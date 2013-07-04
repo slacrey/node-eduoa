@@ -1,0 +1,13 @@
+*.class
+.idea
+*.iml
+*.ipr
+*.iws
+target
+projectFilesBackup
+
+
+# Package Files #
+*.jar
+*.war
+*.ear
