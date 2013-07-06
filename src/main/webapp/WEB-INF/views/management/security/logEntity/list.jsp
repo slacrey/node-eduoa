@@ -82,7 +82,7 @@
 				<td>${item.ipAddress}</td>
 				<td>${item.logLevel}</td>
 				<td>${item.message}</td>
-				<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd"/></td>
+				<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 			</tr>			
 			</c:forEach>
 		</tbody>

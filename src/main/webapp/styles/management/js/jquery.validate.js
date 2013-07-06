@@ -156,7 +156,7 @@ $.extend($.fn, {
 	}
 });
 
-// Custom selectors
+// CustomDataBinding selectors
 $.extend($.expr[":"], {
 	// http://docs.jquery.com/Plugins/Validation/blank
 	blank: function(a) {return !$.trim("" + a.value);},

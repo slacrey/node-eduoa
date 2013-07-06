@@ -3,6 +3,10 @@
 <div class="pageContent">
 <form method="post" action="${contextPath }/management/index/updatePwd" class="required-validate pageForm" onsubmit="return validateCallback(this, dialogAjaxDone);">
 	<div class="pageFormContent" layouth="58">
+        <p>
+            <label>登录账号：</label>
+            <label>${login_user.username }</label>
+        </p>
 		<p>
 			<label>新密码：</label>
 			<input type="password" name="plainPassword" id="newPassword" class="required" maxlength="32"/>

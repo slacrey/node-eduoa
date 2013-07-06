@@ -60,7 +60,7 @@ $(function(){
 				<li><a href="${contextPath}/management/index/updatePwd" target="dialog" mask="true" width="550" height="200">修改密码</a></li>
 				<li><a href="${contextPath}/logout">退出</a></li>
 			</ul>
-			<%-- 
+
 			<ul class="themeList" id="themeList">
 				<li theme="default"><div class="selected">blue</div></li>
 				<li theme="green"><div>green</div></li>
@@ -68,7 +68,7 @@ $(function(){
 				<li theme="silver"><div>silver</div></li>
 				<li theme="azure"><div>天蓝</div></li>
 			</ul>
-			--%>
+
 		</div>
 	</div>
 	<div id="leftside">
@@ -160,6 +160,6 @@ $(function(){
 	</div>
 </div>
 
-<div id="footer">Copyright &copy; 2012-2013, ketayao.com, All Rights Reserve.</div>
+<div id="footer">标典软件开发有限公司</div>
 </body>
 </html>

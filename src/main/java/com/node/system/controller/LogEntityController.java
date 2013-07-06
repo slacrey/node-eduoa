@@ -72,6 +72,7 @@ public class LogEntityController {
 	@RequestMapping(value="/list", method={RequestMethod.GET, RequestMethod.POST})
 	public String list(Page page, LogEntity logEntity,  Date startDate, Date endDate, Map<String, Object> map) {
 		LogEntitySpecification logEntitySpecification = new LogEntitySpecification(logEntity, startDate, endDate);
+        page.setOrderField("createTime");
 		List<LogEntity> logEntities = logEntityService.findByExample(logEntitySpecification, page); 
 		
 		map.put("logEntity", logEntity);

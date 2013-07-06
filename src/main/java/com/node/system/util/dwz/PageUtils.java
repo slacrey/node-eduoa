@@ -49,6 +49,21 @@ public class PageUtils {
 		return new PageRequest(page.getPlainPageNum() - 1, page.getNumPerPage());
 	}
 
+    public static PageRequest createPageRequest(Page page) {
+        if (StringUtils.isNotBlank(page.getOrderField())) {
+            // 忽略大小写
+            if (page.getOrderDirection().equalsIgnoreCase(Page.ORDER_DIRECTION_ASC)) {
+                return new PageRequest(page.getPlainPageNum() - 1, page.getNumPerPage(),
+                        Sort.Direction.ASC, page.getOrderField());
+            } else {
+                return new PageRequest(page.getPlainPageNum() - 1, page.getNumPerPage(),
+                        Sort.Direction.DESC, page.getOrderField());
+            }
+        }
+
+        return new PageRequest(page.getPlainPageNum() - 1, page.getNumPerPage());
+    }
+
 	/**
 	 * 将springDataPage的属性注入page描述
 	 * 

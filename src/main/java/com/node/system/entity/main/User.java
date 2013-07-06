@@ -13,29 +13,18 @@
  
 package com.node.system.entity.main;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
+import com.google.common.collect.Lists;
+import com.node.eduoa.entity.OaTeacherInfo;
+import com.node.system.entity.IdEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.google.common.collect.Lists;
-import com.node.system.entity.IdEntity;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 /** 
  * 	
@@ -102,6 +91,10 @@ public class User extends IdEntity {
 	@ManyToOne
 	@JoinColumn(name="orgId")
 	private Organization organization;
+
+    @ManyToOne
+    @javax.persistence.JoinColumn(name = "teacher_id", referencedColumnName = "id")
+    private OaTeacherInfo teacherInfo;
 	
 	/**  
 	 * 返回 realname 的值   
@@ -278,7 +271,14 @@ public class User extends IdEntity {
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
 	}
-	
+
+    public OaTeacherInfo getTeacherInfo() {
+        return teacherInfo;
+    }
+
+    public void setTeacherInfo(OaTeacherInfo teacherInfo) {
+        this.teacherInfo = teacherInfo;
+    }
 // 在做debug测试时，可能hibernate默认会调用toString方法，该方法包装了集合的样式，在未打开sessionInView时会造成延迟加载错误，
 //	@Override
 //	public String toString() {
