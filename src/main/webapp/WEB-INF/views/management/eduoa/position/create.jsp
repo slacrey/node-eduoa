@@ -4,7 +4,7 @@
 <div class="pageContent">
 <form method="post" action="${contextPath }/management/eduoa/position/create"
       class="required-validate pageForm" onsubmit="return validateCallback(this, dialogReloadNavTab);">
-	<div class="pageFormContent" layoutH="58">
+	<div class="pageFormContent" layoutV="58">
 	<p>
 		<label>职务名称：</label>
 		<input type="text" name="positionName" class="required" size="32" maxlength="32"/>

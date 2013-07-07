@@ -24,13 +24,13 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/** 
- * 	
- * @author 	<a href="mailto:node@gmail.com">node</a>
- * Version  2.0.0
- * @since   2013-4-21 下午7:53:36 
+/**
+ * 年级
+ * User: linfeng at Administrator
+ * Date: 13-7-7
+ * Time: 上午9:53
+ * To change this template use File | Settings | File Templates.
  */
-
 public interface GradeDAO extends JpaRepository<OaGrade, Long> {
 
 	Page<OaGrade> findByGradeNameContaining(String gradeName, Pageable pageable);

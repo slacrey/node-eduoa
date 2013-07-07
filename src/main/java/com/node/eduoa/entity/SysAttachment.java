@@ -22,7 +22,7 @@ public class SysAttachment extends IdEntity {
     @javax.persistence.Column(name = "file_ext")
     private String fileExt;
     @javax.persistence.Column(name = "file_size")
-    private Integer fileSize;
+    private Long fileSize;
     @javax.persistence.Column(name = "service_file")
     private String serviceFile;
 
@@ -31,6 +31,12 @@ public class SysAttachment extends IdEntity {
     private Date createTime;
     @javax.persistence.Column(name = "user_id")
     private Long userId;
+
+    @javax.persistence.Column(name = "attachment_type")
+    private Integer attachmentType;
+
+    @javax.persistence.Column(name = "url_path")
+    private String urlPath;
 
 
     public String getFileName() {
@@ -49,11 +55,11 @@ public class SysAttachment extends IdEntity {
         this.fileExt = fileExt;
     }
 
-    public Integer getFileSize() {
+    public Long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(Integer fileSize) {
+    public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
 
@@ -81,4 +87,19 @@ public class SysAttachment extends IdEntity {
         this.userId = userId;
     }
 
+    public Integer getAttachmentType() {
+        return attachmentType;
+    }
+
+    public void setAttachmentType(Integer attachmentType) {
+        this.attachmentType = attachmentType;
+    }
+
+    public String getUrlPath() {
+        return urlPath;
+    }
+
+    public void setUrlPath(String urlPath) {
+        this.urlPath = urlPath;
+    }
 }

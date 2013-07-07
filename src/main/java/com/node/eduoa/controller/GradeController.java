@@ -13,13 +13,11 @@
  
 package com.node.eduoa.controller;
 
-import com.node.eduoa.YearUtils;
+import com.node.eduoa.utils.YearUtils;
 import com.node.eduoa.converters.CustomTimestampEditor;
 import com.node.eduoa.entity.OaGrade;
 import com.node.eduoa.enums.SemesterEnum;
 import com.node.eduoa.service.GradeService;
-import com.node.eduoa.service.PositionService;
-import com.node.eduoa.service.impl.GradeServiceImpl;
 import com.node.system.log.Log;
 import com.node.system.log.LogLevel;
 import com.node.system.log.LogMessageObject;
@@ -42,13 +40,14 @@ import java.util.*;
 
 /** 
  * 年级管理
- * @author 	<a href="mailto:node@gmail.com">node</a>
- * Version  2.0.0
- * @since   2013-4-21 下午8:43:54 
+ * User: linfeng at Administrator
+ * Date: 13-7-7
+ * Time: 上午11:47
+ * To change this template use File | Settings | File Templates.
  */
 @Controller
 @RequestMapping("/management/eduoa/grade")
-public class GradeController {
+public class GradeController extends BaseFormController {
 
     @Qualifier("gradeServiceImpl")
     @Autowired
@@ -63,14 +62,6 @@ public class GradeController {
 	private static final String LIST = "management/eduoa/grade/list";
 	private static final String VIEW = "management/eduoa/grade/view";
 
-
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(
-                new SimpleDateFormat("yyyy-MM-dd"), true));
-        binder.registerCustomEditor(Date.class, new CustomTimestampEditor(
-                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"), true));
-    }
 
     @RequiresPermissions("Grade:save")
 	@RequestMapping(value="/create", method=RequestMethod.GET)
@@ -97,7 +88,7 @@ public class GradeController {
 		
 		// 加入一个LogMessageObject，该对象的isWritten为true，会记录日志。
         LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{grade.getGradeName()}));
-		return AjaxObject.newOk("任务添加成功！").toString();
+		return AjaxObject.newOk("年级添加成功！").toString();
 	}
 	
 	/**
@@ -135,6 +126,9 @@ public class GradeController {
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.POST)
 	public @ResponseBody String delete(@PathVariable Long id) {
         OaGrade grade = gradeService.get(id);
+        if (grade.getOaClassesById() != null && !grade.getOaClassesById().isEmpty()) {
+            return AjaxObject.newError("年级删除失败：【"+grade.getGradeName()+"】下有班级！").setCallbackType("").toString();
+        }
 		gradeService.delete(id);
         LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{grade.getGradeName()}));
 		return AjaxObject.newOk("年级删除成功！").setCallbackType("").toString();
@@ -154,8 +148,10 @@ public class GradeController {
 		String[] titles = new String[ids.length];
 		for (int i = 0; i < ids.length; i++) {
 			OaGrade grade = gradeService.get(ids[i]);
+            if (grade.getOaClassesById() != null && !grade.getOaClassesById().isEmpty()) {
+                return AjaxObject.newError("年级删除失败：【"+grade.getGradeName()+"】下面有班级！").setCallbackType("").toString();
+            }
 			gradeService.delete(grade.getId());
-			
 			titles[i] = grade.getGradeName();
 		}
 		
@@ -194,6 +190,7 @@ public class GradeController {
 	public String view(@PathVariable Long id, Map<String, Object> map) {
 		OaGrade grade = gradeService.get(id);
 		map.put("grade", grade);
+        map.put("semesterEnums", SemesterEnum.values());
 		return VIEW;
 	}
 }

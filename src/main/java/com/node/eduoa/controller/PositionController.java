@@ -43,13 +43,14 @@ import java.util.Map;
 
 /** 
  * 职务管理
- * @author 	<a href="mailto:node@gmail.com">node</a>
- * Version  2.0.0
- * @since   2013-4-21 下午8:43:54 
+ * User: linfeng at Administrator
+ * Date: 13-7-7
+ * Time: 上午11:47
+ * To change this template use File | Settings | File Templates.
  */
 @Controller
 @RequestMapping("/management/eduoa/position")
-public class PositionController {
+public class PositionController extends BaseFormController {
 
     @Qualifier("positionServiceImpl")
     @Autowired

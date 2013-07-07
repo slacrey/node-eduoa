@@ -19,13 +19,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-/** 
- * 	
- * @author 	<a href="mailto:node@gmail.com">node</a>
- * Version  2.0.0
- * @since   2013-4-21 下午7:53:36 
+/**
+ * 班级
+ * User: linfeng at Administrator
+ * Date: 13-7-7
+ * Time: 上午9:53
+ * To change this template use File | Settings | File Templates.
  */
-
 public interface ClassDAO extends JpaRepository<OaClass, Long>, JpaSpecificationExecutor<OaClass>  {
 
 	Page<OaClass> findByClassNameContaining(String className, Pageable pageable);

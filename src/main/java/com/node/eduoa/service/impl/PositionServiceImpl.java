@@ -8,6 +8,7 @@ import com.node.system.util.dwz.PageUtils;
 import com.sample.entity.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,5 +62,10 @@ public class PositionServiceImpl implements PositionService {
         org.springframework.data.domain.Page<OaPosition> springDataPage = positionDAO.findAll(PageUtils.createPageable(page));
         page.setTotalCount(springDataPage.getTotalElements());
         return springDataPage.getContent();
+    }
+
+    @Override
+    public List<OaPosition> findAll() {
+        return positionDAO.findAll(new Sort(Sort.Direction.ASC, "id"));
     }
 }

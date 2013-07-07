@@ -1,6 +1,6 @@
 /**
  * 得到当前活动的navtab
- * @returns
+ * @return
  */
 function getCurrentNavtab(){
 	return $("ul.navTab-tab li.selected");
@@ -8,7 +8,7 @@ function getCurrentNavtab(){
 
 /**
  * 得到当前活动的navtab的局部区域
- * @returns
+ * @return
  */
 function getCurrentNavtabRel(){
 	var $pDiv = $('.tabsPage div[class="page unitBox"][style*="block"]').first();
@@ -38,6 +38,14 @@ function dialogReloadNavTab(json){
 			$.pdialog.closeCurrent();
 		}
 	}
+}
+
+function popupAlertMsg(json) {
+    DWZ.ajaxDone(json);
+    var tabId = getCurrentNavtab().attr("tabid");
+    if (json.statusCode == DWZ.statusCode.ok){
+
+    }
 }
 
 /**

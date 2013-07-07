@@ -21,7 +21,7 @@ import java.util.List;
 
 /** 
  * 	
- * @author 	<a href="mailto:node@gmail.com">node</a>
+ * @author linfeng
  * Version  2.0.0
  * @since   2013-4-21 下午7:55:07 
  */
@@ -39,4 +39,6 @@ public interface PositionService {
 	List<OaPosition> find(Page page, String positionName);
 
 	List<OaPosition> findAll(Page page);
+
+	List<OaPosition> findAll();
 }

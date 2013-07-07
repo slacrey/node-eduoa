@@ -42,15 +42,15 @@ import org.springside.modules.persistence.SearchFilter;
 import javax.validation.Validator;
 import java.util.*;
 
-/** 
- * 	
- * @author 	<a href="mailto:node@gmail.com">node</a>
- * Version  1.1.0
- * @since   2012-8-27 下午4:10:26 
+/**
+ * User: linfeng at Administrator
+ * Date: 13-7-7
+ * Time: 上午11:47
+ * To change this template use File | Settings | File Templates.
  */
 @Controller
 @RequestMapping("/management/eduoa/class")
-public class ClassController {
+public class ClassController extends BaseFormController {
 
     @Qualifier("gradeServiceImpl")
     @Autowired

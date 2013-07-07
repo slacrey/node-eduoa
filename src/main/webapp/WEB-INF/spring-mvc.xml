@@ -21,6 +21,7 @@
 		<property name="customLogLevel">
            <map>
               <entry key="com.node.system" value="TRACE" />
+              <entry key="com.node.eduoa" value="INFO" />
               <entry key="com.sample" value="INFO" />
            </map>
        </property>

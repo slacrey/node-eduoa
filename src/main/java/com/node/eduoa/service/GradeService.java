@@ -19,13 +19,13 @@ import com.node.system.util.dwz.Page;
 
 import java.util.List;
 
-/** 
- * 	
- * @author 	<a href="mailto:node@gmail.com">node</a>
- * Version  2.0.0
- * @since   2013-4-21 下午7:55:07 
+/**
+ * 年级
+ * User: linfeng at Administrator
+ * Date: 13-7-7
+ * Time: 上午9:56
+ * To change this template use File | Settings | File Templates.
  */
-
 public interface GradeService {
 	
 	void save(OaGrade grade);

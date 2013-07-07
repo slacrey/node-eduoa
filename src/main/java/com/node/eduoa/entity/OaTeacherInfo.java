@@ -1,10 +1,12 @@
 package com.node.eduoa.entity;
 
+import com.node.eduoa.enums.EducationEnum;
 import com.node.system.entity.IdEntity;
 import com.node.system.entity.main.Organization;
 import com.node.system.entity.main.User;
 
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Collection;
 
@@ -51,7 +53,7 @@ public class OaTeacherInfo extends IdEntity {
     @Column(name = "working_time")
     private Date workingTime;
     @Column(name = "original_education")
-    private String originalEducation;
+    private Integer originalEducation;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "original_education_time")
@@ -59,11 +61,14 @@ public class OaTeacherInfo extends IdEntity {
     @Column(name = "special")
     private String special;
     @Column(name = "new_education")
-    private String newEducation;
+    private Integer newEducation;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "new_education_time")
     private Date newEducationTime;
+
+    @Column(name = "certificates_type")
+    private Integer certificatesType;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "certificates_time")
@@ -98,6 +103,13 @@ public class OaTeacherInfo extends IdEntity {
     private OaPosition oaPositionByPositionId;
     @OneToMany(mappedBy = "teacherInfo")
     private Collection<User> securityUsersById;
+
+    @Transient
+    private Integer workedYear;
+    @Transient
+    private String originalEducationName;
+    @Transient
+    private String newEducationName;
 
     public String getTeacherName() {
         return teacherName;
@@ -195,11 +207,11 @@ public class OaTeacherInfo extends IdEntity {
         this.workingTime = workingTime;
     }
 
-    public String getOriginalEducation() {
+    public Integer getOriginalEducation() {
         return originalEducation;
     }
 
-    public void setOriginalEducation(String originalEducation) {
+    public void setOriginalEducation(Integer originalEducation) {
         this.originalEducation = originalEducation;
     }
 
@@ -219,11 +231,11 @@ public class OaTeacherInfo extends IdEntity {
         this.special = special;
     }
 
-    public String getNewEducation() {
+    public Integer getNewEducation() {
         return newEducation;
     }
 
-    public void setNewEducation(String newEducation) {
+    public void setNewEducation(Integer newEducation) {
         this.newEducation = newEducation;
     }
 
@@ -323,5 +335,55 @@ public class OaTeacherInfo extends IdEntity {
         this.securityUsersById = securityUsersById;
     }
 
+    public Integer getCertificatesType() {
+        return certificatesType;
+    }
 
+    public void setCertificatesType(Integer certificatesType) {
+        this.certificatesType = certificatesType;
+    }
+
+    public Integer getWorkedYear() {
+        if (joinTime != null) {
+            Calendar currentCalendar = Calendar.getInstance();
+            Integer currentYear = currentCalendar.get(Calendar.YEAR);
+            Calendar birthdayCalendar = Calendar.getInstance();
+            birthdayCalendar.setTime(joinTime);
+            Integer birthdayYear = birthdayCalendar.get(Calendar.YEAR);
+            workedYear = currentYear - birthdayYear;
+        }
+        return workedYear;
+    }
+
+    public void setWorkedYear(Integer workedYear) {
+        this.workedYear = workedYear;
+    }
+
+    public String getNewEducationName() {
+        if (newEducation != null) {
+            EducationEnum educationEnum = EducationEnum.valueByIndex(newEducation);
+            if (educationEnum != null) {
+                return educationEnum.getText();
+            }
+        }
+        return "";
+    }
+
+    public void setNewEducationName(String newEducationName) {
+        this.newEducationName = newEducationName;
+    }
+
+    public String getOriginalEducationName() {
+        if (originalEducation != null) {
+            EducationEnum educationEnum = EducationEnum.valueByIndex(originalEducation);
+            if (educationEnum != null) {
+                return educationEnum.getText();
+            }
+        }
+        return "";
+    }
+
+    public void setOriginalEducationName(String originalEducationName) {
+        this.originalEducationName = originalEducationName;
+    }
 }

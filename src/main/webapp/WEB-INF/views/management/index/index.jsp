@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=7" />
-<title>KETA定制化平台</title>
+<title>教育信息管理系统</title>
 <link href="${contextPath}/styles/management/themes/default/style.css" rel="stylesheet" type="text/css" media="screen"/>
 <link href="${contextPath}/styles/management/themes/css/core.css" rel="stylesheet" type="text/css" media="screen"/>
 <link href="${contextPath}/styles/management/themes/css/print.css" rel="stylesheet" type="text/css" media="print"/>

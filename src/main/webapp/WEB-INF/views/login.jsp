@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>KETA定制化平台</title>
+<title>教育信息管理系统</title>
 <link href="${contextPath}/styles/management/themes/default/style.css" rel="stylesheet" type="text/css" />
 <link href="${contextPath}/styles/management/themes/css/core.css" rel="stylesheet" type="text/css" />
 <link href="${contextPath}/styles/management/themes/css/login.css" rel="stylesheet" type="text/css" />
