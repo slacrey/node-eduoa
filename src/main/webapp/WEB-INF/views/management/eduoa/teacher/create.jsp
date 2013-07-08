@@ -49,6 +49,31 @@
             <div class="divider"></div>
 
             <p>
+                <label>是否是教师：</label>
+                <select name="oaGradeByGradeId.id" class="combox">
+                    <c:forEach items="${grades}" var="item" >
+                        <option value="${item.id}">${item.gradeName}</option>
+                    </c:forEach>
+                </select>
+            </p>
+            <p>
+                <label>是否是班主任：</label>
+                <select name="oaGradeByGradeId.id" class="combox">
+                    <c:forEach items="${grades}" var="item" >
+                        <option value="${item.id}">${item.gradeName}</option>
+                    </c:forEach>
+                </select>
+            </p>
+            <p>
+                <label>带领班级：</label>
+                <input type="hidden" name="class.classIds" value=""/>
+                <input type="text" class="required" name="class.classNames" value=""/>
+                <a class="btnLook" target="dialog" width="530" height="450"
+                   lookupGroup="class" mask="true"
+                   href="${contextPath }/management/eduoa/teacher/tree_grade"
+                   title="选择">选择</a>
+            </p>
+            <p>
                 <label>年级：</label>
                 <select name="oaGradeByGradeId.id" class="combox">
                     <c:forEach items="${grades}" var="item" >
@@ -60,12 +85,13 @@
                 <label>工作岗位：</label>
                 <input type="hidden" name="securityOrganizationByOrgId.id" value=""/>
                 <input type="text" class="required" name="securityOrganizationByOrgId.name" value=""/>
-                <a class="btnLook" target="dialog" rel="dlg_select_organization" width="530" height="450" href="${contextPath }/management/eduoa/teacher/tree"
+                <a class="btnLook" target="dialog" width="530" mask="true" height="450" href="${contextPath }/management/eduoa/teacher/tree"
                    lookupGroup="securityOrganizationByOrgId" title="选择">选择</a>
             </p>
             <p>
                 <label>职务：</label>
                 <select name="oaPositionByPositionId.id" class="combox">
+                    <option value="">无职务</option>
                     <c:forEach items="${positions}" var="item" >
                         <option value="${item.id}">${item.positionName}</option>
                     </c:forEach>
@@ -84,8 +110,8 @@
                 <label>任课班级：</label>
                 <input type="hidden" name="class.classIds" value=""/>
                 <input type="text" class="required" name="class.classNames" value=""/>
-                <a class="btnLook" target="dialog" rel="dlg_select_class" width="530" height="450"
-                   lookupGroup="class"
+                <a class="btnLook" target="dialog" width="530" height="450"
+                   lookupGroup="class" mask="true"
                    href="${contextPath }/management/eduoa/teacher/tree_grade"
                    title="选择">选择</a>
             </p>
@@ -147,7 +173,7 @@
             </p>
             <p>
                 <label>职称评定时间：</label>
-                <input type="text" name="certificatesTime" class="date" size="30"/><a class="inputDateButton"
+                <input type="text" name="certificatesTime" dateFmt="yyyy-MM-dd" class="date" size="30"/><a class="inputDateButton"
                                                                                       href="javascript:;">选择</a>
             </p>
             <p>

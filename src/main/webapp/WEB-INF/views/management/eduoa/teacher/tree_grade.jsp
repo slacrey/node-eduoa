@@ -46,7 +46,6 @@
         var result = '', ids='', names = '';
         $("#treeGrade_clean").on("click", function(){
             $.bringBackSuggest({classIds:'', classNames:''});
-            $.pdialog.close("dlg_select_class");
             $("#treeGrade_close").trigger("click");
         });
         $("#treeGrade_select").on("click", function(){
@@ -55,7 +54,6 @@
             } else {
                 $.bringBackSuggest(result);
             }
-            $.pdialog.close("dlg_select_class");
             $("#treeGrade_close").trigger("click");
         });
         function treeCheckBack() {

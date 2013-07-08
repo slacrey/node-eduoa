@@ -24,7 +24,6 @@
 <script type="text/javascript">
     function returnClose(obj) {
         $.bringBackSuggest(obj);
-        $.pdialog.close("dlg_select_organization");
         $("#treeLookup_close", $(".formBar")).click();
     }
 </script>
@@ -48,7 +47,7 @@
     <script type="text/javascript">
         $("#treeLookup_clean").on("click", function(){
             $.bringBackSuggest({id:'', name:''});
-            $.pdialog.close("dlg_select_organization");
+            $("#treeLookup_close").trigger("click");
         });
     </script>
 </div>
