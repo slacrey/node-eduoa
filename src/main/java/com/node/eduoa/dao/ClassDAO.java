@@ -18,6 +18,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 /**
  * 班级
@@ -29,5 +33,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface ClassDAO extends JpaRepository<OaClass, Long>, JpaSpecificationExecutor<OaClass>  {
 
 	Page<OaClass> findByClassNameContaining(String className, Pageable pageable);
+
+    @SuppressWarnings("JpaQlInspection")
+    @Query("select c from OaClass c where c.id in :classIds")
+    List<OaClass> findByClassIds(@Param("classIds") List<Long> classIds);
 
 }

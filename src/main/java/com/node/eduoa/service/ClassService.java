@@ -41,4 +41,6 @@ public interface ClassService {
 	List<OaClass> findByGradeId(Page page, Long gradeId, Map<String, Object> searchParams);
 
 	List<OaClass> findAll(Page page);
+
+    List<OaClass> findByClassIds(List<Long> classIds);
 }

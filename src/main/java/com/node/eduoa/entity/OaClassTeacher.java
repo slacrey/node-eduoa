@@ -35,6 +35,13 @@ public class OaClassTeacher extends IdEntity {
     @javax.persistence.JoinColumn(name = "teacher_id", referencedColumnName = "id")
     private OaTeacherInfo oaTeacherInfoByTeacherId;
 
+    public OaClassTeacher(Integer headTeacher) {
+        this.headTeacher = headTeacher;
+    }
+
+    public OaClassTeacher() {
+    }
+
     public Date getStartTime() {
         return startTime;
     }

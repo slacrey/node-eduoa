@@ -19,6 +19,7 @@ import com.node.eduoa.entity.*;
 import com.node.eduoa.enums.*;
 import com.node.eduoa.service.*;
 import com.node.eduoa.service.impl.*;
+import com.node.eduoa.utils.mode.TeacherClassTmp;
 import com.node.system.entity.main.LogEntity;
 import com.node.system.entity.main.Organization;
 import com.node.system.log.Log;
@@ -78,11 +79,15 @@ public class TeacherInfoController extends BaseFormController {
     @Qualifier("certificateTypeServiceImpl")
     @Autowired
     private CertificateTypeService certificateTypeService;
+    @Qualifier("classTeacherServiceImpl")
+    @Autowired
+    private ClassTeacherService classTeacherService;
+    @Qualifier("classServiceImpl")
+    @Autowired
+    private ClassService classService;
 
     @Autowired
     private Validator validator;
-
-
 
     private static final String CREATE = "management/eduoa/teacher/create";
     private static final String UPDATE = "management/eduoa/teacher/update";
@@ -90,7 +95,7 @@ public class TeacherInfoController extends BaseFormController {
     private static final String VIEW = "management/eduoa/teacher/view";
     private static final String TREE = "management/eduoa/teacher/treeLookup";
     private static final String TREE_GRADE = "management/eduoa/teacher/tree_grade";
-
+    private static final String TREE_HEAD_TEACHER = "management/eduoa/teacher/tree_head_teacher";
 
     @RequiresPermissions("TeacherInfo:view")
     @RequestMapping(value = "/tree", method = {RequestMethod.GET, RequestMethod.POST})
@@ -99,6 +104,19 @@ public class TeacherInfoController extends BaseFormController {
 
         map.put("organization", organization);
         return TREE;
+    }
+
+    @RequiresPermissions("TeacherInfo:view")
+    @RequestMapping(value = "/tree_head_teacher", method = {RequestMethod.GET, RequestMethod.POST})
+    public String treeHeadTeacher(Map<String, Object> map) {
+        Calendar calendar = Calendar.getInstance();
+        List<OaGrade> grades = gradeService.findAllByYear(calendar.get(Calendar.YEAR));
+        OaGrade grade = new OaGrade();
+        grade.setGradeName("根年级");
+        grade.setId(-1L);
+        grade.setChildren(grades);
+        map.put("grade", grade);
+        return TREE_HEAD_TEACHER;
     }
 
     @RequiresPermissions("TeacherInfo:view")
@@ -126,6 +144,8 @@ public class TeacherInfoController extends BaseFormController {
         map.put("educations", EducationEnum.values());
         map.put("certificateTypes", certificateTypeService.findAll());
         map.put("establishments", EstablishmentEnum.values());
+        map.put("isTeachers", TeacherEnum.values());
+        map.put("headTeacher", HeadTeacherEnum.values());
 
         return CREATE;
     }
@@ -138,10 +158,60 @@ public class TeacherInfoController extends BaseFormController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public
     @ResponseBody
-    String create(OaTeacherInfo teacherInfo, String classIds) {
+    String create(OaTeacherInfo teacherInfo) {
+        if (teacherInfo.getOaPositionByPositionId() != null
+                && teacherInfo.getOaPositionByPositionId().getId() != null) {
+            OaPosition position = positionService.get(teacherInfo.getOaPositionByPositionId().getId());
+            teacherInfo.setOaPositionByPositionId(position);
+        } else {
+            teacherInfo.setOaPositionByPositionId(null);
+        }
+        if (teacherInfo.getSecurityOrganizationByOrgId() != null
+                && teacherInfo.getSecurityOrganizationByOrgId().getId() != null) {
+            Organization organization = organizationService.get(teacherInfo.getSecurityOrganizationByOrgId().getId());
+            teacherInfo.setSecurityOrganizationByOrgId(organization);
+        } else {
+            teacherInfo.setSecurityOrganizationByOrgId(null);
+        }
+
+
         BeanValidators.validateWithException(validator, teacherInfo);
+//        List<OaClassTeacher> classTeachers = new ArrayList<OaClassTeacher>();
+//        if (headClass != null) {
+//            OaClassTeacher classTeacher = new OaClassTeacher(1);
+//            if (!"".equals(headClass.getClassIds())) {
+//                OaClass oaClass = classService.get(Long.valueOf(headClass.getClassIds()));
+//                classTeacher.setOaClassByClassId(oaClass);
+//                classTeachers.add(classTeacher);
+//            }
+//        }
+//        if (teacherClass != null) {
+//            String classIds = teacherClass.getClassIds();
+//            String[] classIdArray = classIds.split(",");
+//            List<Long> classLongIds = new ArrayList<Long>();
+//            for (String classId: classIdArray) {
+//                classLongIds.add(Long.valueOf(classId));
+//            }
+//            if (!classLongIds.isEmpty()) {
+//                List<OaClass> classList = classService.findByClassIds(classLongIds);
+//                if (classList != null && !classList.isEmpty()) {
+//                    for (OaClass oaClass: classList) {
+//                        OaClassTeacher classTeacher = new OaClassTeacher(0);
+//                        classTeacher.setOaClassByClassId(oaClass);
+//                        classTeachers.add(classTeacher);
+//                    }
+//                }
+//            }
+//        }
         try {
             teacherInfoService.save(teacherInfo);
+//            if (!classTeachers.isEmpty()) {
+//                for (OaClassTeacher classTeacher: classTeachers) {
+//                    classTeacher.setOaTeacherInfoByTeacherId(teacherInfo);
+//                    classTeacherService.save(classTeacher);
+//                }
+//            }
+
         } catch (Exception e) {
             return AjaxObject.newError(e.getMessage()).setCallbackType("").toString();
         }

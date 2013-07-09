@@ -85,4 +85,9 @@ public class ClassServiceImpl implements ClassService {
         page.setTotalCount(springDataPage.getTotalElements());
         return springDataPage.getContent();
     }
+
+    @Override
+    public List<OaClass> findByClassIds(List<Long> classIds) {
+        return classDAO.findByClassIds(classIds);
+    }
 }
