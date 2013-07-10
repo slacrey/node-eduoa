@@ -50,7 +50,7 @@
 
             <p>
                 <label>是否是教师：</label>
-                <select name="isTeacher" class="combox">
+                <select name="teacher" class="combox">
                     <c:forEach items="${isTeachers}" var="item" >
                         <option value="${item.index}">${item.text}</option>
                     </c:forEach>
@@ -163,19 +163,19 @@
                 <input type="text" name="newEducationTime" class="date" size="30"/><a class="inputDateButton"
                                                                                            href="javascript:;">选择</a>
             </p>
-            <%--<p>--%>
-                <%--<label>职称：</label>--%>
-                <%--<select name="certificatesType" class="combox" >--%>
-                    <%--<c:forEach items="${certificateTypes}" var="item" >--%>
-                        <%--<option value="${item.id}">${item.typeName}</option>--%>
-                    <%--</c:forEach>--%>
-                <%--</select>--%>
-            <%--</p>--%>
-            <%--<p>--%>
-                <%--<label>职称评定时间：</label>--%>
-                <%--<input type="text" name="certificatesTime" dateFmt="yyyy-MM-dd" class="date" size="30"/><a class="inputDateButton"--%>
-                                                                                      <%--href="javascript:;">选择</a>--%>
-            <%--</p>--%>
+            <p>
+                <label>职称：</label>
+                <select name="certificatesType" class="combox" >
+                    <c:forEach items="${certificateTypes}" var="item" >
+                        <option value="${item.id}">${item.typeName}</option>
+                    </c:forEach>
+                </select>
+            </p>
+            <p>
+                <label>职称评定时间：</label>
+                <input type="text" name="certificatesTime" dateFmt="yyyy-MM-dd" class="date" size="30"/><a class="inputDateButton"
+                                                                                      href="javascript:;">选择</a>
+            </p>
             <p>
                 <label>编制情况：</label>
                 <select name="establishment" class="combox" >

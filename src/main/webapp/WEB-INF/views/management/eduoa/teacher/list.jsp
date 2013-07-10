@@ -101,7 +101,10 @@
 			<shiro:hasPermission name="TeacherInfo:delete">
 				<li><a class="delete" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/teacher/delete" title="确认要删除选定人员?"><span>删除人员</span></a></li>
 			</shiro:hasPermission>
-		</ul>
+            <shiro:hasPermission name="TeacherInfo:teachClass">
+                <li><a class="magnifier" target="dialog" rel="dlg_mask" width="600" height="500" href="${contextPath }/management/eduoa/teacher/teachClass/{slt_uid}"><span>查看人员</span></a></li>
+            </shiro:hasPermission>
+        </ul>
 	</div>
 	
 	<table class="table" layoutH="138" width="100%">

@@ -96,6 +96,7 @@ public class TeacherInfoController extends BaseFormController {
     private static final String TREE = "management/eduoa/teacher/treeLookup";
     private static final String TREE_GRADE = "management/eduoa/teacher/tree_grade";
     private static final String TREE_HEAD_TEACHER = "management/eduoa/teacher/tree_head_teacher";
+    private static final String TEACH_CLASS = "management/eduoa/teacher/teach_class";
 
     @RequiresPermissions("TeacherInfo:view")
     @RequestMapping(value = "/tree", method = {RequestMethod.GET, RequestMethod.POST})
@@ -231,6 +232,17 @@ public class TeacherInfoController extends BaseFormController {
         OaTeacherInfo teacherInfo = teacherInfoService.get(id);
 
         map.put("teacherInfo", teacherInfo);
+        map.put("genderEnum", GenderEnum.values());
+        map.put("politicalLandscapeEnum", PoliticalLandscapeEnum.values());
+        Calendar calendar = Calendar.getInstance();
+        map.put("grades", gradeService.findAllByYear(calendar.get(Calendar.YEAR)));
+        map.put("positions", positionService.findAll());
+        map.put("subjects", subjectService.findAll());
+        map.put("educations", EducationEnum.values());
+        map.put("certificateTypes", certificateTypeService.findAll());
+        map.put("establishments", EstablishmentEnum.values());
+        map.put("isTeachers", TeacherEnum.values());
+        map.put("headTeacher", HeadTeacherEnum.values());
 
         // 加入一个LogMessageObject，该对象的isWritten为false，不会记录日志。
         LogUitl.putArgs(LogMessageObject.newIgnore());
@@ -243,6 +255,22 @@ public class TeacherInfoController extends BaseFormController {
     public
     @ResponseBody
     String update(OaTeacherInfo teacherInfo) {
+
+        if (teacherInfo.getOaPositionByPositionId() != null
+                && teacherInfo.getOaPositionByPositionId().getId() != null) {
+            OaPosition position = positionService.get(teacherInfo.getOaPositionByPositionId().getId());
+            teacherInfo.setOaPositionByPositionId(position);
+        } else {
+            teacherInfo.setOaPositionByPositionId(null);
+        }
+        if (teacherInfo.getSecurityOrganizationByOrgId() != null
+                && teacherInfo.getSecurityOrganizationByOrgId().getId() != null) {
+            Organization organization = organizationService.get(teacherInfo.getSecurityOrganizationByOrgId().getId());
+            teacherInfo.setSecurityOrganizationByOrgId(organization);
+        } else {
+            teacherInfo.setSecurityOrganizationByOrgId(null);
+        }
+
         BeanValidators.validateWithException(validator, teacherInfo);
         teacherInfoService.update(teacherInfo);
 
@@ -315,12 +343,42 @@ public class TeacherInfoController extends BaseFormController {
      * @param map
      * @return
      */
-    @RequiresPermissions("TeacherInfo:look")
+    @RequiresPermissions("TeacherInfo:view")
     @RequestMapping(value = "/view/{id}", method = {RequestMethod.GET})
     public String view(@PathVariable Long id, Map<String, Object> map) {
         OaTeacherInfo teacherInfo = teacherInfoService.get(id);
         map.put("teacherInfo", teacherInfo);
+        map.put("genderEnum", GenderEnum.values());
+        map.put("politicalLandscapeEnum", PoliticalLandscapeEnum.values());
+        Calendar calendar = Calendar.getInstance();
+        map.put("grades", gradeService.findAllByYear(calendar.get(Calendar.YEAR)));
+        map.put("positions", positionService.findAll());
+        map.put("subjects", subjectService.findAll());
+        map.put("educations", EducationEnum.values());
+        map.put("certificateTypes", certificateTypeService.findAll());
+        map.put("establishments", EstablishmentEnum.values());
+        map.put("isTeachers", TeacherEnum.values());
+        map.put("headTeacher", HeadTeacherEnum.values());
         return VIEW;
+    }
+
+    @RequiresPermissions("TeacherInfo:teachClass")
+    @RequestMapping(value = "/teachClass/{id}", method = {RequestMethod.GET})
+    public String teachClass(@PathVariable Long id, Map<String, Object> map) {
+        OaTeacherInfo teacherInfo = teacherInfoService.get(id);
+        map.put("teacherInfo", teacherInfo);
+        return TEACH_CLASS;
+    }
+
+    @Log(message = "给{0}添加了任课班级【{1}】。", level = LogLevel.INFO)
+    @RequiresPermissions("TeacherInfo:teachClass")
+    @RequestMapping(value = "/createTeachClass", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String saveTeachClass(OaClassTeacher[] classTeacher){
+
+
+        return AjaxObject.newOk("教师信息添加成功！").toString();
     }
 
     private class TeacherInfoSpecification implements Specification<OaTeacherInfo> {

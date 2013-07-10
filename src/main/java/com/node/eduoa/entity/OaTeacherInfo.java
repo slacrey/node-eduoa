@@ -29,7 +29,7 @@ public class OaTeacherInfo extends IdEntity {
     @Column(name = "id_number")
     private String idNumber;
     @Column(name = "is_teacher")
-    private Integer isTeacher;
+    private Integer teacher;
     @Column(name = "phone")
     private String phone;
     @Column(name = "head_teacher")
@@ -136,11 +136,11 @@ public class OaTeacherInfo extends IdEntity {
     }
 
     public Integer getTeacher() {
-        return isTeacher;
+        return teacher;
     }
 
     public void setTeacher(Integer teacher) {
-        isTeacher = teacher;
+        this.teacher = teacher;
     }
 
     public String getPhone() {

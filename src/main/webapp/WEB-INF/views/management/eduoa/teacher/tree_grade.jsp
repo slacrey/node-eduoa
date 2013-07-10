@@ -1,17 +1,26 @@
 <%@page import="com.node.system.entity.main.Organization"%>
 <%@ page import="com.node.eduoa.entity.OaGrade" %>
+<%@ page import="com.node.eduoa.entity.OaClass" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ include file="/WEB-INF/views/include.inc.jsp"%>
 <%!
 	public String tree(OaGrade grade, String basePath) {
 		if (grade.getChildren().isEmpty()) {
-			return "";
+            StringBuffer subBudder = new StringBuffer();
+            subBudder.append("<ul>" + "\n");
+            for(OaClass oaClass : grade.getOaClassesById()) {
+                subBudder.append("<li><a href=\"javascript:\" onclick=\"returnClose({classId:'"
+                        + oaClass.getId() + "', className:'" + oaClass.getClassName() + "'})\" >"
+                        + oaClass.getClassName() + "</a>" + "\n");
+                subBudder.append("</li>" + "\n");
+            }
+            subBudder.append("</ul>" + "\n");
+			return subBudder.toString();
 		}
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<ul>" + "\n");
 		for(OaGrade o : grade.getChildren()) {
-            buffer.append("<li><a href=\"javascript:\" tname=\""+o.getGradeName()+"\" tvalue=\""+o.getId()+"\" >"
-                    + o.getGradeName() + "</a>" + "\n");
+            buffer.append("<li><a href=\"javascript:\" >"  + o.getGradeName() + "</a>" + "\n");
 			buffer.append(tree(o, basePath));
 			buffer.append("</li>" + "\n");
 		}
@@ -24,7 +33,7 @@
 %>
 <div class="pageContent">
     <div class="pageFormContent" layoutH="58">
-        <ul class="tree treeCheck expand" oncheck="treeCheckBack">
+        <ul class="tree expand">
             <li>
                 <a href="javascript:">${grade.gradeName }</a> <%=tree(gradeParent, request.getContextPath())%>
             </li>
@@ -43,26 +52,13 @@
         </ul>
     </div>
     <script type="text/javascript">
-        var result = '', ids='', names = '';
         $("#treeGrade_clean").on("click", function(){
-            $.bringBackSuggest({classIds:'', classNames:''});
+            $.bringBackSuggest({classId:'', className:''});
             $("#treeGrade_close").trigger("click");
         });
-        $("#treeGrade_select").on("click", function(){
-            if (result == '') {
-                $.bringBackSuggest({classIds:'', classNames:''});
-            } else {
-                $.bringBackSuggest(result);
-            }
-            $("#treeGrade_close").trigger("click");
-        });
-        function treeCheckBack() {
-            var json = arguments[0];
-            $(json.items).each(function(i){
-                ids += this.value + ',';
-                names += this.name + ',';
-            });
-            result = {classIds:ids, classNames:names};
+        function returnClose(obj) {
+            $.bringBackSuggest(obj);
+            $("#treeGrade_close").click();
         }
     </script>
 </div>

@@ -122,6 +122,9 @@ public class OaGrade extends IdEntity {
     }
 
     public List<OaGrade> getChildren() {
+        if (oaClassesById != null && !oaClassesById.isEmpty()) {
+
+        }
         return children;
     }
 
