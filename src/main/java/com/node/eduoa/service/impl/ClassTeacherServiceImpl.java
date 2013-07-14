@@ -90,4 +90,19 @@ public class ClassTeacherServiceImpl implements ClassTeacherService {
         page.setTotalCount(springDataPage.getTotalElements());
         return springDataPage.getContent();
     }
+
+    @Override
+    public List<OaClassTeacher> findByClassIdNoPage(Long classId) {
+        return classTeacherDAO.findByClassId(classId);
+    }
+
+    @Override
+    public List<OaClassTeacher> findByTeacherId(Long teacherId) {
+        return classTeacherDAO.findByTeacherId(teacherId);
+    }
+
+    @Override
+    public List<OaClassTeacher> findByTeacherIdAndHeadTeacher(Long teacherId, Integer headTeacher) {
+        return classTeacherDAO.findByTeacherIdAndHead(teacherId, headTeacher);
+    }
 }

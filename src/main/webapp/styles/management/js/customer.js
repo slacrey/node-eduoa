@@ -129,3 +129,17 @@ function dialogReloadRel2Module(json){
 	
 	dialogReloadRel(json);
 }
+
+function dialogReloadRel2ClassTeacher(json, rel, url){
+    DWZ.ajaxDone(json);
+    if (json.statusCode == DWZ.statusCode.ok){
+        if (rel) {
+            var $box = $("#" + rel);
+            $box.ajaxUrl({
+                type:"GET", url:url, callback:function(){
+                    $box.find("[layoutH]").layoutH();
+                }
+            });
+        }
+    }
+}

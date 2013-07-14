@@ -3,7 +3,7 @@ package com.node.eduoa.entity;
 import com.node.system.entity.IdEntity;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +12,7 @@ import java.util.Collection;
  * Time: 上午9:57
  * To change this template use File | Settings | File Templates.
  */
-@Table(name = "oa_dictionary", schema = "", catalog = "node_eduoa")
+@Table(name = "oa_dictionary")
 @Entity
 public class OaDictionary extends IdEntity {
 
@@ -26,9 +26,9 @@ public class OaDictionary extends IdEntity {
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private OaDictionary oaDictionaryByParentId;
     @OneToMany(mappedBy = "oaDictionaryByParentId")
-    private Collection<OaDictionary> oaDictionariesById;
+    private List<OaDictionary> oaDictionariesById;
     @OneToMany(mappedBy = "oaDictionaryByDictionaryId")
-    private Collection<OaDictionaryValue> oaDictionaryValuesById;
+    private List<OaDictionaryValue> oaDictionaryValuesById;
 
     public String getDictName() {
         return dictName;
@@ -54,19 +54,19 @@ public class OaDictionary extends IdEntity {
         this.oaDictionaryByParentId = oaDictionaryByParentId;
     }
 
-    public Collection<OaDictionary> getOaDictionariesById() {
+    public List<OaDictionary> getOaDictionariesById() {
         return oaDictionariesById;
     }
 
-    public void setOaDictionariesById(Collection<OaDictionary> oaDictionariesById) {
+    public void setOaDictionariesById(List<OaDictionary> oaDictionariesById) {
         this.oaDictionariesById = oaDictionariesById;
     }
 
-    public Collection<OaDictionaryValue> getOaDictionaryValuesById() {
+    public List<OaDictionaryValue> getOaDictionaryValuesById() {
         return oaDictionaryValuesById;
     }
 
-    public void setOaDictionaryValuesById(Collection<OaDictionaryValue> oaDictionaryValuesById) {
+    public void setOaDictionaryValuesById(List<OaDictionaryValue> oaDictionaryValuesById) {
         this.oaDictionaryValuesById = oaDictionaryValuesById;
     }
 

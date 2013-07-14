@@ -34,4 +34,16 @@ import java.util.List;
  */
 public interface ClassTeacherDAO extends JpaRepository<OaClassTeacher, Long>, JpaSpecificationExecutor<OaClassTeacher> {
 
+    @Query("select t from OaClassTeacher t where t.oaTeacherInfoByTeacherId.id = :teacherId order by t.id asc")
+    public List<OaClassTeacher> findByTeacherId(@Param("teacherId") Long teacherId);
+
+    @Query("select t from OaClassTeacher t where t.oaClassByClassId.id = :classId order by t.id asc")
+    public List<OaClassTeacher> findByClassId(@Param("classId") Long classId);
+
+    @Query("select t from OaClassTeacher t where t.oaTeacherInfoByTeacherId.id = :teacherId and t.headTeacher=:headTeacher order by t.id asc")
+    public List<OaClassTeacher> findByTeacherIdAndHead(@Param("teacherId") Long teacherId, @Param("headTeacher") Integer headTeacher);
+
+    @Query("select t from OaClassTeacher t where t.oaClassByClassId.id = :classId and t.headTeacher=:headTeacher order by t.id asc")
+    public List<OaClassTeacher> findByClassIdAndHead(@Param("classId") Long classId, @Param("headTeacher") Integer headTeacher);
+
 }

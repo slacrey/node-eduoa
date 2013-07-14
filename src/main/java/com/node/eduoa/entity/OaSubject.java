@@ -6,7 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +15,7 @@ import java.util.Collection;
  * Time: 上午9:57
  * To change this template use File | Settings | File Templates.
  */
-@javax.persistence.Table(name = "oa_subject", schema = "", catalog = "node_eduoa")
+@javax.persistence.Table(name = "oa_subject")
 @Entity
 public class OaSubject extends IdEntity {
 
@@ -26,7 +26,7 @@ public class OaSubject extends IdEntity {
     @javax.persistence.Column(name = "description")
     private String description;
     @OneToMany(mappedBy = "oaSubjectBySubjectId")
-    private Collection<OaTeacherInfo> oaTeacherInfosById;
+    private List<OaTeacherInfo> oaTeacherInfosById;
 
     public String getSubjectName() {
         return subjectName;
@@ -44,11 +44,11 @@ public class OaSubject extends IdEntity {
         this.description = description;
     }
 
-    public Collection<OaTeacherInfo> getOaTeacherInfosById() {
+    public List<OaTeacherInfo> getOaTeacherInfosById() {
         return oaTeacherInfosById;
     }
 
-    public void setOaTeacherInfosById(Collection<OaTeacherInfo> oaTeacherInfosById) {
+    public void setOaTeacherInfosById(List<OaTeacherInfo> oaTeacherInfosById) {
         this.oaTeacherInfosById = oaTeacherInfosById;
     }
 

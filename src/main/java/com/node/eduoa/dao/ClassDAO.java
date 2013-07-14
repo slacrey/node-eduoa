@@ -10,7 +10,7 @@
  *
  * </pre>
  **/
- 
+
 package com.node.eduoa.dao;
 
 import com.node.eduoa.entity.OaClass;
@@ -30,9 +30,9 @@ import java.util.List;
  * Time: 上午9:53
  * To change this template use File | Settings | File Templates.
  */
-public interface ClassDAO extends JpaRepository<OaClass, Long>, JpaSpecificationExecutor<OaClass>  {
+public interface ClassDAO extends JpaRepository<OaClass, Long>, JpaSpecificationExecutor<OaClass> {
 
-	Page<OaClass> findByClassNameContaining(String className, Pageable pageable);
+    Page<OaClass> findByClassNameContaining(String className, Pageable pageable);
 
     @SuppressWarnings("JpaQlInspection")
     @Query("select c from OaClass c where c.id in :classIds")

@@ -39,7 +39,9 @@ public interface TeacherInfoService {
 
 	void update(OaTeacherInfo teacherInfo);
 
-	List<OaTeacherInfo> findByCondition(Page page, OaTeacherInfo teacherInfo, Map<String, Object> searchParams);
+    List<OaTeacherInfo> findByTeacherNameContaining(String teacherName, Page page);
+
+	List<OaTeacherInfo> findByTeacherInfoCondition(Page page, OaTeacherInfo teacherInfo, Map<String, Object> searchParams);
 
 	List<OaTeacherInfo> findAll(Page page);
 

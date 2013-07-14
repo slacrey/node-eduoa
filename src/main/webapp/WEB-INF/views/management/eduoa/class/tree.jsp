@@ -10,7 +10,9 @@
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<ul>" + "\n");
 		for(OaGrade o : grade.getChildren()) {
-			buffer.append("<li><a href=\"" + basePath + "/management/eduoa/class/list/" + o.getId() + "\" target=\"ajax\" rel=\"jbsxBox2organizationList\">" + o.getGradeName() + "</a>" + "\n");
+			buffer.append("<li><a href=\"" + basePath + "/management/eduoa/class/list/" + o.getId()
+                    + "\" target=\"ajax\" rel=\"jbsxBox2organizationList\">" + o.getGradeName()
+                    + "（"+o.getSemester()+"）</a>" + "\n");
 			buffer.append(tree(o, basePath));
 			buffer.append("</li>" + "\n");
 		}

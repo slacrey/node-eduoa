@@ -8,7 +8,7 @@ import com.node.system.entity.main.User;
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +17,7 @@ import java.util.Collection;
  * Time: 上午9:57
  * To change this template use File | Settings | File Templates.
  */
-@Table(name = "oa_teacher_info", schema = "", catalog = "node_eduoa")
+@Table(name = "oa_teacher_info")
 @Entity
 public class OaTeacherInfo extends IdEntity {
 
@@ -86,9 +86,9 @@ public class OaTeacherInfo extends IdEntity {
     private Date updateTime;
 
     @OneToMany(mappedBy = "oaTeacherInfoByTeacherId")
-    private Collection<OaCertificate> oaCertificatesById;
+    private List<OaCertificate> oaCertificatesById;
     @OneToMany(mappedBy = "oaTeacherInfoByTeacherId")
-    private Collection<OaClassTeacher> oaClassTeachersById;
+    private List<OaClassTeacher> oaClassTeachersById;
     @ManyToOne
     @JoinColumn(name = "subject_id", referencedColumnName = "id")
     private OaSubject oaSubjectBySubjectId;
@@ -102,7 +102,7 @@ public class OaTeacherInfo extends IdEntity {
     @JoinColumn(name = "position_id", referencedColumnName = "id")
     private OaPosition oaPositionByPositionId;
     @OneToMany(mappedBy = "teacherInfo")
-    private Collection<User> securityUsersById;
+    private List<User> securityUsersById;
 
     @Transient
     private Integer workedYear;
@@ -279,19 +279,19 @@ public class OaTeacherInfo extends IdEntity {
         this.updateTime = updateTime;
     }
 
-    public Collection<OaCertificate> getOaCertificatesById() {
+    public List<OaCertificate> getOaCertificatesById() {
         return oaCertificatesById;
     }
 
-    public void setOaCertificatesById(Collection<OaCertificate> oaCertificatesById) {
+    public void setOaCertificatesById(List<OaCertificate> oaCertificatesById) {
         this.oaCertificatesById = oaCertificatesById;
     }
 
-    public Collection<OaClassTeacher> getOaClassTeachersById() {
+    public List<OaClassTeacher> getOaClassTeachersById() {
         return oaClassTeachersById;
     }
 
-    public void setOaClassTeachersById(Collection<OaClassTeacher> oaClassTeachersById) {
+    public void setOaClassTeachersById(List<OaClassTeacher> oaClassTeachersById) {
         this.oaClassTeachersById = oaClassTeachersById;
     }
 
@@ -327,11 +327,11 @@ public class OaTeacherInfo extends IdEntity {
         this.oaPositionByPositionId = oaPositionByPositionId;
     }
 
-    public Collection<User> getSecurityUsersById() {
+    public List<User> getSecurityUsersById() {
         return securityUsersById;
     }
 
-    public void setSecurityUsersById(Collection<User> securityUsersById) {
+    public void setSecurityUsersById(List<User> securityUsersById) {
         this.securityUsersById = securityUsersById;
     }
 

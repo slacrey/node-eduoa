@@ -4,7 +4,7 @@ import com.node.system.entity.IdEntity;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +13,7 @@ import java.util.Collection;
  * Time: 上午9:57
  * To change this template use File | Settings | File Templates.
  */
-@javax.persistence.Table(name = "oa_appraisal", schema = "", catalog = "node_eduoa")
+@javax.persistence.Table(name = "oa_appraisal")
 @Entity
 public class OaAppraisal extends IdEntity {
 
@@ -41,7 +41,7 @@ public class OaAppraisal extends IdEntity {
     @javax.persistence.Column(name = "user_id")
     private Long userId;
     @OneToMany(mappedBy = "oaAppraisalByApplayId")
-    private Collection<SysTypeRules> sysTypeRulesesById;
+    private List<SysTypeRules> sysTypeRulesesById;
 
     public Integer getAtype() {
         return atype;
@@ -91,11 +91,11 @@ public class OaAppraisal extends IdEntity {
         this.userId = userId;
     }
 
-    public Collection<SysTypeRules> getSysTypeRulesesById() {
+    public List<SysTypeRules> getSysTypeRulesesById() {
         return sysTypeRulesesById;
     }
 
-    public void setSysTypeRulesesById(Collection<SysTypeRules> sysTypeRulesesById) {
+    public void setSysTypeRulesesById(List<SysTypeRules> sysTypeRulesesById) {
         this.sysTypeRulesesById = sysTypeRulesesById;
     }
 

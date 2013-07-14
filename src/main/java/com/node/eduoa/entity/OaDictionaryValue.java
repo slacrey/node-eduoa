@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
  * Time: 上午9:57
  * To change this template use File | Settings | File Templates.
  */
-@javax.persistence.Table(name = "oa_dictionary_value", schema = "", catalog = "node_eduoa")
+@javax.persistence.Table(name = "oa_dictionary_value")
 @Entity
 public class OaDictionaryValue extends IdEntity {
 

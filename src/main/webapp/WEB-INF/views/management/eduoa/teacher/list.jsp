@@ -3,86 +3,51 @@
 <%@ include file="/WEB-INF/views/include.inc.jsp"%>
 
 <keta:paginationForm action="${contextPath }/management/eduoa/teacher/list" page="${page }">
-    <input type="hidden" name="positionId" value="${teacherInfo.oaPositionByPositionId.id}"/>
-    <input type="hidden" name="subjectId" value="${teacherInfo.oaSubjectBySubjectId.id}"/>
-    <input type="hidden" name="orgId" value="${teacherInfo.securityOrganizationByOrgId.id}"/>
-    <input type="hidden" name="workedYear" value="${teacherInfo.workedYear}"/>
-    <input type="hidden" name="originalEducation" value="${teacherInfo.originalEducation}"/>
-    <input type="hidden" name="newEducation" value="${teacherInfo.newEducation}"/>
-    <input type="hidden" name="establishment" value="${teacherInfo.establishment}"/>
-    <input type="hidden" name="gender" value="${teacherInfo.gender}"/>
-    <input type="hidden" name="startDate" value="<fmt:formatDate value="${startDate}" pattern="yyyy-MM-dd"/>"/>
-    <input type="hidden" name="endDate" value="<fmt:formatDate value="${endDate}" pattern="yyyy-MM-dd"/>"/>
+    <input type="hidden" name="keywords" value="${keywords}"/>
+    <input type="hidden" name="organizationName" value="${organizationName}"/>
+    <input type="hidden" name="subjectId" value="${subjectId}"/>
+    <input type="hidden" name="positionId" value="${positionId}"/>
 </keta:paginationForm>
 
 <form method="post" action="${contextPath }/management/eduoa/teacher/list" onsubmit="return navTabSearch(this)">
-	<div class="pageHeader">
-		<div class="searchBar">
-			<ul class="searchContent">
+    <div class="pageHeader">
+        <div class="searchBar">
+            <ul class="searchContent">
                 <li>
-                    <label style="width: 100px;">工作岗位：</label>
-                    <span>
-                        <input name="securityOrganizationByOrgId.id" value="" type="hidden"/>
-                        <input style="float: left;" class="required" name="securityOrganizationByOrgId.name" type="text" readonly/>
-                        <a class="btnLook" width="530" height="450" href="${contextPath }/management/eduoa/teacher/tree"
-                           lookupGroup="securityOrganizationByOrgId" title="选择">选择</a>
-                    </span>
+                    <label>教师名称：</label>
+                    <input type="text" name="keywords" value="${keywords}"/>
+                </li>
+                <li>
+                    <label>工作岗位：</label>
+                    <input type="text" name="organizationName" value="${organizationName}" />
                 </li>
 
                 <li>
-                    <label style="width: 100px;">学科：</label>
+                    <label>学科：</label>
                     <select name="subjectId" class="combox">
                         <option value="">所有</option>
                         <c:forEach var="item" items="${subjects}">
-                            <option value="${item.id}" ${item.id == teacherInfo.oaSubjectBySubjectId.id ? 'selected="selected"':'' }>${item.subjectName}</option>
+                            <option value="${item.id}" ${item.id == subjectId ? 'selected="selected"':'' }>${item.subjectName}</option>
                         </c:forEach>
                     </select>
                 </li>
-
-				<li>
-					<label style="width: 100px;">人员：</label>
+                <li>
+                    <label>职务：</label>
                     <select name="positionId" class="combox">
                         <option value="">所有</option>
                         <c:forEach var="item" items="${positions}">
-                            <option value="${item.id}" ${item.id == teacherInfo.oaPositionByPositionId.id ? 'selected="selected"':'' }>${item.positionName}</option>
+                            <option value="${item.id}" ${item.id == positionId ? 'selected="selected"':'' }>${item.positionName}</option>
                         </c:forEach>
                     </select>
-				</li>
+                </li>
             </ul>
-            <ul class="searchContent">
-                <li>
-					<label style="width: 100px;">教龄：</label>
-					<input type="text" name="workedYear" value="${teacherInfo.workedYear}"/>
-				</li>
-                <li>
-                    <label style="width: 100px;">原始学历：</label>
-                    <select name="originalEducation" class="combox" value="${teacherInfo.originalEducation}">
-                        <option value="">所有</option>
-                        <c:forEach items="${educations}" var="item" >
-                            <option ${item.index == teacherInfo.originalEducation ? 'selected="selected"':''}
-                                    value="${item.index}">${item.text}</option>
-                        </c:forEach>
-                    </select>
-                </li>
-                <li>
-                    <label style="width: 100px;">最新学历：</label>
-                    <select name="newEducation" class="combox" value="${teacherInfo.newEducation}">
-                        <option value="">所有</option>
-                        <c:forEach items="${educations}" var="item" >
-                            <option ${item.index == teacherInfo.newEducation ? 'selected="selected"':''}
-                                    value="${item.index}">${item.text}</option>
-                        </c:forEach>
-                    </select>
-                </li>
-
-			</ul>
-			<div class="subBar">
-				<ul>						
-					<li><div class="button"><div class="buttonContent"><button type="submit">搜索</button></div></div></li>
-				</ul>
-			</div>
-		</div>
-	</div>
+            <div class="subBar">
+                <ul>
+                    <li><div class="button"><div class="buttonContent"><button type="submit">搜索</button></div></div></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </form>
 
 <div class="pageContent">
@@ -102,7 +67,10 @@
 				<li><a class="delete" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/teacher/delete" title="确认要删除选定人员?"><span>删除人员</span></a></li>
 			</shiro:hasPermission>
             <shiro:hasPermission name="TeacherInfo:teachClass">
-                <li><a class="magnifier" target="dialog" rel="dlg_mask" width="600" height="500" href="${contextPath }/management/eduoa/teacher/teachClass/{slt_uid}"><span>查看人员</span></a></li>
+                <li><a class="add" target="dialog" rel="dlg_mask" width="600" height="500" href="${contextPath }/management/eduoa/teacher/teachClass/{slt_uid}"><span>任课班级</span></a></li>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="TeacherInfo:guideClass">
+                <li><a class="add" target="dialog" rel="dlg_mask" width="600" height="500" href="${contextPath }/management/eduoa/teacher/guideClass/{slt_uid}"><span>带领班级</span></a></li>
             </shiro:hasPermission>
         </ul>
 	</div>

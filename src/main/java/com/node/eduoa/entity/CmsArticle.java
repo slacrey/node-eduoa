@@ -4,7 +4,7 @@ import com.node.system.entity.IdEntity;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -63,7 +63,7 @@ public class CmsArticle extends IdEntity {
     private CmsChannel cmsChannelByChannelId;
 
     @OneToMany(mappedBy = "cmsArticleByArticleId")
-    private Collection<CmsArticleTeacher> cmsArticleTeachersById;
+    private List<CmsArticleTeacher> cmsArticleTeachersById;
 
     public Long getArticleClassId() {
         return articleClassId;
@@ -153,11 +153,11 @@ public class CmsArticle extends IdEntity {
         this.cmsChannelByChannelId = cmsChannelByChannelId;
     }
 
-    public Collection<CmsArticleTeacher> getCmsArticleTeachersById() {
+    public List<CmsArticleTeacher> getCmsArticleTeachersById() {
         return cmsArticleTeachersById;
     }
 
-    public void setCmsArticleTeachersById(Collection<CmsArticleTeacher> cmsArticleTeachersById) {
+    public void setCmsArticleTeachersById(List<CmsArticleTeacher> cmsArticleTeachersById) {
         this.cmsArticleTeachersById = cmsArticleTeachersById;
     }
 

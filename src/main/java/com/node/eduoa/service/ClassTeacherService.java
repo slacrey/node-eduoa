@@ -29,4 +29,10 @@ public interface ClassTeacherService {
     List<OaClassTeacher> findByTeacherId(Page page, Long teacherId, Map<String, Object> searchParams);
 
     List<OaClassTeacher> findAll(Page page);
+
+    List<OaClassTeacher> findByClassIdNoPage(Long classId);
+
+    List<OaClassTeacher> findByTeacherId(Long teacherId);
+
+    List<OaClassTeacher> findByTeacherIdAndHeadTeacher(Long teacherId, Integer headTeacher);
 }

@@ -5,7 +5,7 @@ import com.node.system.entity.IdEntity;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,12 +44,14 @@ public class OaClass extends IdEntity {
     @JoinColumn(name = "grade_id", referencedColumnName = "id")
     private OaGrade oaGradeByGradeId;
     @OneToMany(mappedBy = "oaClassByClassId")
-    private Collection<OaClassTeacher> oaClassTeachersById;
+    private List<OaClassTeacher> oaClassTeachersById;
     @OneToMany(mappedBy = "oaClassByClassId")
-    private Collection<OaStudentClass> oaStudentClassesById;
+    private List<OaStudentClass> oaStudentClassesById;
 
     @Transient
     private String categoryName;
+
+
 
     public String getClassName() {
         return className;
@@ -123,19 +125,19 @@ public class OaClass extends IdEntity {
         this.oaGradeByGradeId = oaGradeByGradeId;
     }
 
-    public Collection<OaClassTeacher> getOaClassTeachersById() {
+    public List<OaClassTeacher> getOaClassTeachersById() {
         return oaClassTeachersById;
     }
 
-    public void setOaClassTeachersById(Collection<OaClassTeacher> oaClassTeachersById) {
+    public void setOaClassTeachersById(List<OaClassTeacher> oaClassTeachersById) {
         this.oaClassTeachersById = oaClassTeachersById;
     }
 
-    public Collection<OaStudentClass> getOaStudentClassesById() {
+    public List<OaStudentClass> getOaStudentClassesById() {
         return oaStudentClassesById;
     }
 
-    public void setOaStudentClassesById(Collection<OaStudentClass> oaStudentClassesById) {
+    public void setOaStudentClassesById(List<OaStudentClass> oaStudentClassesById) {
         this.oaStudentClassesById = oaStudentClassesById;
     }
 

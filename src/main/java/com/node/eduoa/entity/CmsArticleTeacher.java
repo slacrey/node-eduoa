@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
  * Time: 上午9:57
  * To change this template use File | Settings | File Templates.
  */
-@javax.persistence.Table(name = "cms_article_teacher", schema = "", catalog = "node_eduoa")
+@javax.persistence.Table(name = "cms_article_teacher")
 @Entity
 public class CmsArticleTeacher extends IdEntity {
 

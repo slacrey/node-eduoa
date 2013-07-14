@@ -9,7 +9,7 @@
             StringBuffer subBudder = new StringBuffer();
             subBudder.append("<ul>" + "\n");
             for(OaClass oaClass : grade.getOaClassesById()) {
-                subBudder.append("<li><a href=\"javascript:\" onclick=\"returnClose({classId:'"
+                subBudder.append("<li><a href=\"javascript:\" onclick=\"returnClose({id:'"
                         + oaClass.getId() + "', className:'" + oaClass.getClassName() + "'})\" >"
                         + oaClass.getClassName() + "</a>" + "\n");
                 subBudder.append("</li>" + "\n");
@@ -20,7 +20,7 @@
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<ul>" + "\n");
 		for(OaGrade o : grade.getChildren()) {
-            buffer.append("<li><a href=\"javascript:\" >"  + o.getGradeName() + "</a>" + "\n");
+            buffer.append("<li><a href=\"javascript:\" >"  + o.getGradeName() + "（"+o.getSemester()+"）</a>" + "\n");
 			buffer.append(tree(o, basePath));
 			buffer.append("</li>" + "\n");
 		}
@@ -47,13 +47,10 @@
         <ul>
             <li><div class="button"><div class="buttonContent"><button id="treeGrade_clean" type="button">清空</button></div></div></li>
         </ul>
-        <ul>
-            <li><div class="button"><div class="buttonContent"><button id="treeGrade_select" type="button">选择</button></div></div></li>
-        </ul>
     </div>
     <script type="text/javascript">
         $("#treeGrade_clean").on("click", function(){
-            $.bringBackSuggest({classId:'', className:''});
+            $.bringBackSuggest({id:'', className:''});
             $("#treeGrade_close").trigger("click");
         });
         function returnClose(obj) {

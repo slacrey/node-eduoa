@@ -29,6 +29,17 @@
             </p>
 
             <p>
+                <label>开始日期：</label>
+                <input type="text" name="startTime" class="required date" size="30"/><a class="inputDateButton"
+                                                                                       href="javascript:;">选择</a>
+            </p>
+            <p>
+                <label>结束日期：</label>
+                <input type="text" name="endTime" class="required date" size="30"/><a class="inputDateButton"
+                                                                                        href="javascript:;">选择</a>
+            </p>
+
+            <p>
                 <label>描述：</label>
                 <textarea name="description" cols="28" rows="3" maxlength="255"></textarea>
             </p>

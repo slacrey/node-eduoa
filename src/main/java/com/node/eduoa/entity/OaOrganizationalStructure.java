@@ -12,7 +12,7 @@ import java.util.Date;
  * Time: 上午9:57
  * To change this template use File | Settings | File Templates.
  */
-@javax.persistence.Table(name = "oa_organizational_structure", schema = "", catalog = "node_eduoa")
+@javax.persistence.Table(name = "oa_organizational_structure")
 @Entity
 public class OaOrganizationalStructure extends IdEntity {
 

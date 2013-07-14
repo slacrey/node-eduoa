@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +14,7 @@ import java.util.Collection;
  * Time: 上午9:57
  * To change this template use File | Settings | File Templates.
  */
-@javax.persistence.Table(name = "oa_position", schema = "", catalog = "node_eduoa")
+@javax.persistence.Table(name = "oa_position")
 @Entity
 public class OaPosition extends IdEntity {
 
@@ -30,7 +30,7 @@ public class OaPosition extends IdEntity {
     private String description;
 
     @OneToMany(mappedBy = "oaPositionByPositionId")
-    private Collection<OaTeacherInfo> oaTeacherInfosById;
+    private List<OaTeacherInfo> oaTeacherInfosById;
 
     public String getPositionName() {
         return positionName;
@@ -48,11 +48,11 @@ public class OaPosition extends IdEntity {
         this.description = description;
     }
 
-    public Collection<OaTeacherInfo> getOaTeacherInfosById() {
+    public List<OaTeacherInfo> getOaTeacherInfosById() {
         return oaTeacherInfosById;
     }
 
-    public void setOaTeacherInfosById(Collection<OaTeacherInfo> oaTeacherInfosById) {
+    public void setOaTeacherInfosById(List<OaTeacherInfo> oaTeacherInfosById) {
         this.oaTeacherInfosById = oaTeacherInfosById;
     }
 

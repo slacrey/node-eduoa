@@ -59,6 +59,7 @@
             <p>
                 <label>年级：</label>
                 <select name="oaGradeByGradeId.id" class="combox">
+                    <option value="">无归属年级</option>
                     <c:forEach items="${grades}" var="item" >
                         <option value="${item.id}">${item.gradeName}</option>
                     </c:forEach>

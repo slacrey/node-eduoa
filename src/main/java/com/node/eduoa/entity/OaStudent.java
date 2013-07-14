@@ -1,19 +1,21 @@
 package com.node.eduoa.entity;
 
+import com.node.eduoa.enums.ClassTypeEnum;
+import com.node.eduoa.enums.GenderEnum;
 import com.node.system.entity.IdEntity;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Collection;
+import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
+ *
  * User: linfeng at Administrator
  * Date: 13-7-6
  * Time: 上午9:57
  * To change this template use File | Settings | File Templates.
  */
-@javax.persistence.Table(name = "oa_student", schema = "", catalog = "node_eduoa")
+@javax.persistence.Table(name = "oa_student")
 @Entity
 public class OaStudent extends IdEntity {
 
@@ -25,7 +27,7 @@ public class OaStudent extends IdEntity {
     @javax.persistence.Column(name = "gender")
     private Integer gender;
     @javax.persistence.Column(name = "student_number")
-    private String studentNumber;
+    private Integer studentNumber;
 
     @Temporal(TemporalType.TIMESTAMP)
     @javax.persistence.Column(name = "birthday")
@@ -40,12 +42,73 @@ public class OaStudent extends IdEntity {
     private Date updateTime;
     @javax.persistence.Column(name = "operator_id")
     private Long operatorId;
-    @OneToMany(mappedBy = "oaStudentByStudentId")
-    private Collection<OaContact> oaContactsById;
-    @OneToMany(mappedBy = "oaStudentByStudentId")
-    private Collection<OaStudentClass> oaStudentClassesById;
-    @OneToMany(mappedBy = "oaStudentByStudentId")
-    private Collection<OaStudentGrade> oaStudentGradesById;
+    @OneToMany(mappedBy = "oaStudentByStudentId", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    private List<OaContact> oaContactsById;
+    @OneToMany(mappedBy = "oaStudentByStudentId", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    private List<OaStudentClass> oaStudentClassesById;
+    @OneToMany(mappedBy = "oaStudentByStudentId", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    private List<OaStudentGrade> oaStudentGradesById;
+
+    @Column(name = "grade_name")
+    private String gradeName;
+
+    @Column(name = "class_name")
+    private String className;
+
+    @Column(name = "category_name")
+    private String categoryName;
+
+    @Column(name = "current_year")
+    private Integer currentYear;
+
+    @Transient
+    private String genderName;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public Integer getCurrentYear() {
+        return currentYear;
+    }
+
+    public void setCurrentYear(Integer currentYear) {
+        this.currentYear = currentYear;
+    }
+
+    public String getGradeName() {
+        return gradeName;
+    }
+
+    public void setGradeName(String gradeName) {
+        this.gradeName = gradeName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getGenderName() {
+        if (getGender() != null) {
+            GenderEnum genderEnum = GenderEnum.valueByIndex(getGender());
+            if (genderEnum != null) {
+                return genderEnum.getText();
+            }
+        }
+        return "";
+    }
+
+    public void setGenderName(String genderName) {
+        this.genderName = genderName;
+    }
 
     public String getStudentName() {
         return studentName;
@@ -71,11 +134,11 @@ public class OaStudent extends IdEntity {
         this.gender = gender;
     }
 
-    public String getStudentNumber() {
+    public Integer getStudentNumber() {
         return studentNumber;
     }
 
-    public void setStudentNumber(String studentNumber) {
+    public void setStudentNumber(Integer studentNumber) {
         this.studentNumber = studentNumber;
     }
 
@@ -111,27 +174,27 @@ public class OaStudent extends IdEntity {
         this.operatorId = operatorId;
     }
 
-    public Collection<OaContact> getOaContactsById() {
+    public List<OaContact> getOaContactsById() {
         return oaContactsById;
     }
 
-    public void setOaContactsById(Collection<OaContact> oaContactsById) {
+    public void setOaContactsById(List<OaContact> oaContactsById) {
         this.oaContactsById = oaContactsById;
     }
 
-    public Collection<OaStudentClass> getOaStudentClassesById() {
+    public List<OaStudentClass> getOaStudentClassesById() {
         return oaStudentClassesById;
     }
 
-    public void setOaStudentClassesById(Collection<OaStudentClass> oaStudentClassesById) {
+    public void setOaStudentClassesById(List<OaStudentClass> oaStudentClassesById) {
         this.oaStudentClassesById = oaStudentClassesById;
     }
 
-    public Collection<OaStudentGrade> getOaStudentGradesById() {
+    public List<OaStudentGrade> getOaStudentGradesById() {
         return oaStudentGradesById;
     }
 
-    public void setOaStudentGradesById(Collection<OaStudentGrade> oaStudentGradesById) {
+    public void setOaStudentGradesById(List<OaStudentGrade> oaStudentGradesById) {
         this.oaStudentGradesById = oaStudentGradesById;
     }
 

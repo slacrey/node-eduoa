@@ -6,7 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +15,7 @@ import java.util.Collection;
  * Time: 上午9:57
  * To change this template use File | Settings | File Templates.
  */
-@javax.persistence.Table(name = "oa_certificate_type", schema = "", catalog = "node_eduoa")
+@javax.persistence.Table(name = "oa_certificate_type")
 @Entity
 public class OaCertificateType extends IdEntity {
 
@@ -27,7 +27,7 @@ public class OaCertificateType extends IdEntity {
     @javax.persistence.Column(name = "type_level")
     private Integer typeLevel;
     @OneToMany(mappedBy = "oaCertificateTypeByTypeId")
-    private Collection<OaCertificate> oaCertificatesById;
+    private List<OaCertificate> oaCertificatesById;
 
     public String getTypeName() {
         return typeName;
@@ -53,11 +53,11 @@ public class OaCertificateType extends IdEntity {
         this.typeLevel = typeLevel;
     }
 
-    public Collection<OaCertificate> getOaCertificatesById() {
+    public List<OaCertificate> getOaCertificatesById() {
         return oaCertificatesById;
     }
 
-    public void setOaCertificatesById(Collection<OaCertificate> oaCertificatesById) {
+    public void setOaCertificatesById(List<OaCertificate> oaCertificatesById) {
         this.oaCertificatesById = oaCertificatesById;
     }
 

@@ -129,6 +129,12 @@ public class GradeController extends BaseFormController {
         if (grade.getOaClassesById() != null && !grade.getOaClassesById().isEmpty()) {
             return AjaxObject.newError("年级删除失败：【"+grade.getGradeName()+"】下有班级！").setCallbackType("").toString();
         }
+        if (grade.getOaTeacherInfosById() != null && !grade.getOaTeacherInfosById().isEmpty()) {
+            return AjaxObject.newError("年级删除失败：【"+grade.getGradeName()+"】下有属于此的教师！").setCallbackType("").toString();
+        }
+        if (grade.getOaStudentGradesById() != null && !grade.getOaStudentGradesById().isEmpty()) {
+            return AjaxObject.newError("年级删除失败：【"+grade.getGradeName()+"】下有学生！").setCallbackType("").toString();
+        }
 		gradeService.delete(id);
         LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{grade.getGradeName()}));
 		return AjaxObject.newOk("年级删除成功！").setCallbackType("").toString();

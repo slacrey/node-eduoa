@@ -127,6 +127,12 @@ public class ClassController extends BaseFormController {
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.POST)
 	public @ResponseBody String delete(@PathVariable Long id) {
 		OaClass oaClass = classService.get(id);
+        if (oaClass.getOaClassTeachersById() != null && !oaClass.getOaClassTeachersById().isEmpty()) {
+            return AjaxObject.newError("班级【"+oaClass.getClassName()+"】存在教师带领，不能删除。<br>若需要删除，请先移除任课或班主任教师。").setCallbackType("").toString();
+        }
+        if (oaClass.getOaStudentClassesById() != null && !oaClass.getOaStudentClassesById().isEmpty()) {
+            return AjaxObject.newError("班级【"+oaClass.getClassName()+"】已经存在学生，不能删除。<br>若需要删除，请先移除班级的学生。").setCallbackType("").toString();
+        }
         classService.delete(id);
 		LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{oaClass.getClassName()}));
 		return AjaxObject.newOk("删除班级成功！").setCallbackType("").toString();

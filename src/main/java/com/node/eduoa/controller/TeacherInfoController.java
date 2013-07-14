@@ -13,28 +13,21 @@
 
 package com.node.eduoa.controller;
 
-import com.google.common.collect.Lists;
-import com.node.eduoa.dao.TeacherInfoDao;
 import com.node.eduoa.entity.*;
 import com.node.eduoa.enums.*;
 import com.node.eduoa.service.*;
-import com.node.eduoa.service.impl.*;
-import com.node.eduoa.utils.mode.TeacherClassTmp;
-import com.node.system.entity.main.LogEntity;
 import com.node.system.entity.main.Organization;
 import com.node.system.log.Log;
 import com.node.system.log.LogLevel;
 import com.node.system.log.LogMessageObject;
 import com.node.system.log.impl.LogUitl;
 import com.node.system.service.OrganizationService;
-import com.node.system.service.impl.OrganizationServiceImpl;
 import com.node.system.util.dwz.AjaxObject;
 import com.node.system.util.dwz.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,10 +36,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springside.modules.beanvalidator.BeanValidators;
 import org.springside.modules.persistence.SearchFilter;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.validation.Validator;
 import java.util.*;
 
@@ -97,6 +86,8 @@ public class TeacherInfoController extends BaseFormController {
     private static final String TREE_GRADE = "management/eduoa/teacher/tree_grade";
     private static final String TREE_HEAD_TEACHER = "management/eduoa/teacher/tree_head_teacher";
     private static final String TEACH_CLASS = "management/eduoa/teacher/teach_class";
+    private static final String GUIDE_CLASS = "management/eduoa/teacher/guide_class";
+    private static final String CLASS_LIST = "management/eduoa/teacher/class_list";
 
     @RequiresPermissions("TeacherInfo:view")
     @RequestMapping(value = "/tree", method = {RequestMethod.GET, RequestMethod.POST})
@@ -174,45 +165,23 @@ public class TeacherInfoController extends BaseFormController {
         } else {
             teacherInfo.setSecurityOrganizationByOrgId(null);
         }
-
+        if (teacherInfo.getOaSubjectBySubjectId() != null &&
+                teacherInfo.getOaSubjectBySubjectId().getId() != null) {
+            OaSubject subject = subjectService.get(teacherInfo.getOaSubjectBySubjectId().getId());
+            teacherInfo.setOaSubjectBySubjectId(subject);
+        } else {
+            teacherInfo.setOaSubjectBySubjectId(null);
+        }
+        if (teacherInfo.getOaGradeByGradeId() != null && teacherInfo.getOaGradeByGradeId().getId() != null) {
+            OaGrade grade = gradeService.get(teacherInfo.getOaGradeByGradeId().getId());
+            teacherInfo.setOaGradeByGradeId(grade);
+        } else {
+            teacherInfo.setOaGradeByGradeId(null);
+        }
 
         BeanValidators.validateWithException(validator, teacherInfo);
-//        List<OaClassTeacher> classTeachers = new ArrayList<OaClassTeacher>();
-//        if (headClass != null) {
-//            OaClassTeacher classTeacher = new OaClassTeacher(1);
-//            if (!"".equals(headClass.getClassIds())) {
-//                OaClass oaClass = classService.get(Long.valueOf(headClass.getClassIds()));
-//                classTeacher.setOaClassByClassId(oaClass);
-//                classTeachers.add(classTeacher);
-//            }
-//        }
-//        if (teacherClass != null) {
-//            String classIds = teacherClass.getClassIds();
-//            String[] classIdArray = classIds.split(",");
-//            List<Long> classLongIds = new ArrayList<Long>();
-//            for (String classId: classIdArray) {
-//                classLongIds.add(Long.valueOf(classId));
-//            }
-//            if (!classLongIds.isEmpty()) {
-//                List<OaClass> classList = classService.findByClassIds(classLongIds);
-//                if (classList != null && !classList.isEmpty()) {
-//                    for (OaClass oaClass: classList) {
-//                        OaClassTeacher classTeacher = new OaClassTeacher(0);
-//                        classTeacher.setOaClassByClassId(oaClass);
-//                        classTeachers.add(classTeacher);
-//                    }
-//                }
-//            }
-//        }
         try {
             teacherInfoService.save(teacherInfo);
-//            if (!classTeachers.isEmpty()) {
-//                for (OaClassTeacher classTeacher: classTeachers) {
-//                    classTeacher.setOaTeacherInfoByTeacherId(teacherInfo);
-//                    classTeacherService.save(classTeacher);
-//                }
-//            }
-
         } catch (Exception e) {
             return AjaxObject.newError(e.getMessage()).setCallbackType("").toString();
         }
@@ -270,6 +239,12 @@ public class TeacherInfoController extends BaseFormController {
         } else {
             teacherInfo.setSecurityOrganizationByOrgId(null);
         }
+        if (teacherInfo.getOaGradeByGradeId() != null && teacherInfo.getOaGradeByGradeId().getId() != null) {
+            OaGrade grade = gradeService.get(teacherInfo.getOaGradeByGradeId().getId());
+            teacherInfo.setOaGradeByGradeId(grade);
+        } else {
+            teacherInfo.setOaGradeByGradeId(null);
+        }
 
         BeanValidators.validateWithException(validator, teacherInfo);
         teacherInfoService.update(teacherInfo);
@@ -318,22 +293,48 @@ public class TeacherInfoController extends BaseFormController {
 
     @RequiresPermissions("TeacherInfo:view")
     @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
-    public String list(Page page, OaTeacherInfo teacherInfo, Date startDate, Date endDate, Map<String, Object> map) {
+    public String list(Page page, String keywords, String organizationName, Long subjectId, Long positionId, Map<String, Object> map) {
 
+        OaTeacherInfo teacherInfo = new OaTeacherInfo();
+
+        if (organizationName != null) {
+            Organization organization = new Organization();
+            organization.setName(organizationName);
+            teacherInfo.setSecurityOrganizationByOrgId(organization);
+        }
+        if (subjectId != null) {
+            OaSubject subject = new OaSubject();
+            subject.setId(subjectId);
+            teacherInfo.setOaSubjectBySubjectId(subject);
+        }
+        if (positionId != null) {
+            OaPosition position = new OaPosition();
+            position.setId(positionId);
+            teacherInfo.setOaPositionByPositionId(position);
+        }
+
+        List<OaTeacherInfo> teacherInfos = null;
         page.setOrderField("createTime");
-        Map<String, Object> searchMap = new HashMap<String, Object>();
-        List<OaTeacherInfo> teacherInfos = teacherInfoService.findByCondition(page, teacherInfo, searchMap);
+        if (StringUtils.isNotBlank(keywords)) {
+            Map<String, Object> searchParam = new HashMap<String, Object>();
+            searchParam.put(SearchFilter.Operator.LIKE + "_teacherName", keywords);
+            teacherInfos = teacherInfoService.findByTeacherInfoCondition(page, teacherInfo, searchParam);
+        } else {
+            teacherInfos = teacherInfoService.findByTeacherInfoCondition(page, teacherInfo, new HashMap<String, Object>());
+        }
+
 
         map.put("positions", positionService.findAll());
         map.put("subjects", subjectService.findAll());
         map.put("educations", EducationEnum.values());
 
-        map.put("teacherInfo", teacherInfo);
-        map.put("startDate", startDate);
-        map.put("endDate", endDate);
+//        map.put("teacherInfo", teacherInfo);
+        map.put("organizationName", organizationName);
+        map.put("subjectId", subjectId);
+        map.put("positionId", positionId);
+        map.put("keywords", keywords);
         map.put("page", page);
         map.put("teacherInfos", teacherInfos);
-        map.put("logLevels", LogLevel.values());
 
         return LIST;
     }
@@ -365,9 +366,44 @@ public class TeacherInfoController extends BaseFormController {
     @RequiresPermissions("TeacherInfo:teachClass")
     @RequestMapping(value = "/teachClass/{id}", method = {RequestMethod.GET})
     public String teachClass(@PathVariable Long id, Map<String, Object> map) {
+
         OaTeacherInfo teacherInfo = teacherInfoService.get(id);
         map.put("teacherInfo", teacherInfo);
+
         return TEACH_CLASS;
+    }
+
+    @RequiresPermissions("TeacherInfo:guideClass")
+    @RequestMapping(value = "/guideClass/{id}", method = {RequestMethod.GET})
+    public String guideClass(@PathVariable Long id, Map<String, Object> map) {
+
+        OaTeacherInfo teacherInfo = teacherInfoService.get(id);
+        map.put("teacherInfo", teacherInfo);
+
+        List<OaClassTeacher> classTeachers = teacherInfo.getOaClassTeachersById();
+        if (classTeachers != null && !classTeachers.isEmpty()) {
+            for (OaClassTeacher classTeacher: classTeachers) {
+                if (classTeacher.getHeadTeacher() == 1) {
+                    map.put("classTeacher", classTeacher);
+                    break;
+                }
+            }
+        }
+
+        return GUIDE_CLASS;
+    }
+
+    @Log(message = "给{0}添加了带领班级【{1}】。", level = LogLevel.INFO)
+    @RequiresPermissions("TeacherInfo:guideClass")
+    @RequestMapping(value = "/createGuideClass", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String saveGuideClass(OaClassTeacher classTeacher){
+        classTeacher.setHeadTeacher(1);
+        classTeacherService.save(classTeacher);
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{classTeacher.getOaTeacherInfoByTeacherId().getTeacherName(),
+                classTeacher.getOaClassByClassId().getClassName()}));
+        return AjaxObject.newOk("带领班级添加成功！").toString();
     }
 
     @Log(message = "给{0}添加了任课班级【{1}】。", level = LogLevel.INFO)
@@ -375,77 +411,38 @@ public class TeacherInfoController extends BaseFormController {
     @RequestMapping(value = "/createTeachClass", method = RequestMethod.POST)
     public
     @ResponseBody
-    String saveTeachClass(OaClassTeacher[] classTeacher){
+    String saveTeachClass(OaClassTeacher classTeacher){
+        classTeacher.setHeadTeacher(0);
+        classTeacherService.save(classTeacher);
 
-
-        return AjaxObject.newOk("教师信息添加成功！").toString();
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{classTeacher.getOaTeacherInfoByTeacherId().getTeacherName(),
+                classTeacher.getOaClassByClassId().getClassName()}));
+        return AjaxObject.newOk("任课班级添加成功！").setCallbackType("").toString();
     }
 
-    private class TeacherInfoSpecification implements Specification<OaTeacherInfo> {
+    @RequiresPermissions("TeacherInfo:view")
+    @RequestMapping(value="/classList/{id}", method={RequestMethod.GET, RequestMethod.POST})
+    public String classList(@PathVariable Long id, Map<String, Object> map) {
+        List<OaClassTeacher> classTeacherList = classTeacherService.findByTeacherIdAndHeadTeacher(id, 0);
+        map.put("classTeacherList", classTeacherList);
+        OaTeacherInfo teacherInfo = teacherInfoService.get(id);
+        map.put("teacherInfo", teacherInfo);
 
-        private OaTeacherInfo teacherInfo;
-        private Date startDate;
-        private Date endDate;
+        return CLASS_LIST;
+    }
 
-        public TeacherInfoSpecification(OaTeacherInfo teacherInfo) {
-            this.teacherInfo = teacherInfo;
-        }
 
-        public TeacherInfoSpecification(OaTeacherInfo teacherInfo, Date startDate, Date endDate) {
-            this(teacherInfo);
-            this.startDate = startDate;
-            this.endDate = endDate;
-        }
-
-        /**
-         * @param root
-         * @param query
-         * @param criteriabuilder
-         * @return
-         * @see org.springframework.data.jpa.domain.Specification#toPredicate(javax.persistence.criteria.Root, javax.persistence.criteria.CriteriaQuery, javax.persistence.criteria.CriteriaBuilder)
-         */
-        @Override
-        public Predicate toPredicate(Root<OaTeacherInfo> root,
-                                     CriteriaQuery<?> query, CriteriaBuilder criteriabuilder) {
-            List<Predicate> predicateList = Lists.newArrayList();
-
-//            if (teacherInfo.getOaPositionByPositionId() != null) {
-//                Predicate logLevelPredicate = criteriabuilder.equal(root.get("logLevel"), OaTeacherInfo.getLogLevel());
-//                predicateList.add(logLevelPredicate);
-//            }
-//
-//            if (OaTeacherInfo.getUsername() != null && StringUtils.isNotBlank(OaTeacherInfo.getUsername())) {
-//                Predicate usernamePredicate = criteriabuilder.equal(root.get("username"), logEntity.getUsername());
-//                predicateList.add(usernamePredicate);
-//            }
-//
-//            if (OaTeacherInfo.getIpAddress() != null && StringUtils.isNotBlank(OaTeacherInfo.getIpAddress())) {
-//                Predicate ipAddressPredicate = criteriabuilder.equal(root.get("ipAddress"), logEntity.getIpAddress());
-//                predicateList.add(ipAddressPredicate);
-//            }
-
-            if (startDate != null && endDate == null) {
-                endDate = new Date();
-            } else if (endDate != null && startDate == null) {
-                startDate = new Date(0L);
-            }
-
-            if (startDate != null && endDate != null) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(endDate);
-                calendar.add(Calendar.DAY_OF_YEAR, 1);
-                endDate = calendar.getTime();
-
-                Predicate datePredicate = criteriabuilder.between(root.<Date>get("birthday"), startDate, endDate);
-                predicateList.add(datePredicate);
-            }
-
-            Predicate[] predicates = new Predicate[predicateList.size()];
-            predicateList.toArray(predicates);
-
-            return criteriabuilder.and(predicates);
-        }
-
+    @Log(message = "删除了{0}的任课班级【{1}】。", level = LogLevel.INFO)
+    @RequiresPermissions("TeacherInfo:delete")
+    @RequestMapping(value = "/deleteClassTeacher/{id}", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String deleteClassTeacher(@PathVariable Long id) {
+        OaClassTeacher classTeacher = classTeacherService.get(id);
+        classTeacherService.delete(id);
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{classTeacher.getOaTeacherInfoByTeacherId().getTeacherName(),
+                classTeacher.getOaClassByClassId().getClassName()}));
+        return AjaxObject.newOk("任课班级删除成功！").setCallbackType("").toString();
     }
 
 }

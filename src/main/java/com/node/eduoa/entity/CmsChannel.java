@@ -6,7 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +15,7 @@ import java.util.Collection;
  * Time: 上午9:57
  * To change this template use File | Settings | File Templates.
  */
-@javax.persistence.Table(name = "cms_channel", schema = "", catalog = "node_eduoa")
+@javax.persistence.Table(name = "cms_channel")
 @Entity
 public class CmsChannel extends IdEntity {
 
@@ -31,7 +31,7 @@ public class CmsChannel extends IdEntity {
     @Basic
     private String channelUrl;
     @OneToMany(mappedBy = "cmsChannelByChannelId")
-    private Collection<CmsArticle> cmsArticlesById;
+    private List<CmsArticle> cmsArticlesById;
 
     public String getChannelName() {
         return channelName;
@@ -57,11 +57,11 @@ public class CmsChannel extends IdEntity {
         this.channelUrl = channelUrl;
     }
 
-    public Collection<CmsArticle> getCmsArticlesById() {
+    public List<CmsArticle> getCmsArticlesById() {
         return cmsArticlesById;
     }
 
-    public void setCmsArticlesById(Collection<CmsArticle> cmsArticlesById) {
+    public void setCmsArticlesById(List<CmsArticle> cmsArticlesById) {
         this.cmsArticlesById = cmsArticlesById;
     }
 

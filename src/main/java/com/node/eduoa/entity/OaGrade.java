@@ -5,7 +5,7 @@ import com.node.system.entity.IdEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * Time: 上午9:57
  * To change this template use File | Settings | File Templates.
  */
-@javax.persistence.Table(name = "oa_grade", schema = "", catalog = "node_eduoa")
+@javax.persistence.Table(name = "oa_grade")
 @Entity
 public class OaGrade extends IdEntity {
 
@@ -33,15 +33,37 @@ public class OaGrade extends IdEntity {
     @javax.persistence.Column(name = "current_half")
     private Integer currentHalf;
     @OneToMany(mappedBy = "oaGradeByGradeId")
-    private Collection<OaClass> oaClassesById;
+    private List<OaClass> oaClassesById;
     @OneToMany(mappedBy = "oaGradeByGradeId")
-    private Collection<OaStudentGrade> oaStudentGradesById;
+    private List<OaStudentGrade> oaStudentGradesById;
     @OneToMany(mappedBy = "oaGradeByGradeId")
-    private Collection<OaTeacherInfo> oaTeacherInfosById;
+    private List<OaTeacherInfo> oaTeacherInfosById;
     @Transient
     private String semester;
     @Transient
     private List<OaGrade> children = new ArrayList<OaGrade>(0);
+
+    @Column(name = "start_time")
+    private Date startTime;
+
+    @Column(name = "end_time")
+    private Date endTime;
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public String getGradeName() {
         return gradeName;
@@ -83,27 +105,27 @@ public class OaGrade extends IdEntity {
         this.currentHalf = currentHalf;
     }
 
-    public Collection<OaClass> getOaClassesById() {
+    public List<OaClass> getOaClassesById() {
         return oaClassesById;
     }
 
-    public void setOaClassesById(Collection<OaClass> oaClassesById) {
+    public void setOaClassesById(List<OaClass> oaClassesById) {
         this.oaClassesById = oaClassesById;
     }
 
-    public Collection<OaStudentGrade> getOaStudentGradesById() {
+    public List<OaStudentGrade> getOaStudentGradesById() {
         return oaStudentGradesById;
     }
 
-    public void setOaStudentGradesById(Collection<OaStudentGrade> oaStudentGradesById) {
+    public void setOaStudentGradesById(List<OaStudentGrade> oaStudentGradesById) {
         this.oaStudentGradesById = oaStudentGradesById;
     }
 
-    public Collection<OaTeacherInfo> getOaTeacherInfosById() {
+    public List<OaTeacherInfo> getOaTeacherInfosById() {
         return oaTeacherInfosById;
     }
 
-    public void setOaTeacherInfosById(Collection<OaTeacherInfo> oaTeacherInfosById) {
+    public void setOaTeacherInfosById(List<OaTeacherInfo> oaTeacherInfosById) {
         this.oaTeacherInfosById = oaTeacherInfosById;
     }
 

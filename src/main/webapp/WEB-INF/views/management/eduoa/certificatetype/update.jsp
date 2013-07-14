@@ -14,7 +14,7 @@
 
             <p>
                 <label>级别：</label>
-                <input type="text" name="typeLevel" size="32" maxlength="4" value="${certificateType.typeLevel}"/>
+                <input type="text" name="typeLevel" size="32" class="digits" maxlength="4" value="${certificateType.typeLevel}"/>
             </p>
 
             <p>
