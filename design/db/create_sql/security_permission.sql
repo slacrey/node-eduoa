@@ -1,287 +1,225 @@
-CREATE TABLE [security_permission]  ( 
-	[id]         	bigint(20) AUTO_INCREMENT NOT NULL,
-	[description]	varchar(255) NULL,
-	[name]       	varchar(32) NOT NULL,
-	[short_name] 	varchar(16) NOT NULL,
-	[module_id]  	bigint(20) NULL 
-	)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(25, '', 'Â¢û', 'save', 2)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(26, '', 'Âà†', 'delete', 2)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(27, '', 'Êü•', 'view', 2)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(28, '', 'Êîπ', 'edit', 2)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(31, '', 'Êü•', 'view', 10)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(37, '', 'Â¢û', 'save', 3)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(38, '', 'Âà†', 'delete', 3)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(39, '', 'Êü•', 'view', 3)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(40, '', 'Êîπ', 'edit', 3)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(45, '', 'Â¢û', 'save', 4)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(46, '', 'Âà†', 'delete', 4)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(47, '', 'Êü•', 'view', 4)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(48, '', 'Êîπ', 'edit', 4)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(53, '', 'Â¢û', 'save', 5)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(54, '', 'Âà†', 'delete', 5)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(55, '', 'Êü•', 'view', 5)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(56, '', 'Êîπ', 'edit', 5)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(57, '', 'Â¢û', 'save', 18)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(58, '', 'Âà†', 'delete', 18)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(59, '', 'Êü•', 'view', 18)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(60, '', 'Êîπ', 'edit', 18)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(61, '', 'Êü•', 'view', 24)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(62, '', 'Êîπ', 'edit', 24)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(76, 'ÈáçÁΩÆÂØÜÁ†Å„ÄÅÊõ¥Êñ∞Áä∂ÊÄÅ', 'ÈáçÁΩÆ', 'reset', 3)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(77, 'ÂàÜÈÖç„ÄÅÊí§ÈîÄËßíËâ≤', 'ÊéàÊùÉ', 'assign', 3)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(78, 'ÂàÜÈÖç„ÄÅÊí§ÈîÄËßíËâ≤', 'ÊéàÊùÉ', 'assign', 18)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(100, NULL, 'Â¢û', 'save', 52)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(101, NULL, 'Âà†', 'delete', 52)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(102, NULL, 'Êü•', 'view', 52)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(103, NULL, 'Êîπ', 'edit', 52)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(104, NULL, 'Â¢û', 'save', 53)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(105, NULL, 'Âà†', 'delete', 53)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(106, NULL, 'Êü•', 'view', 53)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(107, NULL, 'Êîπ', 'edit', 53)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(108, NULL, 'Â¢û', 'save', 54)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(109, NULL, 'Âà†', 'delete', 54)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(110, NULL, 'Êü•', 'view', 54)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(111, NULL, 'Êîπ', 'edit', 54)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(124, '', 'Êôí', 'sai', 52)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(125, '', 'Ê∏ÖÈô§', 'clear', 52)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(126, '', 'Â¢û', 'save', 14)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(127, '', 'Âà†', 'delete', 14)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(128, '', 'Êü•', 'view', 14)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(129, '', 'Êîπ', 'edit', 14)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(130, '', 'Áúã', 'look', 14)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(131, NULL, 'Â¢û', 'save', 58)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(132, NULL, 'Âà†', 'delete', 58)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(133, NULL, 'Êü•', 'view', 58)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(134, NULL, 'Êîπ', 'edit', 58)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(135, NULL, 'Â¢û', 'save', 59)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(136, NULL, 'Âà†', 'delete', 59)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(137, NULL, 'Êü•', 'view', 59)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(138, NULL, 'Êîπ', 'edit', 59)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(159, '', 'Â¢û', 'save', 38)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(160, '', 'Âà†', 'delete', 38)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(161, '', 'Êü•', 'view', 38)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(162, '', 'Êîπ', 'edit', 38)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(171, NULL, 'Â¢û', 'save', 63)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(172, NULL, 'Âà†', 'delete', 63)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(173, NULL, 'Êü•', 'view', 63)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(174, NULL, 'Êîπ', 'edit', 63)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(175, NULL, 'Â¢û', 'save', 64)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(176, NULL, 'Âà†', 'delete', 64)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(177, NULL, 'Êü•', 'view', 64)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(178, NULL, 'Êîπ', 'edit', 64)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(179, NULL, 'Â¢û', 'save', 65)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(180, NULL, 'Âà†', 'delete', 65)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(181, NULL, 'Êü•', 'view', 65)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(182, NULL, 'Êîπ', 'edit', 65)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(183, NULL, 'Â¢û', 'save', 66)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(184, NULL, 'Âà†', 'delete', 66)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(185, NULL, 'Êü•', 'view', 66)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(186, NULL, 'Êîπ', 'edit', 66)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(187, NULL, 'Â¢û', 'save', 67)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(188, NULL, 'Êü•', 'view', 67)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(189, NULL, 'Â¢û', 'save', 68)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(190, NULL, 'Âà†', 'delete', 68)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(191, NULL, 'Êü•', 'view', 68)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(192, NULL, 'Êîπ', 'edit', 68)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(193, NULL, 'Â¢û', 'save', 69)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(194, NULL, 'Âà†', 'delete', 69)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(195, NULL, 'Êü•', 'view', 69)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(196, NULL, 'Êîπ', 'edit', 69)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(197, NULL, 'Â¢û', 'save', 70)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(198, NULL, 'Âà†', 'delete', 70)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(199, NULL, 'Êü•', 'view', 70)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(200, NULL, 'Êîπ', 'edit', 70)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(205, NULL, 'Â¢û', 'save', 72)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(206, NULL, 'Âà†', 'delete', 72)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(207, NULL, 'Êü•', 'view', 72)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(208, NULL, 'Êîπ', 'edit', 72)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(209, '', '‰ªªËØæÁè≠Á∫ß', 'teachClass', 72)
-GO
-INSERT INTO [security_permission]([id], [description], [name], [short_name], [module_id])
-  VALUES(210, '', 'Â∏¶È¢ÜÁè≠Á∫ß', 'guideClass', 72)
-GO
+CREATE TABLE security_permission  ( 
+	id         	bigint(20) AUTO_INCREMENT NOT NULL,
+	description	varchar(255) NULL,
+	name       	varchar(32) NOT NULL,
+	short_name 	varchar(16) NOT NULL,
+	module_id  	bigint(20) NULL 
+	);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(25, '', '‘ˆ', 'save', 2);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(26, '', '…æ', 'delete', 2);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(27, '', '≤È', 'view', 2);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(28, '', '∏ƒ', 'edit', 2);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(31, '', '≤È', 'view', 10);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(37, '', '‘ˆ', 'save', 3);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(38, '', '…æ', 'delete', 3);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(39, '', '≤È', 'view', 3);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(40, '', '∏ƒ', 'edit', 3);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(45, '', '‘ˆ', 'save', 4);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(46, '', '…æ', 'delete', 4);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(47, '', '≤È', 'view', 4);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(48, '', '∏ƒ', 'edit', 4);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(53, '', '‘ˆ', 'save', 5);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(54, '', '…æ', 'delete', 5);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(55, '', '≤È', 'view', 5);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(56, '', '∏ƒ', 'edit', 5);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(57, '', '‘ˆ', 'save', 18);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(58, '', '…æ', 'delete', 18);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(59, '', '≤È', 'view', 18);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(60, '', '∏ƒ', 'edit', 18);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(61, '', '≤È', 'view', 24);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(62, '', '∏ƒ', 'edit', 24);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(76, '÷ÿ÷√√‹¬Î°¢∏¸–¬◊¥Ã¨', '÷ÿ÷√', 'reset', 3);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(77, '∑÷≈‰°¢≥∑œ˙Ω«…´', ' ⁄»®', 'assign', 3);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(78, '∑÷≈‰°¢≥∑œ˙Ω«…´', ' ⁄»®', 'assign', 18);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(100, NULL, '‘ˆ', 'save', 52);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(101, NULL, '…æ', 'delete', 52);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(102, NULL, '≤È', 'view', 52);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(103, NULL, '∏ƒ', 'edit', 52);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(104, NULL, '‘ˆ', 'save', 53);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(105, NULL, '…æ', 'delete', 53);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(106, NULL, '≤È', 'view', 53);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(107, NULL, '∏ƒ', 'edit', 53);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(108, NULL, '‘ˆ', 'save', 54);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(109, NULL, '…æ', 'delete', 54);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(110, NULL, '≤È', 'view', 54);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(111, NULL, '∏ƒ', 'edit', 54);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(124, '', '…π', 'sai', 52);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(125, '', '«Â≥˝', 'clear', 52);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(126, '', '‘ˆ', 'save', 14);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(127, '', '…æ', 'delete', 14);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(128, '', '≤È', 'view', 14);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(129, '', '∏ƒ', 'edit', 14);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(130, '', 'ø¥', 'look', 14);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(131, NULL, '‘ˆ', 'save', 58);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(132, NULL, '…æ', 'delete', 58);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(133, NULL, '≤È', 'view', 58);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(134, NULL, '∏ƒ', 'edit', 58);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(135, NULL, '‘ˆ', 'save', 59);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(136, NULL, '…æ', 'delete', 59);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(137, NULL, '≤È', 'view', 59);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(138, NULL, '∏ƒ', 'edit', 59);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(159, '', '‘ˆ', 'save', 38);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(160, '', '…æ', 'delete', 38);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(161, '', '≤È', 'view', 38);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(162, '', '∏ƒ', 'edit', 38);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(171, NULL, '‘ˆ', 'save', 63);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(172, NULL, '…æ', 'delete', 63);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(173, NULL, '≤È', 'view', 63);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(174, NULL, '∏ƒ', 'edit', 63);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(175, NULL, '‘ˆ', 'save', 64);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(176, NULL, '…æ', 'delete', 64);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(177, NULL, '≤È', 'view', 64);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(178, NULL, '∏ƒ', 'edit', 64);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(179, NULL, '‘ˆ', 'save', 65);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(180, NULL, '…æ', 'delete', 65);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(181, NULL, '≤È', 'view', 65);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(182, NULL, '∏ƒ', 'edit', 65);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(183, NULL, '‘ˆ', 'save', 66);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(184, NULL, '…æ', 'delete', 66);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(185, NULL, '≤È', 'view', 66);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(186, NULL, '∏ƒ', 'edit', 66);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(187, NULL, '‘ˆ', 'save', 67);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(188, NULL, '≤È', 'view', 67);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(189, NULL, '‘ˆ', 'save', 68);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(190, NULL, '…æ', 'delete', 68);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(191, NULL, '≤È', 'view', 68);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(192, NULL, '∏ƒ', 'edit', 68);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(193, NULL, '‘ˆ', 'save', 69);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(194, NULL, '…æ', 'delete', 69);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(195, NULL, '≤È', 'view', 69);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(196, NULL, '∏ƒ', 'edit', 69);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(197, NULL, '‘ˆ', 'save', 70);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(198, NULL, '…æ', 'delete', 70);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(199, NULL, '≤È', 'view', 70);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(200, NULL, '∏ƒ', 'edit', 70);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(205, NULL, '‘ˆ', 'save', 72);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(206, NULL, '…æ', 'delete', 72);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(207, NULL, '≤È', 'view', 72);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(208, NULL, '∏ƒ', 'edit', 72);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(209, '', '»ŒøŒ∞‡º∂', 'teachClass', 72);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(210, '', '¥¯¡Ï∞‡º∂', 'guideClass', 72);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(215, NULL, '‘ˆ', 'save', 74);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(216, NULL, '…æ', 'delete', 74);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(217, NULL, '≤È', 'view', 74);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(218, NULL, '∏ƒ', 'edit', 74);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(219, NULL, '‘ˆ', 'save', 75);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(220, NULL, '…æ', 'delete', 75);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(221, NULL, '≤È', 'view', 75);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(222, NULL, '∏ƒ', 'edit', 75);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(223, NULL, '‘ˆ', 'save', 76);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(224, NULL, '…æ', 'delete', 76);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(225, NULL, '≤È', 'view', 76);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(226, NULL, '∏ƒ', 'edit', 76);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(227, NULL, '‘ˆ', 'save', 77);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(228, NULL, '…æ', 'delete', 77);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(229, NULL, '≤È', 'view', 77);
+INSERT INTO security_permission(id, description, name, short_name, module_id)
+  VALUES(230, NULL, '∏ƒ', 'edit', 77);

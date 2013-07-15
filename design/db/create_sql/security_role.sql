@@ -1,21 +1,15 @@
-CREATE TABLE [security_role]  ( 
-	[id]         	bigint(20) AUTO_INCREMENT NOT NULL,
-	[description]	varchar(255) NULL,
-	[name]       	varchar(32) NOT NULL 
-	)
-GO
-INSERT INTO [security_role]([id], [description], [name])
-  VALUES(3, '', 'ç®¡ç†å‘˜')
-GO
-INSERT INTO [security_role]([id], [description], [name])
-  VALUES(4, NULL, 'è´¢åŠ¡äººå‘˜')
-GO
-INSERT INTO [security_role]([id], [description], [name])
-  VALUES(5, NULL, 'è¥é”€äººå‘˜')
-GO
-INSERT INTO [security_role]([id], [description], [name])
-  VALUES(7, NULL, 'ä»»åŠ¡å®ä¾‹è§’è‰²')
-GO
-INSERT INTO [security_role]([id], [description], [name])
-  VALUES(8, 'ä»…ä»…æ˜¯æµ‹è¯•è§’è‰²2', 'test')
-GO
+CREATE TABLE security_role  ( 
+	id         	bigint(20) AUTO_INCREMENT NOT NULL,
+	description	varchar(255) NULL,
+	name       	varchar(32) NOT NULL 
+	);
+INSERT INTO security_role(id, description, name)
+  VALUES(3, '', '¹ÜÀíÔ±');
+INSERT INTO security_role(id, description, name)
+  VALUES(4, NULL, '²ÆÎñÈËÔ±');
+INSERT INTO security_role(id, description, name)
+  VALUES(5, NULL, 'ÓªÏúÈËÔ±');
+INSERT INTO security_role(id, description, name)
+  VALUES(7, NULL, 'ÈÎÎñÊµÀı½ÇÉ«');
+INSERT INTO security_role(id, description, name)
+  VALUES(8, '½ö½öÊÇ²âÊÔ½ÇÉ«2', 'test');

@@ -1,40 +1,28 @@
-CREATE TABLE [oa_position]  ( 
-	[id]           	bigint(20) AUTO_INCREMENT NOT NULL,
-	[position_name]	varchar(50) NULL,
-	[description]  	varchar(200) NULL 
+CREATE TABLE oa_position  ( 
+	id           	bigint(20) AUTO_INCREMENT NOT NULL,
+	position_name	varchar(50) NULL,
+	description  	varchar(200) NULL 
 	)
-COMMENT = 'Ö°' 
-GO
-INSERT INTO [oa_position]([id], [position_name], [description])
-  VALUES(7, 'æ ¡é•¿', '')
-GO
-INSERT INTO [oa_position]([id], [position_name], [description])
-  VALUES(8, 'å‰¯æ ¡é•¿', '')
-GO
-INSERT INTO [oa_position]([id], [position_name], [description])
-  VALUES(9, 'å¹´çº§ä¸»ä»»', '')
-GO
-INSERT INTO [oa_position]([id], [position_name], [description])
-  VALUES(10, 'å¹´çº§æ•™å­¦ä¸»ä»»', '')
-GO
-INSERT INTO [oa_position]([id], [position_name], [description])
-  VALUES(11, 'å¹´çº§çºªå¾‹ä¸»ä»»', '')
-GO
-INSERT INTO [oa_position]([id], [position_name], [description])
-  VALUES(12, 'å¹´çº§ç»„é•¿', '')
-GO
-INSERT INTO [oa_position]([id], [position_name], [description])
-  VALUES(13, 'å¤‡ç§‘ç»„é•¿', '')
-GO
-INSERT INTO [oa_position]([id], [position_name], [description])
-  VALUES(14, 'å­¦ç§‘æ•™ç ”ç»„é•¿', '')
-GO
-INSERT INTO [oa_position]([id], [position_name], [description])
-  VALUES(15, 'æ•™åŠ¡å¤„ä¸»ä»»', '')
-GO
-INSERT INTO [oa_position]([id], [position_name], [description])
-  VALUES(16, 'æ”¿æ•™å¤„ä¸»ä»»', '')
-GO
-INSERT INTO [oa_position]([id], [position_name], [description])
-  VALUES(17, 'åŠžå…¬å®¤ä¸»ä»»', '')
-GO
+COMMENT = '?' ;
+INSERT INTO oa_position(id, position_name, description)
+  VALUES(7, 'Ð£³¤', '');
+INSERT INTO oa_position(id, position_name, description)
+  VALUES(8, '¸±Ð£³¤', '');
+INSERT INTO oa_position(id, position_name, description)
+  VALUES(9, 'Äê¼¶Ö÷ÈÎ', '');
+INSERT INTO oa_position(id, position_name, description)
+  VALUES(10, 'Äê¼¶½ÌÑ§Ö÷ÈÎ', '');
+INSERT INTO oa_position(id, position_name, description)
+  VALUES(11, 'Äê¼¶¼ÍÂÉÖ÷ÈÎ', '');
+INSERT INTO oa_position(id, position_name, description)
+  VALUES(12, 'Äê¼¶×é³¤', '');
+INSERT INTO oa_position(id, position_name, description)
+  VALUES(13, '±¸¿Æ×é³¤', '');
+INSERT INTO oa_position(id, position_name, description)
+  VALUES(14, 'Ñ§¿Æ½ÌÑÐ×é³¤', '');
+INSERT INTO oa_position(id, position_name, description)
+  VALUES(15, '½ÌÎñ´¦Ö÷ÈÎ', '');
+INSERT INTO oa_position(id, position_name, description)
+  VALUES(16, 'Õþ½Ì´¦Ö÷ÈÎ', '');
+INSERT INTO oa_position(id, position_name, description)
+  VALUES(17, '°ì¹«ÊÒÖ÷ÈÎ', '');

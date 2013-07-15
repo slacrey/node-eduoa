@@ -1,25 +1,18 @@
-CREATE TABLE [oa_subject]  ( 
-	[id]          	bigint(20) AUTO_INCREMENT NOT NULL,
-	[subject_name]	varchar(50) COMMENT '学'  NULL,
-	[description] 	varchar(200) NULL 
+CREATE TABLE oa_subject  ( 
+	id          	bigint(20) AUTO_INCREMENT NOT NULL,
+	subject_name	varchar(50) COMMENT '?'  NULL,
+	description 	varchar(200) NULL 
 	)
-COMMENT = '学' 
-GO
-INSERT INTO [oa_subject]([id], [subject_name], [description])
-  VALUES(3, '璇枃', '')
-GO
-INSERT INTO [oa_subject]([id], [subject_name], [description])
-  VALUES(4, '鏁板', '')
-GO
-INSERT INTO [oa_subject]([id], [subject_name], [description])
-  VALUES(5, '鑻辫', '')
-GO
-INSERT INTO [oa_subject]([id], [subject_name], [description])
-  VALUES(6, '鐗╃悊', '')
-GO
-INSERT INTO [oa_subject]([id], [subject_name], [description])
-  VALUES(7, '鍖栧', '')
-GO
-INSERT INTO [oa_subject]([id], [subject_name], [description])
-  VALUES(8, '鐢熺墿', '')
-GO
+COMMENT = '?' ;
+INSERT INTO oa_subject(id, subject_name, description)
+  VALUES(3, '语文', '');
+INSERT INTO oa_subject(id, subject_name, description)
+  VALUES(4, '数学', '');
+INSERT INTO oa_subject(id, subject_name, description)
+  VALUES(5, '英语', '');
+INSERT INTO oa_subject(id, subject_name, description)
+  VALUES(6, '物理', '');
+INSERT INTO oa_subject(id, subject_name, description)
+  VALUES(7, '化学', '');
+INSERT INTO oa_subject(id, subject_name, description)
+  VALUES(8, '生物', '');

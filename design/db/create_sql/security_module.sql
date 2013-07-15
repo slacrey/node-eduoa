@@ -1,82 +1,65 @@
-CREATE TABLE [security_module]  ( 
-	[id]         	bigint(20) AUTO_INCREMENT NOT NULL,
-	[description]	varchar(255) NULL,
-	[name]       	varchar(32) NOT NULL,
-	[priority]   	int(11) NOT NULL,
-	[sn]         	varchar(32) NOT NULL,
-	[url]        	varchar(255) NOT NULL,
-	[parent_id]  	bigint(20) NULL 
-	)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(1, 'æ‰€æœ‰æ¨¡å—çš„æ ¹èŠ‚ç‚¹ï¼Œä¸èƒ½åˆ é™¤ã€‚', 'æ ¹æ¨¡å—', 1, 'Root', '#', NULL)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(2, 'å®‰å…¨ç®¡ç†:åŒ…å«æƒé™ç®¡ç†ã€æ¨¡å—ç®¡ç†ç­‰ã€‚', 'ç³»ç»Ÿç®¡ç†', 99, 'Security', '#', 1)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(3, '', 'ç”¨æˆ·ç®¡ç†', 99, 'User', '/management/security/user/list', 2)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(4, '', 'è§’è‰²ç®¡ç†', 99, 'Role', '/management/security/role/list', 2)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(5, '', 'æ¨¡å—ç®¡ç†', 99, 'Module', '/management/security/module/tree_list', 2)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(10, 'ä¸€ä¸ªå¼€å‘ä½¿ç”¨çš„ç®€å•ç¤ºä¾‹ã€‚', 'å¼€å‘å®ä¾‹', 99, 'Sample', '#', 1)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(14, '', 'ç®€å•ä»»åŠ¡å®ä¾‹', 99, 'Task', '/management/sample/task/list', 10)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(18, '', 'ç»„ç»‡ç®¡ç†', 99, 'Organization', '/management/security/organization/tree_list', 2)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(24, '', 'ç¼“å­˜ç®¡ç†', 99, 'CacheManage', '/management/security/cacheManage/index', 2)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(38, 'æµ‹è¯•ä¸‹', 'æµ‹è¯•æ¨¡å—', 99, 'sdfs', 'æµ‹è¯•ä¸‹', 1)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(52, '', 'è‡ªå®šä¹‰æƒé™æµ‹è¯•', 99, 'ggg', '/vv', 38)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(53, '', 'å¤šçº§æ¨¡å—æµ‹è¯•', 99, 'gg', '/gg', 52)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(54, '', 'æ¨¡å—æµ‹è¯•2', 99, 'å¤šçº§æ¨¡å—æµ‹è¯•2', '/hh', 53)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(58, '', 'æ–°æ¨¡å—26', 99, 'ff', '/dd', 53)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(59, '', 'æ—¥å¿—ç®¡ç†', 99, 'logEntity', '/management/security/logEntity/list', 2)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(63, '', 'èŒåŠ¡ç®¡ç†', 99, 'Position', '/management/eduoa/position/list', 2)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(64, '', 'å¹´çº§ç®¡ç†', 99, 'Grade', '/management/eduoa/grade/list', 2)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(65, '', 'ç­çº§ç®¡ç†', 99, 'Class', '/management/eduoa/class/tree_list', 2)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(66, '', 'äººå‘˜ç»„æˆåˆ†å·¥', 99, 'Teacher', '#', 1)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(67, '', 'ç»„ç»‡ç»“æ„', 99, 'Structure', '/management/eduoa/structure/create', 66)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(68, '', 'ç»„ç»‡æœºæ„æŸ¥çœ‹', 99, 'StructureView', '/management/eduoa/structure/view', 66)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(69, '', 'ç§‘ç›®ç®¡ç†', 99, 'Subject', '/management/eduoa/subject/list', 2)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(70, '', 'èŒç§°è¯ä¹¦', 99, 'CertificateType', '/management/eduoa/certificatetype/list', 2)
-GO
-INSERT INTO [security_module]([id], [description], [name], [priority], [sn], [url], [parent_id])
-  VALUES(72, '', 'äººå‘˜ç®¡ç†', 99, 'TeacherInfo', '/management/eduoa/teacher/list', 66)
-GO
+CREATE TABLE security_module  ( 
+	id         	bigint(20) AUTO_INCREMENT NOT NULL,
+	description	varchar(255) NULL,
+	name       	varchar(32) NOT NULL,
+	priority   	int(11) NOT NULL,
+	sn         	varchar(32) NOT NULL,
+	url        	varchar(255) NOT NULL,
+	parent_id  	bigint(20) NULL 
+	);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(1, 'ËùÓĞÄ£¿éµÄ¸ù½Úµã£¬²»ÄÜÉ¾³ı¡£', '¸ùÄ£¿é', 1, 'Root', '#', NULL);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(2, '°²È«¹ÜÀí:°üº¬È¨ÏŞ¹ÜÀí¡¢Ä£¿é¹ÜÀíµÈ¡£', 'ÏµÍ³¹ÜÀí', 99, 'Security', '#', 1);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(3, '', 'ÓÃ»§¹ÜÀí', 99, 'User', '/management/security/user/list', 2);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(4, '', '½ÇÉ«¹ÜÀí', 99, 'Role', '/management/security/role/list', 2);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(5, '', 'Ä£¿é¹ÜÀí', 99, 'Module', '/management/security/module/tree_list', 2);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(10, 'Ò»¸ö¿ª·¢Ê¹ÓÃµÄ¼òµ¥Ê¾Àı¡£', '¿ª·¢ÊµÀı', 99, 'Sample', '#', 1);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(14, '', '¼òµ¥ÈÎÎñÊµÀı', 99, 'Task', '/management/sample/task/list', 10);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(18, '', '×éÖ¯¹ÜÀí', 99, 'Organization', '/management/security/organization/tree_list', 2);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(24, '', '»º´æ¹ÜÀí', 99, 'CacheManage', '/management/security/cacheManage/index', 2);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(38, '²âÊÔÏÂ', '²âÊÔÄ£¿é', 99, 'sdfs', '²âÊÔÏÂ', 1);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(52, '', '×Ô¶¨ÒåÈ¨ÏŞ²âÊÔ', 99, 'ggg', '/vv', 38);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(53, '', '¶à¼¶Ä£¿é²âÊÔ', 99, 'gg', '/gg', 52);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(54, '', 'Ä£¿é²âÊÔ2', 99, '¶à¼¶Ä£¿é²âÊÔ2', '/hh', 53);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(58, '', 'ĞÂÄ£¿é26', 99, 'ff', '/dd', 53);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(59, '', 'ÈÕÖ¾¹ÜÀí', 99, 'logEntity', '/management/security/logEntity/list', 2);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(63, '', 'Ö°Îñ¹ÜÀí', 99, 'Position', '/management/eduoa/position/list', 2);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(64, '', 'Äê¼¶¹ÜÀí', 99, 'Grade', '/management/eduoa/grade/list', 2);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(65, '', '°à¼¶¹ÜÀí', 99, 'Class', '/management/eduoa/class/tree_list', 2);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(66, '', 'ÈËÔ±×é³É·Ö¹¤', 99, 'Teacher', '#', 1);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(67, '', '×éÖ¯½á¹¹', 99, 'Structure', '/management/eduoa/structure/create', 66);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(68, '', '×éÖ¯»ú¹¹²é¿´', 99, 'StructureView', '/management/eduoa/structure/view', 66);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(69, '', '¿ÆÄ¿¹ÜÀí', 99, 'Subject', '/management/eduoa/subject/list', 2);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(70, '', 'Ö°³ÆÖ¤Êé', 99, 'CertificateType', '/management/eduoa/certificatetype/list', 2);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(72, '', '½ÌÊ¦ĞÅÏ¢¹ÜÀí', 99, 'TeacherInfo', '/management/eduoa/teacher/list', 66);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(74, '', 'Ñ§ÉúĞÅÏ¢¹ÜÀí', 99, 'StudentInfo', '/management/eduoa/student/list', 66);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(75, '', 'ÈÕ³£°ì¹«ÖúÊÖ', 99, 'Work', '#', 1);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(76, '', 'ÇëÏú¼Ù¹ÜÀí', 99, 'Leave', '#', 75);
+INSERT INTO security_module(id, description, name, priority, sn, url, parent_id)
+  VALUES(77, '', 'Çë¼ÙÉêÇë', 99, 'LeaveCreate', '/management/eduoa/leavepermit/create', 76);

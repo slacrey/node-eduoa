@@ -1,89 +1,61 @@
-CREATE TABLE [security_organization]  ( 
-	[id]         	bigint(20) AUTO_INCREMENT NOT NULL,
-	[description]	varchar(255) NULL,
-	[name]       	varchar(64) NOT NULL,
-	[parent_id]  	bigint(20) NULL,
-	[org_order]  	int(11) NULL 
-	)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(1, '‰∏çËÉΩÂà†Èô§„ÄÇ', 'Ê†πÁªÑÁªá', NULL, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(24, '', 'È¶ôÊ≤≥ÂéøÁ¨¨‰∏Ä‰∏≠Â≠¶', 1, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(25, '', 'È´ò‰∏ÄÂπ¥Á∫ß', 24, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(26, '', 'È´ò‰∫åÂπ¥Á∫ß', 24, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(27, '', 'È´ò‰∏âÂπ¥Á∫ß', 24, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(28, '', 'ÊïôÂä°Â§Ñ', 24, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(29, '', 'ÊîøÊïôÂ§Ñ', 24, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(30, '', 'ÂäûÂÖ¨ÂÆ§', 24, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(31, '', '‰∏âËÅîÂäû', 24, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(32, '', 'ÂêéÂã§', 24, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(33, '', 'Ë¥¢Âä°ÂÆ§', 24, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(34, '', 'ÂÆûÈ™åÂÆ§', 24, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(35, '', 'Âõæ‰π¶È¶Ü', 24, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(36, '', 'Âõ¢Âßî', 24, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(37, '', 'ËµÑÊñôÂÆ§', 24, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(38, '', 'ËØ≠ÊñáÁªÑ', 25, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(39, '', 'ÂåñÂ≠¶ÁªÑ', 25, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(40, '', 'Ëã±ËØ≠ÁªÑ', 25, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(41, '', 'Áâ©ÁêÜÁªÑ', 25, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(42, '', 'ÊîøÊ≤ªÁªÑ', 25, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(43, '', 'ÁîüÁâ©ÁªÑ', 25, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(44, '', 'ËØ≠ÊñáÁªÑ', 26, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(45, '', 'Êï∞Â≠¶ÁªÑ', 26, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(46, '', 'Ëã±ËØ≠ÁªÑ', 26, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(47, '', 'Áâ©ÁêÜÁªÑ', 26, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(48, '', 'ÂåñÂ≠¶ÁªÑ', 26, NULL)
-GO
-INSERT INTO [security_organization]([id], [description], [name], [parent_id], [org_order])
-  VALUES(49, '', 'ÁîüÁâ©ÁªÑ', 26, NULL)
-GO
+CREATE TABLE security_organization  ( 
+	id         	bigint(20) AUTO_INCREMENT NOT NULL,
+	description	varchar(255) NULL,
+	name       	varchar(64) NOT NULL,
+	parent_id  	bigint(20) NULL,
+	org_order  	int(11) NULL 
+	);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(1, '≤ªƒ‹…æ≥˝°£', '∏˘◊È÷Ø', NULL, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(24, '', 'œ„∫”œÿµ⁄“ª÷–—ß', 1, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(25, '', '∏ﬂ“ªƒÍº∂', 24, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(26, '', '∏ﬂ∂˛ƒÍº∂', 24, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(27, '', '∏ﬂ»˝ƒÍº∂', 24, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(28, '', 'ΩÃŒÒ¥¶', 24, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(29, '', '’˛ΩÃ¥¶', 24, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(30, '', '∞Ïπ´ “', 24, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(31, '', '»˝¡™∞Ï', 24, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(32, '', '∫Û«⁄', 24, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(33, '', '≤∆ŒÒ “', 24, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(34, '', ' µ—È “', 24, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(35, '', 'Õº Èπ›', 24, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(36, '', 'Õ≈ŒØ', 24, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(37, '', '◊ ¡œ “', 24, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(38, '', '”ÔŒƒ◊È', 25, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(39, '', 'ªØ—ß◊È', 25, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(40, '', '”¢”Ô◊È', 25, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(41, '', 'ŒÔ¿Ì◊È', 25, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(42, '', '’˛÷Œ◊È', 25, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(43, '', '…˙ŒÔ◊È', 25, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(44, '', '”ÔŒƒ◊È', 26, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(45, '', ' ˝—ß◊È', 26, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(46, '', '”¢”Ô◊È', 26, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(47, '', 'ŒÔ¿Ì◊È', 26, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(48, '', 'ªØ—ß◊È', 26, NULL);
+INSERT INTO security_organization(id, description, name, parent_id, org_order)
+  VALUES(49, '', '…˙ŒÔ◊È', 26, NULL);

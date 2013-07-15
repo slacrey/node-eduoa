@@ -1,25 +1,44 @@
-CREATE TABLE [oa_class]  ( 
-	[id]            	bigint(20) AUTO_INCREMENT NOT NULL,
-	[grade_id]      	bigint(20) NULL,
-	[class_name]    	varchar(50) NULL,
-	[category]      	int(11) NULL,
-	[description]   	varchar(200) NULL,
-	[number_limit]  	int(11) NULL,
-	[create_time]   	datetime NULL,
-	[update_time]   	datetime NULL,
-	[create_user_id]	bigint(20) NULL,
-	[update_user_id]	bigint(20) NULL 
-	)
-GO
-INSERT INTO [oa_class]([id], [grade_id], [class_name], [category], [description], [number_limit], [create_time], [update_time], [create_user_id], [update_user_id])
-  VALUES(3, 5, '1Áè≠', 1, '23', 42, '2013-07-06 23:50:01.0', NULL, NULL, NULL)
-GO
-INSERT INTO [oa_class]([id], [grade_id], [class_name], [category], [description], [number_limit], [create_time], [update_time], [create_user_id], [update_user_id])
-  VALUES(4, 5, '23', 1, '123', 23, '2013-07-06 23:50:17.0', NULL, NULL, NULL)
-GO
-INSERT INTO [oa_class]([id], [grade_id], [class_name], [category], [description], [number_limit], [create_time], [update_time], [create_user_id], [update_user_id])
-  VALUES(5, 5, '9', 1, '12', 12, '2013-07-07 13:45:57.0', NULL, NULL, NULL)
-GO
-INSERT INTO [oa_class]([id], [grade_id], [class_name], [category], [description], [number_limit], [create_time], [update_time], [create_user_id], [update_user_id])
-  VALUES(6, 5, 'qweq', 3, 'qw', 123, '2013-07-07 14:16:49.0', NULL, NULL, NULL)
-GO
+CREATE TABLE oa_class  ( 
+	id            	bigint(20) AUTO_INCREMENT NOT NULL,
+	grade_id      	bigint(20) NULL,
+	class_name    	varchar(50) NULL,
+	category      	int(11) NULL,
+	description   	varchar(200) NULL,
+	number_limit  	int(11) NULL,
+	create_time   	datetime NULL,
+	update_time   	datetime NULL,
+	create_user_id	bigint(20) NULL,
+	update_user_id	bigint(20) NULL 
+	);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(7, 13, '∏ﬂ“ª£®1£©∞‡', 1, '', 50, '2013-07-13 22:24:19.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(8, 13, '∏ﬂ“ª£®2£©∞‡', 1, '', 50, '2013-07-13 22:24:36.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(9, 13, '∏ﬂ“ª£®3£©∞‡', 1, '', 50, '2013-07-13 22:24:50.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(10, 13, '∏ﬂ“ª£®4£©∞‡', 1, '', 50, '2013-07-13 22:25:04.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(11, 14, '∏ﬂ“ª£®1£©∞‡', 1, '', 50, '2013-07-13 22:25:28.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(12, 14, '∏ﬂ“ª£®2£©∞‡', 1, '', 50, '2013-07-13 22:25:45.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(13, 14, '∏ﬂ“ª£®3£©∞‡', 1, '', 50, '2013-07-13 22:25:59.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(14, 14, '∏ﬂ“ª£®4£©∞‡', 1, '', 50, '2013-07-13 22:26:08.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(15, 15, '∏ﬂ∂˛£®1£©∞‡', 2, '', 50, '2013-07-13 22:26:28.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(16, 15, '∏ﬂ∂˛£®2£©∞‡', 2, '', 50, '2013-07-13 22:26:46.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(17, 15, '∏ﬂ∂˛£®3£©∞‡', 3, '', 50, '2013-07-13 22:27:02.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(18, 15, '∏ﬂ∂˛£®4£©∞‡', 3, '', 50, '2013-07-13 22:27:40.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(19, 16, '∏ﬂ∂˛£®1£©∞‡', 2, '', 50, '2013-07-13 22:29:09.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(20, 16, '∏ﬂ∂˛£®2£©∞‡', 3, '', 50, '2013-07-13 22:29:27.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(21, 16, '∏ﬂ∂˛£®3£©∞‡', 2, '', 50, '2013-07-13 22:29:38.0', NULL, NULL, NULL);
+INSERT INTO oa_class(id, grade_id, class_name, category, description, number_limit, create_time, update_time, create_user_id, update_user_id)
+  VALUES(22, 16, '∏ﬂ∂˛£®4£©∞‡', 3, '', 50, '2013-07-13 22:29:57.0', NULL, NULL, NULL);
