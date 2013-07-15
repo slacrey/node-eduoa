@@ -4,6 +4,7 @@
 <div class="pageContent">
     <form method="post" action="${contextPath }/management/eduoa/teacher/create"
           class="required-validate pageForm" onsubmit="return validateCallback(this, dialogReloadNavTab);">
+        <input type="hidden" name="securityUsersById[0].id" value="${user.id}"/>
         <div class="pageFormContent" layoutH="56">
 
             <p>
@@ -13,7 +14,7 @@
 
             <p>
                 <label>姓名：</label>
-                <input name="teacherName" class="required" type="text" size="30" alt="请输入姓名"/>
+                <input name="teacherName" class="required" value="${user.realname}" type="text" size="30" alt="请输入姓名"/>
             </p>
 
             <p>

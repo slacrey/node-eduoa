@@ -58,19 +58,19 @@
 				<li><a class="magnifier" target="dialog" rel="dlg_mask" mask="true" width="600" height="500" href="${contextPath }/management/eduoa/teacher/view/{slt_uid}"><span>查看人员</span></a></li>
 			</shiro:hasPermission>		
 			<shiro:hasPermission name="TeacherInfo:save">
-				<li><a class="add" target="dialog" rel="dlg_mask" width="600" height="500" href="${contextPath }/management/eduoa/teacher/create"><span>添加人员</span></a></li>
+				<li><a class="add" target="dialog" rel="dlg_mask" mask="true" width="600" height="500" href="${contextPath }/management/eduoa/teacher/create"><span>添加人员</span></a></li>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="TeacherInfo:edit">
-				<li><a class="edit" target="dialog" rel="dlg_mask" width="600" height="500" href="${contextPath }/management/eduoa/teacher/update/{slt_uid}"><span>编辑人员</span></a></li>
+				<li><a class="edit" target="dialog" rel="dlg_mask" mask="true" width="600" height="500" href="${contextPath }/management/eduoa/teacher/update/{slt_uid}"><span>编辑人员</span></a></li>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="TeacherInfo:delete">
 				<li><a class="delete" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/teacher/delete" title="确认要删除选定人员?"><span>删除人员</span></a></li>
 			</shiro:hasPermission>
             <shiro:hasPermission name="TeacherInfo:teachClass">
-                <li><a class="add" target="dialog" rel="dlg_mask" width="600" height="500" href="${contextPath }/management/eduoa/teacher/teachClass/{slt_uid}"><span>任课班级</span></a></li>
+                <li><a class="add" target="dialog" rel="dlg_mask" mask="true" width="600" height="500" href="${contextPath }/management/eduoa/teacher/teachClass/{slt_uid}"><span>任课班级</span></a></li>
             </shiro:hasPermission>
             <shiro:hasPermission name="TeacherInfo:guideClass">
-                <li><a class="add" target="dialog" rel="dlg_mask" width="600" height="500" href="${contextPath }/management/eduoa/teacher/guideClass/{slt_uid}"><span>带领班级</span></a></li>
+                <li><a class="add" target="dialog" rel="dlg_mask" mask="true" width="600" height="500" href="${contextPath }/management/eduoa/teacher/guideClass/{slt_uid}"><span>带领班级</span></a></li>
             </shiro:hasPermission>
         </ul>
 	</div>

@@ -6,42 +6,43 @@
           onsubmit="return validateCallback(this, dialogReloadNavTab);">
         <div class="pageFormContent" layoutH="58">
             <p>
-                <label>年级：</label>
-                <input type="text" name="gradeName" class="required" size="32" maxlength="32"/>
-            </p>
-
-            <p>
-                <label>年份：</label>
-                <select name="currentYear" class="combox">
-                    <c:forEach items="${years}" var="year" >
-                        <option value="${year}">${year}年</option>
-                    </c:forEach>
-                </select>
-            </p>
-
-            <p>
-                <label>学期：</label>
-                <select name="currentHalf" class="combox">
-                    <c:forEach items="${semesterEnums}" var="semester" >
-                        <option value="${semester.index}">${semester.text}</option>
-                    </c:forEach>
-                </select>
-            </p>
-
-            <p>
-                <label>开始日期：</label>
-                <input type="text" name="startTime" class="required date" size="30"/><a class="inputDateButton"
-                                                                                       href="javascript:;">选择</a>
-            </p>
-            <p>
-                <label>结束日期：</label>
-                <input type="text" name="endTime" class="required date" size="30"/><a class="inputDateButton"
+                <label>申请时间：</label>
+                <input type="text" name="applyTime" dateFmt="yyyy-MM-dd HH:mm:ss" class="required date" size="30"/><a class="inputDateButton"
                                                                                         href="javascript:;">选择</a>
             </p>
+            <p>
+                <label>申请人：</label>
+                <input type="hidden" name="applyTeacherId" value="${user.id}" size="32" maxlength="32"/>
+                <input type="text" name="applyTeacherName" value="${user.realname}" readonly="true" class="required" size="32" maxlength="20"/>
+            </p>
 
             <p>
-                <label>描述：</label>
-                <textarea name="description" cols="28" rows="3" maxlength="255"></textarea>
+                <label>请假开始时间：</label>
+                <input type="text" name="startTime" class="required date" size="30"/><a class="inputDateButton"
+                                                                                        href="javascript:;">选择</a>
+            </p>
+            <p>
+                <label>请假结束时间：</label>
+                <input type="text" name="endTime" class="required date" size="30"/><a class="inputDateButton"
+                                                                                      href="javascript:;">选择</a>
+            </p>
+            <p>
+                <label>事由：</label>
+                <input type="text" name="reason" class="required" size="32" maxlength="200"/>
+            </p>
+            <p>
+                <label>审批人：</label>
+                <input type="hidden" name="leaderId" size="32" maxlength="32"/>
+                <input type="hidden" name="leaderPosition" size="32" maxlength="32"/>
+                <input type="text" name="leaderName" class="required" size="32" maxlength="20"/>
+                <a class="btnLook" target="dialog" width="530" mask="true" height="450"
+                   href="${contextPath }/management/eduoa/teacher/tree"
+                   lookupGroup="securityOrganizationByOrgId" title="选择">选择</a>
+            </p>
+
+            <p>
+                <label>备注：</label>
+                <textarea name="remark" cols="28" rows="3" maxlength="255"></textarea>
             </p>
         </div>
 
@@ -50,7 +51,14 @@
                 <li>
                     <div class="button">
                         <div class="buttonContent">
-                            <button type="submit">确定</button>
+                            <button type="submit">提交</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="submit">保存</button>
                         </div>
                     </div>
                 </li>

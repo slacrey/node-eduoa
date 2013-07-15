@@ -17,11 +17,14 @@ import com.node.eduoa.entity.*;
 import com.node.eduoa.enums.*;
 import com.node.eduoa.service.*;
 import com.node.system.entity.main.Organization;
+import com.node.system.entity.main.User;
 import com.node.system.log.Log;
 import com.node.system.log.LogLevel;
 import com.node.system.log.LogMessageObject;
 import com.node.system.log.impl.LogUitl;
 import com.node.system.service.OrganizationService;
+import com.node.system.service.UserService;
+import com.node.system.service.impl.UserServiceImpl;
 import com.node.system.util.dwz.AjaxObject;
 import com.node.system.util.dwz.Page;
 import org.apache.commons.lang3.StringUtils;
@@ -74,15 +77,20 @@ public class TeacherInfoController extends BaseFormController {
     @Qualifier("classServiceImpl")
     @Autowired
     private ClassService classService;
+    @Qualifier("userServiceImpl")
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private Validator validator;
 
     private static final String CREATE = "management/eduoa/teacher/create";
+    private static final String LINK_CREATE = "management/eduoa/teacher/link_create";
     private static final String UPDATE = "management/eduoa/teacher/update";
     private static final String LIST = "management/eduoa/teacher/list";
     private static final String VIEW = "management/eduoa/teacher/view";
     private static final String TREE = "management/eduoa/teacher/treeLookup";
+    private static final String LEADER_TREE = "management/eduoa/teacher/tree_leader";
     private static final String TREE_GRADE = "management/eduoa/teacher/tree_grade";
     private static final String TREE_HEAD_TEACHER = "management/eduoa/teacher/tree_head_teacher";
     private static final String TEACH_CLASS = "management/eduoa/teacher/teach_class";
@@ -96,6 +104,13 @@ public class TeacherInfoController extends BaseFormController {
 
         map.put("organization", organization);
         return TREE;
+    }
+
+    @RequestMapping(value = "/leader", method = {RequestMethod.GET, RequestMethod.POST})
+    public String getLeader(Map<String, Object> map) {
+        Organization organization = organizationService.getTree();
+        map.put("organization", organization);
+        return LEADER_TREE;
     }
 
     @RequiresPermissions("TeacherInfo:view")
@@ -140,6 +155,28 @@ public class TeacherInfoController extends BaseFormController {
         map.put("headTeacher", HeadTeacherEnum.values());
 
         return CREATE;
+    }
+
+    @RequiresPermissions("TeacherInfo:save")
+    @RequestMapping(value = "/create/{id}", method = RequestMethod.GET)
+    public String preLinkCreate(@PathVariable Long id, Map<String, Object> map) {
+
+        User user = userService.get(id);
+
+        map.put("genderEnum", GenderEnum.values());
+        map.put("politicalLandscapeEnum", PoliticalLandscapeEnum.values());
+        Calendar calendar = Calendar.getInstance();
+        map.put("grades", gradeService.findAllByYear(calendar.get(Calendar.YEAR)));
+        map.put("positions", positionService.findAll());
+        map.put("subjects", subjectService.findAll());
+        map.put("educations", EducationEnum.values());
+        map.put("certificateTypes", certificateTypeService.findAll());
+        map.put("establishments", EstablishmentEnum.values());
+        map.put("isTeachers", TeacherEnum.values());
+        map.put("headTeacher", HeadTeacherEnum.values());
+        map.put("user", user);
+
+        return LINK_CREATE;
     }
 
     /**
@@ -212,6 +249,9 @@ public class TeacherInfoController extends BaseFormController {
         map.put("establishments", EstablishmentEnum.values());
         map.put("isTeachers", TeacherEnum.values());
         map.put("headTeacher", HeadTeacherEnum.values());
+        if (teacherInfo.getSecurityUsersById() != null && !teacherInfo.getSecurityUsersById().isEmpty()) {
+            map.put("user", teacherInfo.getSecurityUsersById().get(0));
+        }
 
         // 加入一个LogMessageObject，该对象的isWritten为false，不会记录日志。
         LogUitl.putArgs(LogMessageObject.newIgnore());
@@ -238,6 +278,13 @@ public class TeacherInfoController extends BaseFormController {
             teacherInfo.setSecurityOrganizationByOrgId(organization);
         } else {
             teacherInfo.setSecurityOrganizationByOrgId(null);
+        }
+        if (teacherInfo.getOaSubjectBySubjectId() != null &&
+                teacherInfo.getOaSubjectBySubjectId().getId() != null) {
+            OaSubject subject = subjectService.get(teacherInfo.getOaSubjectBySubjectId().getId());
+            teacherInfo.setOaSubjectBySubjectId(subject);
+        } else {
+            teacherInfo.setOaSubjectBySubjectId(null);
         }
         if (teacherInfo.getOaGradeByGradeId() != null && teacherInfo.getOaGradeByGradeId().getId() != null) {
             OaGrade grade = gradeService.get(teacherInfo.getOaGradeByGradeId().getId());

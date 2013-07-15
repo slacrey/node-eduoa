@@ -4,6 +4,7 @@
 <div class="pageContent">
 <form method="post" action="${contextPath }/management/eduoa/teacher/update" class="required-validate pageForm" onsubmit="return validateCallback(this, dialogReloadNavTab);">
 	<input type="hidden" name="id" value="${teacherInfo.id}"/>
+    <input type="hidden" name="securityUsersById[0].id" value="${user.id}"/>
     <div class="pageFormContent" layoutH="56">
 
         <p>

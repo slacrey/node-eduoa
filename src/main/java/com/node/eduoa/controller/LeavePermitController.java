@@ -66,11 +66,12 @@ public class LeavePermitController extends BaseFormController {
 	private static final String VIEW = "management/eduoa/leavepermit/view";
 
 
-    @RequiresPermissions("LeavePermit:save")
+    @RequiresPermissions("LeaveCreate:view")
 	@RequestMapping(value="/create", method=RequestMethod.GET)
 	public String preCreate(Map<String, Object> map) {
         map.put("semesterEnums", SemesterEnum.values());
         map.put("years", YearUtils.getYears(3));
+        map.put("user", currentUser.getUser());
 		return CREATE;
 	}
 
@@ -78,8 +79,8 @@ public class LeavePermitController extends BaseFormController {
 	 * LogMessageObject的write用法实例。
 	 */
     @Log(message="添加了{0}请假申请。", level=LogLevel.TRACE, override=true)
-	@RequiresPermissions("LeavePermit:save")
-	@RequestMapping(value="/create", method=RequestMethod.POST)
+	@RequiresPermissions("LeaveCreate:save")
+	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public @ResponseBody String create(OaLeavePermit leavePermit) {
 		BeanValidators.validateWithException(validator, leavePermit);
         try {
@@ -93,6 +94,26 @@ public class LeavePermitController extends BaseFormController {
         LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leavePermit.getApplyTeacherName()}));
 		return AjaxObject.newOk("请假申请添加成功！").toString();
 	}
+
+    /**
+     * LogMessageObject的write用法实例。
+     */
+    @Log(message="添加了{0}请假申请。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("LeaveCreate:save")
+    @RequestMapping(value="/submit", method=RequestMethod.POST)
+    public @ResponseBody String submit(OaLeavePermit leavePermit) {
+        BeanValidators.validateWithException(validator, leavePermit);
+        try {
+            leavePermit.setCreateTime(new Date());
+            leavePermitService.save(leavePermit);
+        } catch (Exception e) {
+            return AjaxObject.newError(e.getMessage()).setCallbackType("").toString();
+        }
+
+        // 加入一个LogMessageObject，该对象的isWritten为true，会记录日志。
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leavePermit.getApplyTeacherName()}));
+        return AjaxObject.newOk("请假申请添加成功！").toString();
+    }
 
 	/**
 	 * LogMessageObject的ignore用法实例，ignore不会记录日志。
