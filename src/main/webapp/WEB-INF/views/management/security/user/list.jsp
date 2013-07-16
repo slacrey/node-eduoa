@@ -48,7 +48,7 @@
 				<li><a class="shield_delete" target="dialog" mask="true" width="400" height="500" href="${contextPath }/management/security/user/lookup2delete/userRole/{slt_uid}"><span>撤销角色</span></a></li>
 			</shiro:hasPermission>
             <shiro:hasPermission name="TeacherInfo:save">
-                <li><a class="add" target="dialog" rel="dlg_mask" mask="true" width="600" height="500" href="${contextPath }/management/eduoa/teacher/create/{slt_uid}"><span>完善相信信息</span></a></li>
+                <li><a class="add" target="dialog" rel="dlg_mask" mask="true" width="600" height="500" href="${contextPath }/management/eduoa/teacher/create/{slt_uid}"><span>完善信息</span></a></li>
             </shiro:hasPermission>
 		</ul>
 	</div>

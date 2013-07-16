@@ -17,10 +17,12 @@ import com.node.eduoa.entity.OaLeavePermit;
 import com.node.eduoa.entity.OaTeacherInfo;
 import com.node.eduoa.enums.ApplyStatusEnum;
 import com.node.eduoa.enums.SemesterEnum;
+import com.node.eduoa.enums.StatusEnum;
 import com.node.eduoa.service.GradeService;
 import com.node.eduoa.service.LeavePermitService;
 import com.node.eduoa.service.impl.LeavePermitServiceImpl;
 import com.node.eduoa.utils.YearUtils;
+import com.node.eduoa.utils.model.LeaveModel;
 import com.node.system.log.Log;
 import com.node.system.log.LogLevel;
 import com.node.system.log.LogMessageObject;
@@ -81,17 +83,30 @@ public class LeavePermitController extends BaseFormController {
     @Log(message="添加了{0}请假申请。", level=LogLevel.TRACE, override=true)
 	@RequiresPermissions("LeaveCreate:save")
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public @ResponseBody String create(OaLeavePermit leavePermit) {
-		BeanValidators.validateWithException(validator, leavePermit);
+	public @ResponseBody String create(LeaveModel leaveModel) {
+
+		BeanValidators.validateWithException(validator, leaveModel.getLeavePermit());
+
         try {
-            leavePermit.setCreateTime(new Date());
-            leavePermitService.save(leavePermit);
+            Date currentDate = new Date();
+            leaveModel.getLeavePermit().setId(null);
+            leaveModel.getLeavePermit().setLeaderId(leaveModel.getLeader().getLeaderId());
+            leaveModel.getLeavePermit().setLeaderName(leaveModel.getLeader().getLeaderName());
+            leaveModel.getLeavePermit().setLeaderPosition(leaveModel.getLeader().getLeaderPosition());
+            leaveModel.getLeavePermit().setStatue(StatusEnum.Uncommitted.getIndex());
+            leaveModel.getLeavePermit().setCreateTime(currentDate);
+
+            leaveModel.getLeavePermit().setApplyTeacherId(getCurrentUser().getId());
+            leaveModel.getLeavePermit().setApplyTime(currentDate);
+            leaveModel.getLeavePermit().setApplyTeacherName(getCurrentUser().getLoginName());
+
+            leavePermitService.save(leaveModel.getLeavePermit());
         } catch (Exception e) {
             return AjaxObject.newError(e.getMessage()).setCallbackType("").toString();
         }
 
 		// 加入一个LogMessageObject，该对象的isWritten为true，会记录日志。
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leavePermit.getApplyTeacherName()}));
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leaveModel.getLeavePermit().getApplyTeacherName()}));
 		return AjaxObject.newOk("请假申请添加成功！").toString();
 	}
 
@@ -101,17 +116,29 @@ public class LeavePermitController extends BaseFormController {
     @Log(message="添加了{0}请假申请。", level=LogLevel.TRACE, override=true)
     @RequiresPermissions("LeaveCreate:save")
     @RequestMapping(value="/submit", method=RequestMethod.POST)
-    public @ResponseBody String submit(OaLeavePermit leavePermit) {
-        BeanValidators.validateWithException(validator, leavePermit);
+    public @ResponseBody String submit(LeaveModel leaveModel) {
+        BeanValidators.validateWithException(validator, leaveModel.getLeavePermit());
         try {
-            leavePermit.setCreateTime(new Date());
-            leavePermitService.save(leavePermit);
+
+            Date currentDate = new Date();
+            leaveModel.getLeavePermit().setId(null);
+            leaveModel.getLeavePermit().setLeaderId(leaveModel.getLeader().getLeaderId());
+            leaveModel.getLeavePermit().setLeaderName(leaveModel.getLeader().getLeaderName());
+            leaveModel.getLeavePermit().setLeaderPosition(leaveModel.getLeader().getLeaderPosition());
+            leaveModel.getLeavePermit().setStatue(StatusEnum.Submitted.getIndex());
+            leaveModel.getLeavePermit().setCreateTime(currentDate);
+
+            leaveModel.getLeavePermit().setApplyTeacherId(getCurrentUser().getId());
+            leaveModel.getLeavePermit().setApplyTime(currentDate);
+            leaveModel.getLeavePermit().setApplyTeacherName(getCurrentUser().getLoginName());
+            leavePermitService.save(leaveModel.getLeavePermit());
+
         } catch (Exception e) {
             return AjaxObject.newError(e.getMessage()).setCallbackType("").toString();
         }
 
         // 加入一个LogMessageObject，该对象的isWritten为true，会记录日志。
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leavePermit.getApplyTeacherName()}));
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leaveModel.getLeavePermit().getApplyTeacherName()}));
         return AjaxObject.newOk("请假申请添加成功！").toString();
     }
 
@@ -153,6 +180,17 @@ public class LeavePermitController extends BaseFormController {
 		leavePermitService.delete(id);
         LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leavePermit.getApplyTeacherName()}));
 		return AjaxObject.newOk("请假申请删除成功！").setCallbackType("").toString();
+	}
+
+    @Log(message="提交了{0}请假申请。", level=LogLevel.TRACE, override=true)
+	@RequiresPermissions("LeaveDraft:save")
+	@RequestMapping(value="/submit/{id}", method=RequestMethod.POST)
+	public @ResponseBody String doSubmit(@PathVariable Long id) {
+        OaLeavePermit leavePermit = leavePermitService.get(id);
+        leavePermit.setStatue(StatusEnum.Submitted.getIndex());
+		leavePermitService.save(leavePermit);
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leavePermit.getApplyTeacherName()}));
+		return AjaxObject.newOk("请假申请提交成功！").setCallbackType("").toString();
 	}
 
 
@@ -200,7 +238,7 @@ public class LeavePermitController extends BaseFormController {
 		return LIST;
 	}
 
-    @RequiresPermissions("LeavePermit:view")
+    @RequiresPermissions("LeaveDraft:view")
     @RequestMapping(value="/listDraft", method={RequestMethod.GET, RequestMethod.POST})
     public String listDraft(Page page, String keywords, Map<String, Object> map) {
 
@@ -208,6 +246,7 @@ public class LeavePermitController extends BaseFormController {
         page.setOrderField("applyTime");
         Map<String, Object> searchParam = new HashMap<String, Object>();
         searchParam.put(SearchFilter.Operator.EQ + "_applyTeacherId", getCurrentUser().getId());
+        searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Uncommitted.getIndex());
         List<OaLeavePermit> leavePermits = null;
         if (StringUtils.isNotBlank(keywords)) {
             searchParam.put(SearchFilter.Operator.LIKE + "_reason", keywords);
@@ -231,7 +270,7 @@ public class LeavePermitController extends BaseFormController {
         page.setOrderField("applyTime");
         Map<String, Object> searchParam = new HashMap<String, Object>();
         searchParam.put(SearchFilter.Operator.EQ + "_applyTeacherId", getCurrentUser().getId());
-        searchParam.put(SearchFilter.Operator.EQ + "_statue", ApplyStatusEnum.Submitted);
+        searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Submitted);
         List<OaLeavePermit> leavePermits = null;
         if (StringUtils.isNotBlank(keywords)) {
             searchParam.put(SearchFilter.Operator.LIKE + "_reason", keywords);

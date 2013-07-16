@@ -7,13 +7,13 @@ package com.node.eduoa.enums;
  * Time: 下午11:34
  * To change this template use File | Settings | File Templates.
  */
-public enum ApplyStatusEnum {
+public enum StatusEnum {
 
-    Reject("驳回"), Pass("通过");
+    Uncommitted("未提交"), Submitted("已提交");
 
     private String text;
 
-    ApplyStatusEnum(String text) {
+    StatusEnum(String text) {
         this.text = text;
     }
 
@@ -26,8 +26,8 @@ public enum ApplyStatusEnum {
     }
 
     // 获得 enum 对象
-    public static ApplyStatusEnum valueByIndex(int index) {
-        for (ApplyStatusEnum typeEnum : ApplyStatusEnum.values()) {
+    public static StatusEnum valueByIndex(int index) {
+        for (StatusEnum typeEnum : StatusEnum.values()) {
             if (typeEnum.getIndex() == index) {
                 return typeEnum;
             }
@@ -36,8 +36,8 @@ public enum ApplyStatusEnum {
     }
 
     // 根据全名获得 enum 对象
-    public static ApplyStatusEnum valueByText(String text) {
-        for (ApplyStatusEnum typeEnum : ApplyStatusEnum.values()) {
+    public static StatusEnum valueByText(String text) {
+        for (StatusEnum typeEnum : StatusEnum.values()) {
             if (typeEnum.getText().equals(text)) {
                 return typeEnum;
             }
