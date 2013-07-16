@@ -92,7 +92,7 @@ public class User extends IdEntity {
 	@JoinColumn(name="orgId")
 	private Organization organization;
 
-    @ManyToOne
+    @OneToOne(cascade={CascadeType.ALL})
     @javax.persistence.JoinColumn(name = "teacher_id", referencedColumnName = "id")
     private OaTeacherInfo teacherInfo;
 	

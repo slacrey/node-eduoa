@@ -229,6 +229,69 @@ public class TeacherInfoController extends BaseFormController {
     }
 
     /**
+     * LogMessageObject的write用法实例。
+     */
+    @Log(message = "添加了{0}教师信息。", level = LogLevel.TRACE, override = true)
+    @RequiresPermissions("TeacherInfo:save")
+    @RequestMapping(value = "/createLink", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String createLink(OaTeacherInfo teacherInfo) {
+        if (teacherInfo.getOaPositionByPositionId() != null
+                && teacherInfo.getOaPositionByPositionId().getId() != null) {
+            OaPosition position = positionService.get(teacherInfo.getOaPositionByPositionId().getId());
+            teacherInfo.setOaPositionByPositionId(position);
+        } else {
+            teacherInfo.setOaPositionByPositionId(null);
+        }
+        if (teacherInfo.getSecurityOrganizationByOrgId() != null
+                && teacherInfo.getSecurityOrganizationByOrgId().getId() != null) {
+            Organization organization = organizationService.get(teacherInfo.getSecurityOrganizationByOrgId().getId());
+            teacherInfo.setSecurityOrganizationByOrgId(organization);
+        } else {
+            teacherInfo.setSecurityOrganizationByOrgId(null);
+        }
+        if (teacherInfo.getOaSubjectBySubjectId() != null &&
+                teacherInfo.getOaSubjectBySubjectId().getId() != null) {
+            OaSubject subject = subjectService.get(teacherInfo.getOaSubjectBySubjectId().getId());
+            teacherInfo.setOaSubjectBySubjectId(subject);
+        } else {
+            teacherInfo.setOaSubjectBySubjectId(null);
+        }
+        if (teacherInfo.getOaGradeByGradeId() != null && teacherInfo.getOaGradeByGradeId().getId() != null) {
+            OaGrade grade = gradeService.get(teacherInfo.getOaGradeByGradeId().getId());
+            teacherInfo.setOaGradeByGradeId(grade);
+        } else {
+            teacherInfo.setOaGradeByGradeId(null);
+        }
+        if (teacherInfo.getUser() != null && teacherInfo.getUser().getId() != null) {
+            User user = userService.get(teacherInfo.getUser().getId());
+            user.setTeacherInfo(teacherInfo);
+            teacherInfo.setUser(user);
+        }
+
+        BeanValidators.validateWithException(validator, teacherInfo);
+        try {
+            teacherInfoService.save(teacherInfo);
+
+//            List<User> userList = teacherInfo.getSecurityUsersById();
+//            if (userList != null && !userList.isEmpty()) {
+//                for (User user: userList) {
+//                    user.setTeacherInfo(teacherInfo);
+//                    userService.updateUser(user);
+//                }
+//            }
+
+        } catch (Exception e) {
+            return AjaxObject.newError(e.getMessage()).setCallbackType("").toString();
+        }
+
+        // 加入一个LogMessageObject，该对象的isWritten为true，会记录日志。
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{teacherInfo.getTeacherName()}));
+        return AjaxObject.newOk("教师信息添加成功！").toString();
+    }
+
+    /**
      * LogMessageObject的ignore用法实例，ignore不会记录日志。
      */
     @Log(message = "你永远不会看见该日志，LogMessageObject的isWritten为false。", level = LogLevel.TRACE)
@@ -249,8 +312,8 @@ public class TeacherInfoController extends BaseFormController {
         map.put("establishments", EstablishmentEnum.values());
         map.put("isTeachers", TeacherEnum.values());
         map.put("headTeacher", HeadTeacherEnum.values());
-        if (teacherInfo.getSecurityUsersById() != null && !teacherInfo.getSecurityUsersById().isEmpty()) {
-            map.put("user", teacherInfo.getSecurityUsersById().get(0));
+        if (teacherInfo.getUser() != null) {
+            map.put("user", teacherInfo.getUser());
         }
 
         // 加入一个LogMessageObject，该对象的isWritten为false，不会记录日志。

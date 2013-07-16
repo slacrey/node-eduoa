@@ -117,7 +117,12 @@ public class UserServiceImpl implements UserService {
 		shiroRealm.clearCachedAuthorizationInfo(user.getUsername());
 	}
 
-	/**   
+    @Override
+    public void updateUser(User user) {
+        userDAO.save(user);
+    }
+
+    /**
 	 * @param id  
 	 * @see com.node.system.service.UserService#delete(java.lang.Long)
 	 */

@@ -7,9 +7,4 @@ CREATE TABLE oa_student_grade  (
 	current_year	int(11) NULL 
 	)
 COMMENT = '?' ;
-INSERT INTO oa_student_grade(id, grade_id, student_id, start_time, end_time, current_year)
-  VALUES(3, 13, 11, '2012-09-01 00:00:00.0', '2013-02-01 00:00:00.0', 2013);
-INSERT INTO oa_student_grade(id, grade_id, student_id, start_time, end_time, current_year)
-  VALUES(4, 13, 12, '2012-09-01 00:00:00.0', '2013-02-01 00:00:00.0', 2013);
-INSERT INTO oa_student_grade(id, grade_id, student_id, start_time, end_time, current_year)
-  VALUES(5, 13, 11, '2012-09-01 00:00:00.0', '2013-02-01 00:00:00.0', 2013);
+

@@ -2,9 +2,9 @@
          pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/views/include.inc.jsp" %>
 <div class="pageContent">
-    <form method="post" action="${contextPath }/management/eduoa/teacher/create"
+    <form method="post" action="${contextPath }/management/eduoa/teacher/createLink"
           class="required-validate pageForm" onsubmit="return validateCallback(this, dialogReloadNavTab);">
-        <input type="hidden" name="securityUsersById[0].id" value="${user.id}"/>
+        <input type="hidden" name="user.id" value="${user.id}"/>
         <div class="pageFormContent" layoutH="56">
 
             <p>

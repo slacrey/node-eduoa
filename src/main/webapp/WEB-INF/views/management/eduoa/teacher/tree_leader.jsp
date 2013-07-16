@@ -7,23 +7,29 @@
     public String tree(Organization organization, String basePath) {
 
         if (organization.getChildren().isEmpty()) {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("<ul>" + "\n");
+            StringBuilder buffer = new StringBuilder();
+            boolean exist = false;
             for (User user : organization.getUsers()) {
                 OaTeacherInfo teacherInfo = user.getTeacherInfo();
-                if (teacherInfo.getOaPositionByPositionId() != null ) {
+                if (teacherInfo != null && teacherInfo.getOaPositionByPositionId() != null ) {
                     buffer.append("<li><a href=\"javascript:\" onclick=\"returnClose({userId:'" + user.getId()
                             + "',teacherId:'"+teacherInfo.getId()+"' , teacherName:'" + teacherInfo.getTeacherName() + "'})\" >" + teacherInfo.getTeacherName() + "</a>" + "\n");
                     buffer.append("</li>" + "\n");
+                    exist = true;
                 }
-                buffer.append("</ul>" + "\n");
             }
-            return buffer.toString();
+            StringBuilder builder = new StringBuilder();
+            if (exist) {
+                builder.append("<ul>" + "\n");
+                builder.append(buffer);
+                builder.append("</ul>" + "\n");
+            }
+            return builder.toString();
         }
         StringBuffer buffer = new StringBuffer();
         buffer.append("<ul>" + "\n");
         for (Organization o : organization.getChildren()) {
-            buffer.append("<li>" + o.getName() + "\n");
+            buffer.append("<li><a href=\"javascript:\" >"  + o.getName() +"</a>" + "\n");
             buffer.append(tree(o, basePath));
             buffer.append("</li>" + "\n");
         }

@@ -35,6 +35,8 @@ public interface UserService {
 
 	void update(User user);
 
+    void updateUser(User user);
+
 	void save(User user) throws ExistedException;
 
 	User get(Long id);

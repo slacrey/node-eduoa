@@ -36,7 +36,7 @@
                 <input type="hidden" name="leaderPosition" size="32" maxlength="32"/>
                 <input type="text" name="leaderName" class="required" size="32" maxlength="20"/>
                 <a class="btnLook" target="dialog" width="530" mask="true" height="450"
-                   href="${contextPath }/management/eduoa/teacher/tree"
+                   href="${contextPath }/management/eduoa/teacher/leader"
                    lookupGroup="securityOrganizationByOrgId" title="选择">选择</a>
             </p>
 

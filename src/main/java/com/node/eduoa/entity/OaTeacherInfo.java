@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
+ *
  * User: linfeng at Administrator
  * Date: 13-7-6
  * Time: 上午9:57
@@ -101,8 +101,9 @@ public class OaTeacherInfo extends IdEntity {
     @ManyToOne
     @JoinColumn(name = "position_id", referencedColumnName = "id")
     private OaPosition oaPositionByPositionId;
-    @OneToMany(mappedBy = "teacherInfo")
-    private List<User> securityUsersById;
+
+    @OneToOne(mappedBy="teacherInfo", cascade={CascadeType.PERSIST})
+    private User user;
 
     @Transient
     private Integer workedYear;
@@ -327,12 +328,12 @@ public class OaTeacherInfo extends IdEntity {
         this.oaPositionByPositionId = oaPositionByPositionId;
     }
 
-    public List<User> getSecurityUsersById() {
-        return securityUsersById;
+    public User getUser() {
+        return user;
     }
 
-    public void setSecurityUsersById(List<User> securityUsersById) {
-        this.securityUsersById = securityUsersById;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getCertificatesType() {
