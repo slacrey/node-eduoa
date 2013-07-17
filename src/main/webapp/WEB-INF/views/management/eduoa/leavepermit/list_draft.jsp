@@ -53,7 +53,7 @@
 				<th>事由</th>
 				<th width="130">请假开始时间</th>
 				<th width="130">请假结束时间</th>
-				<th width="100">申请人</th>
+				<th width="100">审批领导</th>
 				<th width="130">申请时间</th>
                 <th width="130">审批状态</th>
 			</tr>
@@ -65,7 +65,7 @@
 				<td>${item.reason}</td>
 				<td><fmt:formatDate value="${item.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 				<td><fmt:formatDate value="${item.endTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                <td>${item.applyTeacherName}</td>
+                <td>${item.leaderName}</td>
 				<td><fmt:formatDate value="${item.applyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <td>${item.applyStatueCn}</td>
 			</tr>

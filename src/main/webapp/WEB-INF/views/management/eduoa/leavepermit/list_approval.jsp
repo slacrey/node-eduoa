@@ -2,11 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include.inc.jsp"%>
 
-<keta:paginationForm action="${contextPath }/management/eduoa/leavepermit/list" page="${page }">
+<keta:paginationForm action="${contextPath }/management/eduoa/leavepermit/listApproval" page="${page }">
 	<input type="hidden" name="keywords" value="${keywords}"/>
 </keta:paginationForm>
 
-<form method="post" action="${contextPath }/management/eduoa/leavepermit/list" onsubmit="return navTabSearch(this)">
+<form method="post" action="${contextPath }/management/eduoa/leavepermit/listApproval" onsubmit="return navTabSearch(this)">
 	<div class="pageHeader">
 		<div class="searchBar">
 			<ul class="searchContent">
@@ -27,23 +27,7 @@
 <div class="pageContent">
 
 	<div class="panelBar">
-		<ul class="toolBar">
-            <shiro:hasPermission name="LeavePermit:save">
-                <li><a class="add" target="navTab" href="${contextPath }/management/eduoa/leavepermit/create"><span>请假申请</span></a></li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="LeavePermit:save">
-                <li><a class="arrow_refresh" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/leavepermit/commit" title="确认提交申请码？"><span>提交申请</span></a></li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="LeavePermit:edit">
-                <li><a class="edit" target="navTab"  href="${contextPath }/management/eduoa/leavepermit/update/{slt_uid}"><span>编辑申请</span></a></li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="LeavePermit:delete">
-                <li><a class="delete" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/leavepermit/delete" title="确认要删除申请?"><span>删除申请</span></a></li>
-            </shiro:hasPermission>
-
-
-
-		</ul>
+		<ul class="toolBar"></ul>
 	</div>
 	
 	<table class="table" layoutH="138" width="100%">
@@ -53,9 +37,9 @@
 				<th>事由</th>
 				<th width="130">请假开始时间</th>
 				<th width="130">请假结束时间</th>
-				<th width="100">申请人</th>
+				<th width="100">审批领导</th>
 				<th width="130">申请时间</th>
-                <th width="130">审批状态</th>
+				<th width="130">审批状态</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -65,7 +49,7 @@
 				<td>${item.reason}</td>
 				<td><fmt:formatDate value="${item.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 				<td><fmt:formatDate value="${item.endTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                <td>${item.applyTeacherName}</td>
+                <td>${item.leaderName}</td>
 				<td><fmt:formatDate value="${item.applyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <td>${item.applyStatueCn}</td>
 			</tr>

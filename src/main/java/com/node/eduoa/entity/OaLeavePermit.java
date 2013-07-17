@@ -1,11 +1,9 @@
 package com.node.eduoa.entity;
 
+import com.node.eduoa.enums.ApplyStatusEnum;
 import com.node.system.entity.IdEntity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -53,6 +51,23 @@ public class OaLeavePermit extends IdEntity {
     private Integer statue;
     @javax.persistence.Column(name = "apply_statue")
     private Integer applyStatue;
+
+    @Transient
+    private String applyStatueCn;
+
+    public String getApplyStatueCn() {
+        if (applyStatue != null) {
+            ApplyStatusEnum classTypeEnum = ApplyStatusEnum.valueByIndex(applyStatue);
+            if (classTypeEnum != null) {
+                return classTypeEnum.getText();
+            }
+        }
+        return "";
+    }
+
+    public void setApplyStatueCn(String applyStatueCn) {
+        this.applyStatueCn = applyStatueCn;
+    }
 
     public Long getLeaderId() {
         return leaderId;
