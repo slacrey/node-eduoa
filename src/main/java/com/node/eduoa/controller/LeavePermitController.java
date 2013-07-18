@@ -64,7 +64,9 @@ public class LeavePermitController extends BaseFormController {
 
 	private static final String CREATE = "management/eduoa/leavepermit/create";
 	private static final String UPDATE = "management/eduoa/leavepermit/update";
+	private static final String UPDATE_SICK = "management/eduoa/leavepermit/update_sick";
 	private static final String LIST = "management/eduoa/leavepermit/list";
+	private static final String LIST_FINISH = "management/eduoa/leavepermit/list_finish";
 	private static final String LIST_DRAFT = "management/eduoa/leavepermit/list_draft";
 	private static final String LIST_APPROVAL = "management/eduoa/leavepermit/list_approval";
 	private static final String VIEW = "management/eduoa/leavepermit/view";
@@ -162,6 +164,40 @@ public class LeavePermitController extends BaseFormController {
 		return UPDATE;
 	}
 
+    @RequiresPermissions("listApproval:sick")
+    @RequestMapping(value="/sick/{id}", method=RequestMethod.GET)
+    public String preSick(@PathVariable Long id, Map<String, Object> map) {
+        OaLeavePermit leavePermit = leavePermitService.get(id);
+        if (leavePermit.getApplyStatue() == ApplyStatusEnum.Pass.getIndex()) {
+            map.put("leavePermit", leavePermit);
+            return UPDATE_SICK;
+        } else {
+            return AjaxObject.newError("请选择已经审批通过的请假条！").setCallbackType("").toString();
+        }
+    }
+
+    @RequiresPermissions("listApproval:sick")
+    @RequestMapping(value="/checkSick/{id}", method=RequestMethod.POST)
+    public @ResponseBody String checkSick(@PathVariable Long id) {
+        OaLeavePermit leavePermit = leavePermitService.get(id);
+        if (leavePermit.getApplyStatue() != ApplyStatusEnum.Pass.getIndex()) {
+            return AjaxObject.newError("打开窗口验证失败！").setCallbackType("").toString();
+        }
+        return AjaxObject.newOk("打开窗口验证成功！").setCallbackType("").toString();
+    }
+
+    @Log(message="对{0}的请假进行了销假。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("listApproval:sick")
+    @RequestMapping(value="/sick", method=RequestMethod.POST)
+    public @ResponseBody String updateSick(OaLeavePermit leavePermit) {
+
+        //leavePermit = leavePermitService.get(leavePermit.getId());
+        leavePermitService.update(leavePermit);
+
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leavePermit.getApplyTeacherName()}));
+        return AjaxObject.newOk("销假成功！").toString();
+    }
+
     @Log(message="修改了{0}的请假申请。", level=LogLevel.TRACE, override=true)
     @RequiresPermissions("LeavePermit:edit")
 	@RequestMapping(value="/update", method=RequestMethod.POST)
@@ -223,7 +259,7 @@ public class LeavePermitController extends BaseFormController {
 		return AjaxObject.newOk("请假申请删除成功！").setCallbackType("").toString();
 	}
 
-	@RequiresPermissions("LeavePermit:view")
+	@RequiresPermissions("Permit:view")
 	@RequestMapping(value="/list", method={RequestMethod.GET, RequestMethod.POST})
 	public String list(Page page, String keywords, Map<String, Object> map) {
 
@@ -248,8 +284,33 @@ public class LeavePermitController extends BaseFormController {
 		return LIST;
 	}
 
+    @RequiresPermissions("listFinish:view")
+    @RequestMapping(value="/listFinish", method={RequestMethod.GET, RequestMethod.POST})
+    public String listFinish(Page page, String keywords, Map<String, Object> map) {
+
+        OaLeavePermit leavePermit = new OaLeavePermit();
+        page.setOrderField("applyTime");
+        Map<String, Object> searchParam = new HashMap<String, Object>();
+        searchParam.put(SearchFilter.Operator.EQ + "_leaderId", getCurrentUser().getId()+"");
+        searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Submitted.getIndex() + "");
+        searchParam.put(SearchFilter.Operator.GTE + "_applyStatue", ApplyStatusEnum.Pass.getIndex() + "");
+        List<OaLeavePermit> leavePermits = null;
+        if (StringUtils.isNotBlank(keywords)) {
+            searchParam.put(SearchFilter.Operator.LIKE + "_reason", keywords);
+            leavePermits = leavePermitService.findByLeavePermitCondition(page, leavePermit, searchParam);
+        } else {
+            leavePermits = leavePermitService.findByLeavePermitCondition(page, leavePermit, searchParam);
+        }
+
+        map.put("page", page);
+        map.put("leavePermits", leavePermits);
+        map.put("keywords", keywords);
+
+        return LIST_FINISH;
+    }
+
     @Log(message="同意了{0}请假申请。", level=LogLevel.TRACE, override=true)
-    @RequiresPermissions("LeavePermit:save")
+    @RequiresPermissions("Permit:pass")
     @RequestMapping(value="/passed", method=RequestMethod.POST)
     public @ResponseBody String doPass(Long[] ids) {
 
@@ -266,14 +327,13 @@ public class LeavePermitController extends BaseFormController {
     }
 
     @Log(message="驳回了{0}请假申请。", level=LogLevel.TRACE, override=true)
-    @RequiresPermissions("LeavePermit:save")
+    @RequiresPermissions("Permit:reject")
     @RequestMapping(value="/rejected", method=RequestMethod.POST)
     public @ResponseBody String doReject(Long[] ids) {
 
         String[] titles = new String[ids.length];
         for (int i = 0; i < ids.length; i++) {
             OaLeavePermit leavePermit = leavePermitService.get(ids[i]);
-            leavePermit.setStatue(StatusEnum.Uncommitted.getIndex());
             leavePermit.setApplyStatue(ApplyStatusEnum.Reject.getIndex());
             leavePermitService.update(leavePermit);
             titles[i] = leavePermit.getApplyTeacherName();

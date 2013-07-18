@@ -2,11 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include.inc.jsp"%>
 
-<keta:paginationForm action="${contextPath }/management/eduoa/leavepermit/list" page="${page }">
+<keta:paginationForm action="${contextPath }/management/eduoa/leavepermit/listFinish" page="${page }">
 	<input type="hidden" name="keywords" value="${keywords}"/>
 </keta:paginationForm>
 
-<form method="post" action="${contextPath }/management/eduoa/leavepermit/list" onsubmit="return navTabSearch(this)">
+<form method="post" action="${contextPath }/management/eduoa/leavepermit/listFinish" onsubmit="return navTabSearch(this)">
 	<div class="pageHeader">
 		<div class="searchBar">
 			<ul class="searchContent">
@@ -26,16 +26,9 @@
 
 <div class="pageContent">
 
-	<div class="panelBar">
-		<ul class="toolBar">
-            <shiro:hasPermission name="Permit:pass">
-                <li><a class="arrow_refresh" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/leavepermit/passed" title="确认通过申请码？"><span>通过申请</span></a></li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="Permit:reject">
-                <li><a class="delete" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/leavepermit/rejected" title="确认要驳回该申请吗?"><span>驳回申请</span></a></li>
-            </shiro:hasPermission>
-		</ul>
-	</div>
+    <div class="panelBar">
+        <ul class="toolBar"></ul>
+    </div>
 	
 	<table class="table" layoutH="138" width="100%">
 		<thead>

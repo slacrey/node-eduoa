@@ -9,7 +9,7 @@ package com.node.eduoa.enums;
  */
 public enum ApplyStatusEnum {
 
-    Normal("正常"), Reject("驳回"), Pass("通过");
+    Normal("正常"), Pass("通过"), Reject("驳回");
 
     private String text;
 

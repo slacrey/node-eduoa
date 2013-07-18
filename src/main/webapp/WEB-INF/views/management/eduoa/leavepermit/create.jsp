@@ -23,14 +23,14 @@
     <form id="leaveForm" method="post" action="${contextPath }/management/eduoa/leavepermit/create" class="required-validate pageForm">
         <div class="pageFormContent" style="height: 228px; overflow: auto;" layouth="56">
             <p>
-                <label>申请时间：</label>
-                <input type="text" name="leavePermit.applyTime" dateFmt="yyyy-MM-dd HH:mm:ss" class="required date" size="30"/><a class="inputDateButton"
-                                                                                                                      href="javascript:;">选择</a>
-            </p>
-            <p>
                 <label>申请人：</label>
                 <input type="hidden" name="leavePermit.applyTeacherId" value="${user.id}" size="32" maxlength="32"/>
                 <input type="text" name="leavePermit.applyTeacherName" value="${user.realname}" readonly="true" class="required" size="32" maxlength="20"/>
+            </p>
+
+            <p>
+                <label>请假天数：</label>
+                <input type="text" name="leavePermit.applyDay" class="required" size="30"/>
             </p>
 
             <p>

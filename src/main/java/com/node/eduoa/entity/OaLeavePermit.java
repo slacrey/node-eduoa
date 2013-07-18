@@ -52,8 +52,41 @@ public class OaLeavePermit extends IdEntity {
     @javax.persistence.Column(name = "apply_statue")
     private Integer applyStatue;
 
+    @Column(name = "apply_day")
+    private Integer applyDay;
+
+    @Column(name = "real_day")
+    private Integer realDay;
+
+    @Column(name = "sick_time")
+    private Date sickTime;
+
     @Transient
     private String applyStatueCn;
+
+    public Date getSickTime() {
+        return sickTime;
+    }
+
+    public void setSickTime(Date sickTime) {
+        this.sickTime = sickTime;
+    }
+
+    public Integer getRealDay() {
+        return realDay;
+    }
+
+    public void setRealDay(Integer realDay) {
+        this.realDay = realDay;
+    }
+
+    public Integer getApplyDay() {
+        return applyDay;
+    }
+
+    public void setApplyDay(Integer applyDay) {
+        this.applyDay = applyDay;
+    }
 
     public String getApplyStatueCn() {
         if (applyStatue != null) {

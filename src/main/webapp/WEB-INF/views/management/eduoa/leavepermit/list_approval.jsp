@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" trimDirectiveWhitespaces="true"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include.inc.jsp"%>
-
 <keta:paginationForm action="${contextPath }/management/eduoa/leavepermit/listApproval" page="${page }">
 	<input type="hidden" name="keywords" value="${keywords}"/>
 </keta:paginationForm>
@@ -27,7 +26,13 @@
 <div class="pageContent">
 
 	<div class="panelBar">
-		<ul class="toolBar"></ul>
+		<ul class="toolBar">
+            <shiro:hasPermission name="listApproval:sick">
+                <li><a class="arrow_refresh" target="ajaxToDialog" mask="true"
+                       checkUrl="${contextPath }/management/eduoa/leavepermit/checkSick/{slt_uid}"
+                       href="${contextPath }/management/eduoa/leavepermit/sick/{slt_uid}"><span>销假</span></a></li>
+            </shiro:hasPermission>
+		</ul>
 	</div>
 	
 	<table class="table" layoutH="138" width="100%">
