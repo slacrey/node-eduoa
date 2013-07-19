@@ -14,13 +14,12 @@
 package com.node.eduoa.controller;
 
 import com.node.eduoa.entity.OaLeavePermit;
-import com.node.eduoa.entity.OaTeacherInfo;
 import com.node.eduoa.enums.ApplyStatusEnum;
 import com.node.eduoa.enums.SemesterEnum;
 import com.node.eduoa.enums.StatusEnum;
-import com.node.eduoa.service.GradeService;
+import com.node.eduoa.service.GoodsApplyService;
 import com.node.eduoa.service.LeavePermitService;
-import com.node.eduoa.service.impl.LeavePermitServiceImpl;
+import com.node.eduoa.service.impl.GoodsApplyServiceImpl;
 import com.node.eduoa.utils.YearUtils;
 import com.node.eduoa.utils.model.LeaveModel;
 import com.node.system.log.Log;
@@ -52,24 +51,27 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-@RequestMapping("/management/eduoa/leavepermit")
-public class LeavePermitController extends BaseFormController {
+@RequestMapping("/management/eduoa/goods")
+public class GoodsApplyController extends BaseFormController {
 
     @Qualifier("leavePermitServiceImpl")
     @Autowired
     private LeavePermitService leavePermitService;
+    @Qualifier("goodsApplyServiceImpl")
+    @Autowired
+    private GoodsApplyService goodsApplyService;
 
 	@Autowired
 	private Validator validator;
 
-	private static final String CREATE = "management/eduoa/leavepermit/create";
-	private static final String UPDATE = "management/eduoa/leavepermit/update";
-	private static final String UPDATE_SICK = "management/eduoa/leavepermit/update_sick";
-	private static final String LIST = "management/eduoa/leavepermit/list";
-	private static final String LIST_FINISH = "management/eduoa/leavepermit/list_finish";
-	private static final String LIST_DRAFT = "management/eduoa/leavepermit/list_draft";
-	private static final String LIST_APPROVAL = "management/eduoa/leavepermit/list_approval";
-	private static final String VIEW = "management/eduoa/leavepermit/view";
+	private static final String CREATE = "management/eduoa/goods/create";
+	private static final String UPDATE = "management/eduoa/goods/update";
+	private static final String UPDATE_SICK = "management/eduoa/goods/update_sick";
+	private static final String LIST = "management/eduoa/goods/list";
+	private static final String LIST_FINISH = "management/eduoa/goods/list_finish";
+	private static final String LIST_DRAFT = "management/eduoa/goods/list_draft";
+	private static final String LIST_APPROVAL = "management/eduoa/goods/list_approval";
+	private static final String VIEW = "management/eduoa/goods/view";
 
 
     @RequiresPermissions("LeavePermit:view")
