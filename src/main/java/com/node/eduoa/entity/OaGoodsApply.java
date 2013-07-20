@@ -1,10 +1,9 @@
 package com.node.eduoa.entity;
 
+import com.node.eduoa.enums.ApplyStatusEnum;
 import com.node.system.entity.IdEntity;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -33,6 +32,8 @@ public class OaGoodsApply extends IdEntity {
     private String goodsName;
     @javax.persistence.Column(name = "goods_unit")
     private String goodsUnit;
+    @javax.persistence.Column(name = "goods_count")
+    private Integer goodsCount;
     @javax.persistence.Column(name = "apply_teacher_id")
     private Long applyTeacherId;
     @javax.persistence.Column(name = "apply_teacher_name")
@@ -49,6 +50,54 @@ public class OaGoodsApply extends IdEntity {
     private Integer applyStatue;
     @javax.persistence.Column(name = "statue")
     private Integer statue;
+
+    @javax.persistence.Column(name = "goods_statue")
+    private Integer goodsStatue;
+    @Column(name = "sick_time")
+    private Date sickTime;
+    @Column(name = "commit_time")
+    private Date commitTime;
+
+    @Transient
+    private String applyStatueCn;
+
+    public Date getCommitTime() {
+        return commitTime;
+    }
+
+    public void setCommitTime(Date commitTime) {
+        this.commitTime = commitTime;
+    }
+
+    public Integer getGoodsStatue() {
+        return goodsStatue;
+    }
+
+    public void setGoodsStatue(Integer goodsStatue) {
+        this.goodsStatue = goodsStatue;
+    }
+
+    public Date getSickTime() {
+        return sickTime;
+    }
+
+    public void setSickTime(Date sickTime) {
+        this.sickTime = sickTime;
+    }
+
+    public String getApplyStatueCn() {
+        if (applyStatue != null) {
+            ApplyStatusEnum classTypeEnum = ApplyStatusEnum.valueByIndex(applyStatue);
+            if (classTypeEnum != null) {
+                return classTypeEnum.getText();
+            }
+        }
+        return applyStatueCn;
+    }
+
+    public void setApplyStatueCn(String applyStatueCn) {
+        this.applyStatueCn = applyStatueCn;
+    }
 
     public Long getLeaderId() {
         return leaderId;
@@ -160,5 +209,13 @@ public class OaGoodsApply extends IdEntity {
 
     public void setStatue(Integer statue) {
         this.statue = statue;
+    }
+
+    public Integer getGoodsCount() {
+        return goodsCount;
+    }
+
+    public void setGoodsCount(Integer goodsCount) {
+        this.goodsCount = goodsCount;
     }
 }

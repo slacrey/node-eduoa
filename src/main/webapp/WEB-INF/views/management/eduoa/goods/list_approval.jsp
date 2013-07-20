@@ -57,16 +57,16 @@
         });
     });
 </script>
-<keta:paginationForm action="${contextPath }/management/eduoa/leavepermit/listApproval" page="${page }">
+<keta:paginationForm action="${contextPath }/management/eduoa/goods/listApproval" page="${page }">
 	<input type="hidden" name="keywords" value="${keywords}"/>
 </keta:paginationForm>
 
-<form method="post" action="${contextPath }/management/eduoa/leavepermit/listApproval" onsubmit="return navTabSearch(this)">
+<form method="post" action="${contextPath }/management/eduoa/goods/listApproval" onsubmit="return navTabSearch(this)">
 	<div class="pageHeader">
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
-					<label>申请事由：</label>
+					<label>物品名称：</label>
 					<input type="text" name="keywords" value="${keywords}"/>
 				</li>
 			</ul>
@@ -83,10 +83,10 @@
 
 	<div class="panelBar">
 		<ul class="toolBar">
-            <shiro:hasPermission name="listApproval:sick">
+            <shiro:hasPermission name="GoodsApproval:sick">
                 <li><a class="arrow_refresh" target="ajaxToDialog" mask="true"
-                       checkUrl="${contextPath }/management/eduoa/leavepermit/checkSick/{slt_uid}"
-                       href="${contextPath }/management/eduoa/leavepermit/sick/{slt_uid}"><span>销假</span></a></li>
+                       checkUrl="${contextPath }/management/eduoa/goods/checkSick/{slt_uid}"
+                       href="${contextPath }/management/eduoa/goods/sick/{slt_uid}"><span>领取</span></a></li>
             </shiro:hasPermission>
 		</ul>
 	</div>
@@ -95,33 +95,31 @@
 		<thead>
 			<tr>
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-				<th>事由</th>
-				<th width="130">请假开始时间</th>
-				<th width="130">请假结束时间</th>
-				<th width="130">请假天数</th>
-				<th width="100">审批领导</th>
-				<th width="130">申请时间</th>
-				<th width="130">审批状态</th>
-				<th width="130">实休假期</th>
-				<th width="130">销假时间</th>
+                <th width="130">申请时间</th>
+                <th width="80">申请人</th>
+                <th width="80">申请部门</th>
+                <th width="80">审批领导</th>
+                <th>物品名称</th>
+                <th width="80">单位</th>
+                <th width="80">数量</th>
+                <th width="100">审批状态</th>
+                <th width="130">审批时间</th>
+                <th width="130">领取时间</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach var="item" items="${leavePermits}">
 			<tr target="slt_uid" rel="${item.id}">
 				<td><input name="ids" value="${item.id}" type="checkbox"></td>
-				<td>${item.reason}</td>
-				<td><fmt:formatDate value="${item.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-				<td><fmt:formatDate value="${item.endTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                <td>${item.applyDay}</td>
+                <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                <td>${item.applyTeacherName}</td>
+                <td>${item.applyOrganizationName}</td>
                 <td>${item.leaderName}</td>
-				<td><fmt:formatDate value="${item.applyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                <td>${item.goodsName}</td>
+                <td>${item.goodsUnit}</td>
+                <td>${item.goodsCount}</td>
                 <td>${item.applyStatueCn}</td>
-                <td>
-                    <c:if test="${item.realDay != null}">
-                        共${item.realDay}天
-                    </c:if>
-                </td>
+                <td><fmt:formatDate value="${item.applyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <td><fmt:formatDate value="${item.sickTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 			</tr>
 			</c:forEach>

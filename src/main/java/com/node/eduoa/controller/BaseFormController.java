@@ -1,6 +1,8 @@
 package com.node.eduoa.controller;
 
 import com.node.eduoa.converters.CustomTimestampEditor;
+import com.node.eduoa.entity.OaTeacherInfo;
+import com.node.system.entity.main.Organization;
 import com.node.system.shiro.ShiroDbRealm;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -28,6 +30,7 @@ public class BaseFormController implements ServletContextAware {
 
     private ServletContext servletContext;
     protected ShiroDbRealm.ShiroUser currentUser;
+    protected Organization currentOrganization;
 
     @Override
     public void setServletContext(ServletContext servletContext) {
@@ -46,6 +49,14 @@ public class BaseFormController implements ServletContextAware {
         this.currentUser = currentUser;
     }
 
+    public Organization getCurrentOrganization() {
+        return currentOrganization;
+    }
+
+    public void setCurrentOrganization(Organization currentOrganization) {
+        this.currentOrganization = currentOrganization;
+    }
+
     @InitBinder
     protected void initBinder(HttpServletRequest request,
                               ServletRequestDataBinder binder) {
@@ -62,13 +73,17 @@ public class BaseFormController implements ServletContextAware {
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", request.getLocale());
         dateTimeFormat.setLenient(false);
         binder.registerCustomEditor(Date.class, null,
-                new CustomTimestampEditor(dateFormat, true));
+                new CustomTimestampEditor(dateTimeFormat, true));
     }
 
     @ModelAttribute
     protected void initCurrentUser() {
         Subject subject = SecurityUtils.getSubject();
         currentUser = ((ShiroDbRealm.ShiroUser)subject.getPrincipal());
+        OaTeacherInfo teacherInfo = currentUser.getUser().getTeacherInfo();
+        if (teacherInfo != null) {
+            currentOrganization = currentUser.getUser().getTeacherInfo().getSecurityOrganizationByOrgId();
+        }
     }
 
 }

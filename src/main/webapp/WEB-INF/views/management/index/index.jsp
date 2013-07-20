@@ -12,7 +12,8 @@
 <link href="${contextPath}/styles/management/themes/css/core.css" rel="stylesheet" type="text/css" media="screen"/>
 <link href="${contextPath}/styles/management/themes/css/print.css" rel="stylesheet" type="text/css" media="print"/>
 <link href="${contextPath}/styles/management/themes/css/custom.css" rel="stylesheet" type="text/css" media="screen"/>
-<%-- 
+<link href="${contextPath}/styles/plugin/timepicker/css/jquery.timepicker.css" rel="stylesheet" type="text/css" media="screen"/>
+<%--
 <link href="${contextPath}/styles/uploadify/css/uploadify.css" rel="stylesheet" type="text/css" media="screen"/>
 --%>
 <!--[if IE]>
@@ -31,9 +32,11 @@
 <script src="${contextPath}/styles/uploadify/scripts/jquery.uploadify.v2.1.0.js" type="text/javascript"></script>
 --%>
 <script src="${contextPath}/styles/management/js/dwz.min.js" type="text/javascript"></script>
+<script src="${contextPath}/styles/plugin/timepicker/js/jquery.timepicker.js" type="text/javascript"></script>
 <script src="${contextPath}/styles/management/js/dwz.regional.zh.js" type="text/javascript"></script>
 <!-- 自定义JS -->
 <script src="${contextPath}/styles/management/js/customer.js" type="text/javascript"></script>
+<script src="${contextPath}/styles/plugin/timepicker/js/eduoa.timepicker.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 $(function(){	
@@ -43,6 +46,7 @@ $(function(){
 		debug:false,	// 调试模式 【true|false】
 		callback:function(){
 			initEnv();
+            initTimePicker();
 			$("#themeList").theme({themeBase:"${contextPath}/styles/management/themes"});
 		}
 	});

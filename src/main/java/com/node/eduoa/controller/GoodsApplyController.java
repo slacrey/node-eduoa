@@ -13,15 +13,13 @@
  
 package com.node.eduoa.controller;
 
-import com.node.eduoa.entity.OaLeavePermit;
+import com.node.eduoa.entity.OaGoodsApply;
 import com.node.eduoa.enums.ApplyStatusEnum;
 import com.node.eduoa.enums.SemesterEnum;
 import com.node.eduoa.enums.StatusEnum;
 import com.node.eduoa.service.GoodsApplyService;
-import com.node.eduoa.service.LeavePermitService;
-import com.node.eduoa.service.impl.GoodsApplyServiceImpl;
 import com.node.eduoa.utils.YearUtils;
-import com.node.eduoa.utils.model.LeaveModel;
+import com.node.eduoa.utils.model.GoodsModel;
 import com.node.system.log.Log;
 import com.node.system.log.LogLevel;
 import com.node.system.log.LogMessageObject;
@@ -44,7 +42,7 @@ import javax.validation.Validator;
 import java.util.*;
 
 /** 
- * 请假申请管理
+ * 领物申请管理
  * User: linfeng at Administrator
  * Date: 13-7-7
  * Time: 上午11:47
@@ -54,9 +52,6 @@ import java.util.*;
 @RequestMapping("/management/eduoa/goods")
 public class GoodsApplyController extends BaseFormController {
 
-    @Qualifier("leavePermitServiceImpl")
-    @Autowired
-    private LeavePermitService leavePermitService;
     @Qualifier("goodsApplyServiceImpl")
     @Autowired
     private GoodsApplyService goodsApplyService;
@@ -74,171 +69,177 @@ public class GoodsApplyController extends BaseFormController {
 	private static final String VIEW = "management/eduoa/goods/view";
 
 
-    @RequiresPermissions("LeavePermit:view")
+    @RequiresPermissions("GoodsApply:view")
 	@RequestMapping(value="/create", method=RequestMethod.GET)
 	public String preCreate(Map<String, Object> map) {
         map.put("semesterEnums", SemesterEnum.values());
         map.put("years", YearUtils.getYears(3));
         map.put("user", currentUser.getUser());
+        map.put("organization", currentOrganization);
+        map.put("createTime", new Date());
 		return CREATE;
 	}
 
 	/**
 	 * LogMessageObject的write用法实例。
 	 */
-    @Log(message="添加了{0}请假申请。", level=LogLevel.TRACE, override=true)
-    @RequiresPermissions("LeavePermit:save")
+    @Log(message="添加了{0}领物申请。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("GoodsApply:save")
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public @ResponseBody String create(LeaveModel leaveModel) {
+	public @ResponseBody String create(GoodsModel goodsModel) {
 
-		BeanValidators.validateWithException(validator, leaveModel.getLeavePermit());
+		BeanValidators.validateWithException(validator, goodsModel.getGoodsApply());
 
         try {
             Date currentDate = new Date();
-            leaveModel.getLeavePermit().setLeaderId(leaveModel.getLeader().getLeaderId());
-            leaveModel.getLeavePermit().setLeaderName(leaveModel.getLeader().getLeaderName());
-            leaveModel.getLeavePermit().setLeaderPosition(leaveModel.getLeader().getLeaderPosition());
-            leaveModel.getLeavePermit().setStatue(StatusEnum.Uncommitted.getIndex());
-            leaveModel.getLeavePermit().setApplyStatue(ApplyStatusEnum.Normal.getIndex());
-            leaveModel.getLeavePermit().setCreateTime(currentDate);
+            goodsModel.getGoodsApply().setLeaderId(goodsModel.getLeader().getLeaderId());
+            goodsModel.getGoodsApply().setLeaderName(goodsModel.getLeader().getLeaderName());
+            goodsModel.getGoodsApply().setLeaderPosition(goodsModel.getLeader().getLeaderPosition());
+            goodsModel.getGoodsApply().setStatue(StatusEnum.Uncommitted.getIndex());
+            goodsModel.getGoodsApply().setApplyStatue(ApplyStatusEnum.Normal.getIndex());
+            goodsModel.getGoodsApply().setCreateTime(currentDate);
 
-            leaveModel.getLeavePermit().setApplyTeacherId(getCurrentUser().getId());
-            leaveModel.getLeavePermit().setApplyTime(currentDate);
-            leaveModel.getLeavePermit().setApplyTeacherName(getCurrentUser().getLoginName());
+            goodsModel.getGoodsApply().setApplyTeacherId(getCurrentUser().getId());
+            goodsModel.getGoodsApply().setApplyTeacherName(getCurrentUser().getLoginName());
 
-            leavePermitService.save(leaveModel.getLeavePermit());
+            goodsModel.getGoodsApply().setApplyOrganizationId(currentOrganization.getId());
+            goodsModel.getGoodsApply().setApplyOrganizationName(currentOrganization.getName());
+
+            goodsModel.getGoodsApply().setGoodsId(null);
+
+
+            goodsApplyService.save(goodsModel.getGoodsApply());
         } catch (Exception e) {
             return AjaxObject.newError(e.getMessage()).setCallbackType("").toString();
         }
 
 		// 加入一个LogMessageObject，该对象的isWritten为true，会记录日志。
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leaveModel.getLeavePermit().getApplyTeacherName()}));
-		return AjaxObject.newOk("请假申请添加成功！").toString();
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{goodsModel.getGoodsApply().getApplyTeacherName()}));
+		return AjaxObject.newOk("领物申请成功！").toString();
 	}
 
     /**
      * LogMessageObject的write用法实例。
      */
-    @Log(message="添加了{0}请假申请。", level=LogLevel.TRACE, override=true)
-    @RequiresPermissions("LeavePermit:save")
+    @Log(message="添加了{0}领物申请。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("GoodsApply:save")
     @RequestMapping(value="/submit", method=RequestMethod.POST)
-    public @ResponseBody String submit(LeaveModel leaveModel) {
-        BeanValidators.validateWithException(validator, leaveModel.getLeavePermit());
+    public @ResponseBody String submit(GoodsModel goodsModel) {
+        BeanValidators.validateWithException(validator, goodsModel.getGoodsApply());
         try {
 
             Date currentDate = new Date();
-            leaveModel.getLeavePermit().setLeaderId(leaveModel.getLeader().getLeaderId());
-            leaveModel.getLeavePermit().setLeaderName(leaveModel.getLeader().getLeaderName());
-            leaveModel.getLeavePermit().setLeaderPosition(leaveModel.getLeader().getLeaderPosition());
-            leaveModel.getLeavePermit().setStatue(StatusEnum.Submitted.getIndex());
-            leaveModel.getLeavePermit().setApplyStatue(ApplyStatusEnum.Normal.getIndex());
-            leaveModel.getLeavePermit().setCreateTime(currentDate);
+            goodsModel.getGoodsApply().setLeaderId(goodsModel.getLeader().getLeaderId());
+            goodsModel.getGoodsApply().setLeaderName(goodsModel.getLeader().getLeaderName());
+            goodsModel.getGoodsApply().setLeaderPosition(goodsModel.getLeader().getLeaderPosition());
+            goodsModel.getGoodsApply().setStatue(StatusEnum.Submitted.getIndex());
+            goodsModel.getGoodsApply().setApplyStatue(ApplyStatusEnum.Normal.getIndex());
+            goodsModel.getGoodsApply().setCreateTime(currentDate);
 
-            leaveModel.getLeavePermit().setApplyTeacherId(getCurrentUser().getId());
-            leaveModel.getLeavePermit().setApplyTime(currentDate);
-            leaveModel.getLeavePermit().setApplyTeacherName(getCurrentUser().getLoginName());
-            leavePermitService.save(leaveModel.getLeavePermit());
+            goodsModel.getGoodsApply().setApplyTeacherId(getCurrentUser().getId());
+            goodsModel.getGoodsApply().setApplyTeacherName(getCurrentUser().getLoginName());
+            goodsModel.getGoodsApply().setCommitTime(currentDate);
+            goodsModel.getGoodsApply().setApplyOrganizationId(currentOrganization.getId());
+            goodsModel.getGoodsApply().setApplyOrganizationName(currentOrganization.getName());
+
+            goodsModel.getGoodsApply().setGoodsId(null);
+
+            goodsApplyService.save(goodsModel.getGoodsApply());
 
         } catch (Exception e) {
             return AjaxObject.newError(e.getMessage()).setCallbackType("").toString();
         }
 
         // 加入一个LogMessageObject，该对象的isWritten为true，会记录日志。
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leaveModel.getLeavePermit().getApplyTeacherName()}));
-        return AjaxObject.newOk("请假申请添加成功！").toString();
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{goodsModel.getGoodsApply().getApplyTeacherName()}));
+        return AjaxObject.newOk("领物申请成功！").toString();
     }
 
-	/**
-	 * LogMessageObject的ignore用法实例，ignore不会记录日志。
-	 */
-	@Log(message="你永远不会看见该日志，LogMessageObject的isWritten为false。", level=LogLevel.TRACE)
-    @RequiresPermissions("LeavePermit:view")
+    @RequiresPermissions("GoodsApply:view")
 	@RequestMapping(value="/update/{id}", method=RequestMethod.GET)
 	public String preUpdate(@PathVariable Long id, Map<String, Object> map) {
-		OaLeavePermit leavePermit = leavePermitService.get(id);
+		OaGoodsApply goodsApply = goodsApplyService.get(id);
 
-		map.put("leavePermit", leavePermit);
+		map.put("goodsApply", goodsApply);
         map.put("years", YearUtils.getYears(3));
         map.put("semesterEnums", SemesterEnum.values());
 
-		// 加入一个LogMessageObject，该对象的isWritten为false，不会记录日志。
-		LogUitl.putArgs(LogMessageObject.newIgnore());
 		return UPDATE;
 	}
 
-    @RequiresPermissions("listApproval:sick")
+    @RequiresPermissions("GoodsApproval:sick")
     @RequestMapping(value="/sick/{id}", method=RequestMethod.GET)
     public String preSick(@PathVariable Long id, Map<String, Object> map) {
-        OaLeavePermit leavePermit = leavePermitService.get(id);
-        if (leavePermit.getApplyStatue() == ApplyStatusEnum.Pass.getIndex()) {
-            map.put("leavePermit", leavePermit);
+        OaGoodsApply goodsApply = goodsApplyService.get(id);
+        if (goodsApply.getApplyStatue() == ApplyStatusEnum.Pass.getIndex()) {
+            map.put("goodsApply", goodsApply);
             return UPDATE_SICK;
         } else {
-            return AjaxObject.newError("请选择已经审批通过的请假条！").setCallbackType("").toString();
+            return AjaxObject.newError("请选择已经审批通过的领物条！").setCallbackType("").toString();
         }
     }
 
-    @RequiresPermissions("listApproval:sick")
+    @RequiresPermissions("GoodsApproval:sick")
     @RequestMapping(value="/checkSick/{id}", method=RequestMethod.POST)
     public @ResponseBody String checkSick(@PathVariable Long id) {
-        OaLeavePermit leavePermit = leavePermitService.get(id);
-        if (leavePermit.getApplyStatue() != ApplyStatusEnum.Pass.getIndex()) {
+        OaGoodsApply goodsApply = goodsApplyService.get(id);
+        if (goodsApply.getApplyStatue() != ApplyStatusEnum.Pass.getIndex()) {
             return AjaxObject.newError("请等待申请通过之后操作！").setCallbackType("").toString();
         }
         return AjaxObject.newOk("打开窗口验证成功！").setCallbackType("").toString();
     }
 
-    @Log(message="对{0}的请假进行了销假。", level=LogLevel.TRACE, override=true)
-    @RequiresPermissions("listApproval:sick")
+    @Log(message="{0}申领的物品进行了领取。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("GoodsApproval:sick")
     @RequestMapping(value="/sick", method=RequestMethod.POST)
-    public @ResponseBody String updateSick(LeaveModel leaveModel) {
+    public @ResponseBody String updateSick(GoodsModel goodsModel) {
 
-        OaLeavePermit leavePermit = leavePermitService.get(leaveModel.getLeavePermit().getId());
-        leavePermit.setSickTime(leaveModel.getLeavePermit().getSickTime());
-        leavePermit.setRealDay(leaveModel.getLeavePermit().getRealDay());
-        leavePermitService.update(leavePermit);
+        OaGoodsApply goodsApply = goodsApplyService.get(goodsModel.getGoodsApply().getId());
+        goodsApply.setSickTime(goodsModel.getGoodsApply().getSickTime());
+        goodsApplyService.update(goodsApply);
 
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leavePermit.getApplyTeacherName()}));
-        return AjaxObject.newOk("销假成功！").toString();
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{goodsApply.getApplyTeacherName()}));
+        return AjaxObject.newOk("领取成功！").toString();
     }
 
-    @Log(message="修改了{0}的请假申请。", level=LogLevel.TRACE, override=true)
-    @RequiresPermissions("LeavePermit:edit")
+    @Log(message="修改了{0}的领物申请。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("GoodsApply:edit")
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public @ResponseBody String update(OaLeavePermit leavePermit) {
-		BeanValidators.validateWithException(validator, leavePermit);
-		leavePermitService.update(leavePermit);
+	public @ResponseBody String update(OaGoodsApply goodsApply) {
+		BeanValidators.validateWithException(validator, goodsApply);
+		goodsApplyService.update(goodsApply);
 
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leavePermit.getApplyTeacherName()}));
-		return AjaxObject.newOk("请假申请修改成功！").toString();
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{goodsApply.getApplyTeacherName()}));
+		return AjaxObject.newOk("领物申请修改成功！").toString();
 	}
 
 
-    @Log(message="删除了{0}请假申请。", level=LogLevel.TRACE, override=true)
-	@RequiresPermissions("LeaveDraft:delete")
+    @Log(message="删除了{0}领物申请。", level=LogLevel.TRACE, override=true)
+	@RequiresPermissions("GoodsApply:delete")
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.POST)
 	public @ResponseBody String delete(@PathVariable Long id) {
-        OaLeavePermit leavePermit = leavePermitService.get(id);
-		leavePermitService.delete(id);
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{leavePermit.getApplyTeacherName()}));
-		return AjaxObject.newOk("请假申请删除成功！").setCallbackType("").toString();
+        OaGoodsApply goodsApply = goodsApplyService.get(id);
+		goodsApplyService.delete(id);
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{goodsApply.getApplyTeacherName()}));
+		return AjaxObject.newOk("领物申请删除成功！").setCallbackType("").toString();
 	}
 
-    @Log(message="提交了{0}请假申请。", level=LogLevel.TRACE, override=true)
-    @RequiresPermissions("LeavePermit:save")
+    @Log(message="提交了{0}领物申请。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("GoodsApply:save")
 	@RequestMapping(value="/commit", method=RequestMethod.POST)
 	public @ResponseBody String doSubmit(Long[] ids) {
 
         String[] titles = new String[ids.length];
         for (int i = 0; i < ids.length; i++) {
-            OaLeavePermit leavePermit = leavePermitService.get(ids[i]);
-            leavePermit.setStatue(StatusEnum.Submitted.getIndex());
-            leavePermitService.update(leavePermit);
-            titles[i] = leavePermit.getApplyTeacherName();
+            OaGoodsApply goodsApply = goodsApplyService.get(ids[i]);
+            goodsApply.setStatue(StatusEnum.Submitted.getIndex());
+            goodsApply.setCommitTime(new Date());
+            goodsApplyService.update(goodsApply);
+            titles[i] = goodsApply.getApplyTeacherName();
         }
 
         LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{Arrays.toString(titles)}));
-		return AjaxObject.newOk("请假申请提交成功！").setCallbackType("").toString();
+		return AjaxObject.newOk("领物申请提交成功！").setCallbackType("").toString();
 	}
 
 
@@ -248,37 +249,37 @@ public class GoodsApplyController extends BaseFormController {
 	 *
 	 * 批量删除展示
 	 */
-	@Log(message="删除了{0}请假申请。", level=LogLevel.TRACE, override=true)
-    @RequiresPermissions("LeavePermit:delete")
+	@Log(message="删除了{0}领物申请。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("GoodsApply:delete")
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
 	public @ResponseBody String deleteMany(Long[] ids) {
 		String[] titles = new String[ids.length];
 		for (int i = 0; i < ids.length; i++) {
-			OaLeavePermit leavePermit = leavePermitService.get(ids[i]);
-			leavePermitService.delete(leavePermit.getId());
-			titles[i] = leavePermit.getApplyTeacherName();
+			OaGoodsApply goodsApply = goodsApplyService.get(ids[i]);
+			goodsApplyService.delete(goodsApply.getId());
+			titles[i] = goodsApply.getApplyTeacherName();
 		}
 
 		LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{Arrays.toString(titles)}));
-		return AjaxObject.newOk("请假申请删除成功！").setCallbackType("").toString();
+		return AjaxObject.newOk("领物申请删除成功！").setCallbackType("").toString();
 	}
 
-	@RequiresPermissions("Permit:view")
+	@RequiresPermissions("GoodsPermit:view")
 	@RequestMapping(value="/list", method={RequestMethod.GET, RequestMethod.POST})
 	public String list(Page page, String keywords, Map<String, Object> map) {
 
-        OaLeavePermit leavePermit = new OaLeavePermit();
+        OaGoodsApply goodsApply = new OaGoodsApply();
         page.setOrderField("applyTime");
         Map<String, Object> searchParam = new HashMap<String, Object>();
         searchParam.put(SearchFilter.Operator.EQ + "_leaderId", getCurrentUser().getId()+"");
         searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Submitted.getIndex() + "");
         searchParam.put(SearchFilter.Operator.EQ + "_applyStatue", ApplyStatusEnum.Normal.getIndex() + "");
-        List<OaLeavePermit> leavePermits = null;
+        List<OaGoodsApply> leavePermits = null;
         if (StringUtils.isNotBlank(keywords)) {
-            searchParam.put(SearchFilter.Operator.LIKE + "_reason", keywords);
-            leavePermits = leavePermitService.findByLeavePermitCondition(page, leavePermit, searchParam);
+            searchParam.put(SearchFilter.Operator.LIKE + "_goodsName", keywords);
+            leavePermits = goodsApplyService.findByGoodsApplyCondition(page, goodsApply, searchParam);
         } else {
-            leavePermits = leavePermitService.findByLeavePermitCondition(page, leavePermit, searchParam);
+            leavePermits = goodsApplyService.findByGoodsApplyCondition(page, goodsApply, searchParam);
         }
 
 		map.put("page", page);
@@ -288,22 +289,22 @@ public class GoodsApplyController extends BaseFormController {
 		return LIST;
 	}
 
-    @RequiresPermissions("listFinish:view")
+    @RequiresPermissions("GoodsFinish:view")
     @RequestMapping(value="/listFinish", method={RequestMethod.GET, RequestMethod.POST})
     public String listFinish(Page page, String keywords, Map<String, Object> map) {
 
-        OaLeavePermit leavePermit = new OaLeavePermit();
+        OaGoodsApply goodsApply = new OaGoodsApply();
         page.setOrderField("applyTime");
         Map<String, Object> searchParam = new HashMap<String, Object>();
         searchParam.put(SearchFilter.Operator.EQ + "_leaderId", getCurrentUser().getId()+"");
         searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Submitted.getIndex() + "");
         searchParam.put(SearchFilter.Operator.GTE + "_applyStatue", ApplyStatusEnum.Pass.getIndex() + "");
-        List<OaLeavePermit> leavePermits = null;
+        List<OaGoodsApply> leavePermits = null;
         if (StringUtils.isNotBlank(keywords)) {
-            searchParam.put(SearchFilter.Operator.LIKE + "_reason", keywords);
-            leavePermits = leavePermitService.findByLeavePermitCondition(page, leavePermit, searchParam);
+            searchParam.put(SearchFilter.Operator.LIKE + "_goodsName", keywords);
+            leavePermits = goodsApplyService.findByGoodsApplyCondition(page, goodsApply, searchParam);
         } else {
-            leavePermits = leavePermitService.findByLeavePermitCondition(page, leavePermit, searchParam);
+            leavePermits = goodsApplyService.findByGoodsApplyCondition(page, goodsApply, searchParam);
         }
 
         map.put("page", page);
@@ -313,55 +314,57 @@ public class GoodsApplyController extends BaseFormController {
         return LIST_FINISH;
     }
 
-    @Log(message="同意了{0}请假申请。", level=LogLevel.TRACE, override=true)
-    @RequiresPermissions("Permit:pass")
+    @Log(message="同意了{0}领物申请。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("GoodsPermit:pass")
     @RequestMapping(value="/passed", method=RequestMethod.POST)
     public @ResponseBody String doPass(Long[] ids) {
 
         String[] titles = new String[ids.length];
         for (int i = 0; i < ids.length; i++) {
-            OaLeavePermit leavePermit = leavePermitService.get(ids[i]);
-            leavePermit.setApplyStatue(ApplyStatusEnum.Pass.getIndex());
-            leavePermitService.update(leavePermit);
-            titles[i] = leavePermit.getApplyTeacherName();
+            OaGoodsApply goodsApply = goodsApplyService.get(ids[i]);
+            goodsApply.setApplyStatue(ApplyStatusEnum.Pass.getIndex());
+            goodsApply.setApplyTime(new Date());
+            goodsApplyService.update(goodsApply);
+            titles[i] = goodsApply.getApplyTeacherName();
         }
 
         LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{Arrays.toString(titles)}));
         return AjaxObject.newOk("申请通过了！").setCallbackType("").toString();
     }
 
-    @Log(message="驳回了{0}请假申请。", level=LogLevel.TRACE, override=true)
-    @RequiresPermissions("Permit:reject")
+    @Log(message="驳回了{0}领物申请。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("GoodsPermit:reject")
     @RequestMapping(value="/rejected", method=RequestMethod.POST)
     public @ResponseBody String doReject(Long[] ids) {
 
         String[] titles = new String[ids.length];
         for (int i = 0; i < ids.length; i++) {
-            OaLeavePermit leavePermit = leavePermitService.get(ids[i]);
-            leavePermit.setApplyStatue(ApplyStatusEnum.Reject.getIndex());
-            leavePermitService.update(leavePermit);
-            titles[i] = leavePermit.getApplyTeacherName();
+            OaGoodsApply goodsApply = goodsApplyService.get(ids[i]);
+            goodsApply.setApplyStatue(ApplyStatusEnum.Reject.getIndex());
+            goodsApply.setApplyTime(new Date());
+            goodsApplyService.update(goodsApply);
+            titles[i] = goodsApply.getApplyTeacherName();
         }
 
         LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{Arrays.toString(titles)}));
         return AjaxObject.newOk("申请被驳回了！").setCallbackType("").toString();
     }
 
-    @RequiresPermissions("LeavePermit:view")
+    @RequiresPermissions("GoodsApply:view")
     @RequestMapping(value="/listDraft", method={RequestMethod.GET, RequestMethod.POST})
     public String listDraft(Page page, String keywords, Map<String, Object> map) {
 
-        OaLeavePermit leavePermit = new OaLeavePermit();
+        OaGoodsApply goodsApply = new OaGoodsApply();
         page.setOrderField("applyTime");
         Map<String, Object> searchParam = new HashMap<String, Object>();
         searchParam.put(SearchFilter.Operator.EQ + "_applyTeacherId", getCurrentUser().getId()+"");
         searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Uncommitted.getIndex()+"");
-        List<OaLeavePermit> leavePermits = null;
+        List<OaGoodsApply> leavePermits = null;
         if (StringUtils.isNotBlank(keywords)) {
-            searchParam.put(SearchFilter.Operator.LIKE + "_reason", keywords);
-            leavePermits = leavePermitService.findByLeavePermitCondition(page, leavePermit, searchParam);
+            searchParam.put(SearchFilter.Operator.LIKE + "_goodsName", keywords);
+            leavePermits = goodsApplyService.findByGoodsApplyCondition(page, goodsApply, searchParam);
         } else {
-            leavePermits = leavePermitService.findByLeavePermitCondition(page, leavePermit, searchParam);
+            leavePermits = goodsApplyService.findByGoodsApplyCondition(page, goodsApply, searchParam);
         }
 
         map.put("page", page);
@@ -371,21 +374,21 @@ public class GoodsApplyController extends BaseFormController {
         return LIST_DRAFT;
     }
 
-    @RequiresPermissions("LeavePermit:view")
+    @RequiresPermissions("GoodsApproval:view")
     @RequestMapping(value="/listApproval", method={RequestMethod.GET, RequestMethod.POST})
     public String listApproval(Page page, String keywords, Map<String, Object> map) {
 
-        OaLeavePermit leavePermit = new OaLeavePermit();
+        OaGoodsApply goodsApply = new OaGoodsApply();
         page.setOrderField("applyStatue");
         Map<String, Object> searchParam = new HashMap<String, Object>();
         searchParam.put(SearchFilter.Operator.EQ + "_applyTeacherId", getCurrentUser().getId() + "");
         searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Submitted.getIndex() + "");
-        List<OaLeavePermit> leavePermits = null;
+        List<OaGoodsApply> leavePermits = null;
         if (StringUtils.isNotBlank(keywords)) {
-            searchParam.put(SearchFilter.Operator.LIKE + "_reason", keywords);
-            leavePermits = leavePermitService.findByLeavePermitCondition(page, leavePermit, searchParam);
+            searchParam.put(SearchFilter.Operator.LIKE + "_goodsName", keywords);
+            leavePermits = goodsApplyService.findByGoodsApplyCondition(page, goodsApply, searchParam);
         } else {
-            leavePermits = leavePermitService.findByLeavePermitCondition(page, leavePermit, searchParam);
+            leavePermits = goodsApplyService.findByGoodsApplyCondition(page, goodsApply, searchParam);
         }
 
         map.put("page", page);
@@ -402,11 +405,11 @@ public class GoodsApplyController extends BaseFormController {
 	 * @param map
 	 * @return
 	 */
-	@RequiresPermissions("LeavePermit:look")
+	@RequiresPermissions("GoodsApply:look")
 	@RequestMapping(value="/view/{id}", method={RequestMethod.GET})
 	public String view(@PathVariable Long id, Map<String, Object> map) {
-		OaLeavePermit leavePermit = leavePermitService.get(id);
-		map.put("leavePermit", leavePermit);
+		OaGoodsApply goodsApply = goodsApplyService.get(id);
+		map.put("goodsApply", goodsApply);
         map.put("semesterEnums", SemesterEnum.values());
 		return VIEW;
 	}

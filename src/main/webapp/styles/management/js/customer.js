@@ -143,3 +143,20 @@ function dialogReloadRel2ClassTeacher(json, rel, url){
         }
     }
 }
+
+function dialogReloadNavTabAfterCloseTab(json){
+    DWZ.ajaxDone(json);
+    var tabId = getCurrentNavtab().attr("tabid");
+    if (json.statusCode == DWZ.statusCode.ok){
+        if (json.navTabId || tabId!=null){
+            navTab.reload(json.forwardUrl, {navTabId: json.navTabId});
+        } else if (json.rel) {
+            var $pagerForm = $("#pagerForm", navTab.getCurrentPanel());
+            var args = $pagerForm.size()>0 ? $pagerForm.serializeArray() : {}
+            navTabPageBreak(args, json.rel);
+        }
+        if ("closeCurrent" == json.callbackType) {
+            $.pdialog.closeCurrent();
+        }
+    }
+}

@@ -2,11 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include.inc.jsp"%>
 
-<keta:paginationForm action="${contextPath }/management/eduoa/leavepermit/list" page="${page }">
+<keta:paginationForm action="${contextPath }/management/eduoa/leavepermit/listDraft" page="${page }">
 	<input type="hidden" name="keywords" value="${keywords}"/>
 </keta:paginationForm>
 
-<form method="post" action="${contextPath }/management/eduoa/leavepermit/list" onsubmit="return navTabSearch(this)">
+<form method="post" action="${contextPath }/management/eduoa/leavepermit/listDraft" onsubmit="return navTabSearch(this)">
 	<div class="pageHeader">
 		<div class="searchBar">
 			<ul class="searchContent">

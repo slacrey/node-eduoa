@@ -12,7 +12,7 @@
 
             <p>
                 <label>级别：</label>
-                <input type="text" name="typeLevel" size="32" maxlength="32" />
+                <input type="text" name="typeLevel" class="digits" size="32" maxlength="32" />
             </p>
 
             <p>

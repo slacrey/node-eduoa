@@ -369,7 +369,7 @@ public class LeavePermitController extends BaseFormController {
         return LIST_DRAFT;
     }
 
-    @RequiresPermissions("LeavePermit:view")
+    @RequiresPermissions("listApproval:view")
     @RequestMapping(value="/listApproval", method={RequestMethod.GET, RequestMethod.POST})
     public String listApproval(Page page, String keywords, Map<String, Object> map) {
 

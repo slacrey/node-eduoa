@@ -2,16 +2,16 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include.inc.jsp"%>
 
-<keta:paginationForm action="${contextPath }/management/eduoa/leavepermit/list" page="${page }">
+<keta:paginationForm action="${contextPath }/management/eduoa/goods/listDraft" page="${page }">
 	<input type="hidden" name="keywords" value="${keywords}"/>
 </keta:paginationForm>
 
-<form method="post" action="${contextPath }/management/eduoa/leavepermit/list" onsubmit="return navTabSearch(this)">
+<form method="post" action="${contextPath }/management/eduoa/goods/listDraft" onsubmit="return navTabSearch(this)">
 	<div class="pageHeader">
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
-					<label>申请事由：</label>
+					<label>物品名称：</label>
 					<input type="text" name="keywords" value="${keywords}"/>
 				</li>
 			</ul>
@@ -29,19 +29,17 @@
 	<div class="panelBar">
 		<ul class="toolBar">
             <shiro:hasPermission name="LeavePermit:save">
-                <li><a class="add" target="navTab" href="${contextPath }/management/eduoa/leavepermit/create"><span>请假申请</span></a></li>
+                <li><a class="add" target="navTab" href="${contextPath }/management/eduoa/goods/create"><span>领物申请</span></a></li>
             </shiro:hasPermission>
             <shiro:hasPermission name="LeavePermit:save">
-                <li><a class="arrow_refresh" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/leavepermit/commit" title="确认提交申请码？"><span>提交申请</span></a></li>
+                <li><a class="arrow_refresh" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/goods/commit" title="确认提交申请码？"><span>提交申请</span></a></li>
             </shiro:hasPermission>
             <shiro:hasPermission name="LeavePermit:edit">
-                <li><a class="edit" target="navTab"  href="${contextPath }/management/eduoa/leavepermit/update/{slt_uid}"><span>编辑申请</span></a></li>
+                <li><a class="edit" target="navTab"  href="${contextPath }/management/eduoa/goods/update/{slt_uid}"><span>编辑申请</span></a></li>
             </shiro:hasPermission>
             <shiro:hasPermission name="LeavePermit:delete">
-                <li><a class="delete" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/leavepermit/delete" title="确认要删除申请?"><span>删除申请</span></a></li>
+                <li><a class="delete" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/goods/delete" title="确认要删除申请?"><span>删除申请</span></a></li>
             </shiro:hasPermission>
-
-
 
 		</ul>
 	</div>
@@ -50,12 +48,13 @@
 		<thead>
 			<tr>
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-				<th>事由</th>
-				<th width="130">请假开始时间</th>
-				<th width="130">请假结束时间</th>
-				<th width="130">请假天数</th>
-				<th width="100">审批领导</th>
 				<th width="130">申请时间</th>
+				<th width="130">申请人</th>
+				<th width="130">申请部门</th>
+				<th width="100">审批领导</th>
+				<th>物品名称</th>
+				<th width="100">单位</th>
+				<th width="130">数量</th>
                 <th width="130">审批状态</th>
 			</tr>
 		</thead>
@@ -63,12 +62,13 @@
 			<c:forEach var="item" items="${leavePermits}">
 			<tr target="slt_uid" rel="${item.id}">
 				<td><input name="ids" value="${item.id}" type="checkbox"></td>
-				<td>${item.reason}</td>
-				<td><fmt:formatDate value="${item.startTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-				<td><fmt:formatDate value="${item.endTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                <td>${item.applyDay}</td>
+				<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                <td>${item.applyTeacherName}</td>
+                <td>${item.applyOrganizationName}</td>
                 <td>${item.leaderName}</td>
-				<td><fmt:formatDate value="${item.applyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                <td>${item.goodsName}</td>
+                <td>${item.goodsUnit}</td>
+                <td>${item.goodsCount}</td>
                 <td>${item.applyStatueCn}</td>
 			</tr>
 			</c:forEach>
