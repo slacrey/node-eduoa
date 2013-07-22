@@ -13,10 +13,13 @@
  
 package com.node.eduoa.controller;
 
-import com.node.eduoa.entity.OaPosition;
+import com.node.eduoa.entity.OaRegistrationAttendance;
+import com.node.eduoa.entity.OaRegistrationAttendance;
+import com.node.eduoa.entity.OaTeacherInfo;
 import com.node.eduoa.service.PositionService;
 import com.node.eduoa.service.RegistrationAttendanceService;
 import com.node.eduoa.service.impl.RegistrationAttendanceServiceImpl;
+import com.node.eduoa.utils.WeekUtils;
 import com.node.system.log.Log;
 import com.node.system.log.LogLevel;
 import com.node.system.log.LogMessageObject;
@@ -33,14 +36,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springside.modules.beanvalidator.BeanValidators;
+import org.springside.modules.persistence.SearchFilter;
 
 import javax.validation.Validator;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /** 
- * 职务管理
+ * 考勤管理
  * User: linfeng at Administrator
  * Date: 13-7-7
  * Time: 上午11:47
@@ -50,9 +52,6 @@ import java.util.Map;
 @RequestMapping("/management/eduoa/attendance")
 public class RegistrationAttendanceController extends BaseFormController {
 
-    @Qualifier("positionServiceImpl")
-    @Autowired
-    private PositionService positionService;
     @Qualifier("registrationAttendanceServiceImpl")
     @Autowired
     private RegistrationAttendanceService registrationAttendanceService;
@@ -67,7 +66,7 @@ public class RegistrationAttendanceController extends BaseFormController {
 	private static final String VIEW = "management/eduoa/attendance/view";
 
 
-    @RequiresPermissions("Position:save")
+    @RequiresPermissions("Registration:save")
 	@RequestMapping(value="/create", method=RequestMethod.GET)
 	public String preCreate(Map<String, Object> map) {
 		return CREATE;
@@ -76,58 +75,58 @@ public class RegistrationAttendanceController extends BaseFormController {
 	/**
 	 * LogMessageObject的write用法实例。
 	 */
-    @Log(message="添加了{0}职务。", level=LogLevel.TRACE, override=true)
-	@RequiresPermissions("Position:save")
+    @Log(message="添加了{0}的考勤。", level=LogLevel.TRACE, override=true)
+	@RequiresPermissions("Registration:save")
 	@RequestMapping(value="/create", method=RequestMethod.POST)
-	public @ResponseBody String create(OaPosition position) {
-		BeanValidators.validateWithException(validator, position);
+	public @ResponseBody String create(OaRegistrationAttendance registrationAttendance) {
+		BeanValidators.validateWithException(validator, registrationAttendance);
         try {
-            positionService.save(position);
+            registrationAttendanceService.save(registrationAttendance);
         } catch (Exception e) {
             return AjaxObject.newError(e.getMessage()).setCallbackType("").toString();
         }
 		
 		// 加入一个LogMessageObject，该对象的isWritten为true，会记录日志。
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{position.getPositionName()}));
-		return AjaxObject.newOk("任务添加成功！").toString();
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{registrationAttendance.getTeacherName()}));
+		return AjaxObject.newOk("考勤添加成功！").toString();
 	}
 	
 	/**
 	 * LogMessageObject的ignore用法实例，ignore不会记录日志。
 	 */
 	@Log(message="你永远不会看见该日志，LogMessageObject的isWritten为false。", level=LogLevel.TRACE)
-	@RequiresPermissions("Position:edit")
+	@RequiresPermissions("Registration:edit")
 	@RequestMapping(value="/update/{id}", method=RequestMethod.GET)
 	public String preUpdate(@PathVariable Long id, Map<String, Object> map) {
-		OaPosition position = positionService.get(id);
+		OaRegistrationAttendance registrationAttendance = registrationAttendanceService.get(id);
 		
-		map.put("position", position);
+		map.put("registrationAttendance", registrationAttendance);
 		
 		// 加入一个LogMessageObject，该对象的isWritten为false，不会记录日志。
 		LogUitl.putArgs(LogMessageObject.newIgnore());
 		return UPDATE;
 	}
 
-    @Log(message="修改了{0}职务。", level=LogLevel.TRACE, override=true)
-	@RequiresPermissions("Position:edit")
+    @Log(message="修改了{0}的考勤。", level=LogLevel.TRACE, override=true)
+	@RequiresPermissions("Registration:edit")
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public @ResponseBody String update(OaPosition position) {
-		BeanValidators.validateWithException(validator, position);
-		positionService.update(position);
+	public @ResponseBody String update(OaRegistrationAttendance registrationAttendance) {
+		BeanValidators.validateWithException(validator, registrationAttendance);
+		registrationAttendanceService.update(registrationAttendance);
 
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{position.getPositionName()}));
-		return AjaxObject.newOk("职务修改成功！").toString();
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{registrationAttendance.getTeacherName()}));
+		return AjaxObject.newOk("考勤修改成功！").toString();
 	}
 
 
-    @Log(message="删除了{0}职务。", level=LogLevel.TRACE, override=true)
-	@RequiresPermissions("Position:delete")
+    @Log(message="删除了{0}的考勤。", level=LogLevel.TRACE, override=true)
+	@RequiresPermissions("Registration:delete")
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.POST)
 	public @ResponseBody String delete(@PathVariable Long id) {
-        OaPosition position = positionService.get(id);
-		positionService.delete(id);
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{position.getPositionName()}));
-		return AjaxObject.newOk("职务删除成功！").setCallbackType("").toString();
+        OaRegistrationAttendance registrationAttendance = registrationAttendanceService.get(id);
+		registrationAttendanceService.delete(id);
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{registrationAttendance.getTeacherName()}));
+		return AjaxObject.newOk("考勤删除成功！").setCallbackType("").toString();
 	}
 	
 	
@@ -137,34 +136,114 @@ public class RegistrationAttendanceController extends BaseFormController {
 	 * 
 	 * 批量删除展示
 	 */
-	@Log(message="删除了{0}职务。", level=LogLevel.TRACE, override=true)
-	@RequiresPermissions("Position:delete")
+	@Log(message="删除了{0}的考勤。", level=LogLevel.TRACE, override=true)
+	@RequiresPermissions("Registration:delete")
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
 	public @ResponseBody String deleteMany(Long[] ids) {
 		String[] titles = new String[ids.length];
 		for (int i = 0; i < ids.length; i++) {
-			OaPosition position = positionService.get(ids[i]);
-			positionService.delete(position.getId());
+			OaRegistrationAttendance registrationAttendance = registrationAttendanceService.get(ids[i]);
+			registrationAttendanceService.delete(registrationAttendance.getId());
 			
-			titles[i] = position.getPositionName();
+			titles[i] = registrationAttendance.getTeacherName();
 		}
 		
 		LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{Arrays.toString(titles)}));
-		return AjaxObject.newOk("职务删除成功！").setCallbackType("").toString();
+		return AjaxObject.newOk("考勤删除成功！").setCallbackType("").toString();
 	}
 
-	@RequiresPermissions("Position:view")
+	@RequiresPermissions("Registration:view")
 	@RequestMapping(value="/list", method={RequestMethod.GET, RequestMethod.POST})
 	public String list(Page page, String keywords, Map<String, Object> map) {
-		List<OaPosition> positions = null;
-		if (StringUtils.isNotBlank(keywords)) {
-			positions = positionService.find(page, keywords);
-		} else {
-			positions = positionService.findAll(page);
-		}
+
+        WeekUtils weekUtils = new WeekUtils();
+        Date currentDate = new Date();
+        Map<String, Long> dateMap = new HashMap<String, Long>(6);
+
+        // 上午上班 07:30:00
+        Long morningStartTimeLong = weekUtils.getCompileDateForSomeTime("07:30:00", currentDate);
+        dateMap.put("morningStart", morningStartTimeLong);
+
+        // 上午下班11:30:00
+        Long morningEndTimeLong = weekUtils.getCompileDateForSomeTime("11:30:00", currentDate);
+        dateMap.put("morningEnd", morningEndTimeLong);
+
+        // 下午上班14:00:00
+        Long afternoonStartTimeLong = weekUtils.getCompileDateForSomeTime("14:00:00", currentDate);
+        dateMap.put("afternoonStart", afternoonStartTimeLong);
+
+        // 下午上班17:30:00
+        Long afternoonEndTimeLong = weekUtils.getCompileDateForSomeTime("17:30:00", currentDate);
+        dateMap.put("afternoonEnd", afternoonEndTimeLong);
+
+        // 晚上上班18:30:00
+        Long nightStartTimeLong = weekUtils.getCompileDateForSomeTime("18:30:00", currentDate);
+        dateMap.put("nightStart", nightStartTimeLong);
+
+        // 晚上下班21:30:00
+        Long nightEndTimeLong = weekUtils.getCompileDateForSomeTime("21:30:00", currentDate);
+        dateMap.put("nightEnd", nightEndTimeLong);
+        WeekUtils.MinDate minDate = weekUtils.getMinDate(dateMap);
+
+
+        Map<String, Object> searchParams = new HashMap<String, Object>();
+        searchParams.put(SearchFilter.Operator.GTE + "_createTime", weekUtils.getCurrentMonday());
+        searchParams.put(SearchFilter.Operator.LTE + "_createTime", weekUtils.getSunday());
+        List<OaRegistrationAttendance> registrationAttendanceList = registrationAttendanceService.findByCondition(page, searchParams);
+        if (registrationAttendanceList == null || registrationAttendanceList.isEmpty()) {
+            OaTeacherInfo teacherInfo = currentUser.getUser().getTeacherInfo();
+            List<Date> weekList = weekUtils.getCurrentDateOfWeek();
+            OaRegistrationAttendance registrationAttendance = null;
+            for (Date week: weekList) {
+                registrationAttendance = new OaRegistrationAttendance(teacherInfo.getId(), teacherInfo.getTeacherName(),
+                        currentOrganization.getId(), currentOrganization.getName(), new Date());
+                registrationAttendanceService.save(registrationAttendance);
+            }
+            registrationAttendanceList = registrationAttendanceService.findByCondition(page, searchParams);
+        }
+
+
+        for (OaRegistrationAttendance registrationAttendance: registrationAttendanceList) {
+            Date day = registrationAttendance.getCreateTime();
+            if (weekUtils.compileDateForSomeDay(day, weekUtils.getCurrentDate())) {
+                if (registrationAttendance.getMorningStartTime() == null) {
+                    if ("morningStart".equals(minDate.getKey())) {
+                        registrationAttendance.setMorningStartDisplay(1);
+                    }
+                }
+                if (registrationAttendance.getMorningEndTime() == null) {
+                    if ("morningEnd".equals(minDate.getKey())) {
+                        registrationAttendance.setMorningEndDisplay(1);
+                    }
+                }
+
+                if (registrationAttendance.getAfternoonStartTime() == null) {
+                    if ("afternoonStart".equals(minDate.getKey())) {
+                        registrationAttendance.setAfternoonStart(1);
+                    }
+                }
+                if (registrationAttendance.getAfternoonEndTime() == null) {
+                    if ("afternoonEnd".equals(minDate.getKey())) {
+                        registrationAttendance.setAfternoonEndDisplay(1);
+                    }
+                }
+
+                if (registrationAttendance.getNightStartTime() == null) {
+                    if ("nightStart".equals(minDate.getKey())) {
+                        registrationAttendance.setNightStartDisplay(1);
+                    }
+                }
+                if (registrationAttendance.getNightEndTime() == null) {
+                    if ("nightEnd".equals(minDate.getKey())) {
+                        registrationAttendance.setNightEndDisplay(1);
+                    }
+                }
+
+            }
+        }
 
 		map.put("page", page);
-		map.put("positions", positions);
+		map.put("registrationAttendances", registrationAttendanceList);
 		map.put("keywords", keywords);
 
 		return LIST;
@@ -177,11 +256,11 @@ public class RegistrationAttendanceController extends BaseFormController {
 	 * @param map
 	 * @return
 	 */
-	@RequiresPermissions("Position:look")
+	@RequiresPermissions("Registration:look")
 	@RequestMapping(value="/view/{id}", method={RequestMethod.GET})
 	public String view(@PathVariable Long id, Map<String, Object> map) {
-		OaPosition position = positionService.get(id);
-		map.put("position", position);
+		OaRegistrationAttendance registrationAttendance = registrationAttendanceService.get(id);
+		map.put("registrationAttendance", registrationAttendance);
 		return VIEW;
 	}
 }
