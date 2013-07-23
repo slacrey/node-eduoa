@@ -9,7 +9,12 @@
 <form method="post" action="${contextPath }/management/eduoa/attendance/list" onsubmit="return navTabSearch(this)">
 	<div class="pageHeader">
 		<div class="searchBar">
+            <ul class="searchContent">
 
+            </ul>
+            <div class="subBar">
+
+            </div>
 		</div>
 	</div>
 </form>
@@ -32,13 +37,40 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="item" items="${positions}">
+			<c:forEach var="item" items="${registrationAttendances}">
 			<tr target="slt_uid" rel="${item.id}">
-				<td><fmt:formatDate value="${item.attendanceDate}" pattern="yyyy-MM-dd"/></td>
+				<td>${item.attendanceDate}</td>
 				<td>${item.teacherName}</td>
-				<td>${item.teacherName}</td>
-				<td>${item.teacherName}</td>
-				<td>${item.teacherName}</td>
+				<td>
+                    <c:if test="${item.morningStartDisplay == 1}">
+                        <a href="${contextPath }/management/eduoa/attendance/list/${item.id}">签到</a>
+                    </c:if>
+                </td>
+				<td>
+                    <c:if test="${item.morningEndDisplay == 1}">
+                        <a href="${contextPath }/management/eduoa/attendance/list/${item.id}">签退</a>
+                    </c:if>
+				</td>
+				<td>
+                    <c:if test="${item.afternoonStartDisplay == 1}">
+                        <a href="${contextPath }/management/eduoa/attendance/list/${item.id}">签到</a>
+                    </c:if>
+				</td>
+                <td>
+                    <c:if test="${item.afternoonEndDisplay == 1}">
+                        <a href="${contextPath }/management/eduoa/attendance/list/${item.id}">签退</a>
+                    </c:if>
+                </td>
+                <td>
+                    <c:if test="${item.nightStartDisplay == 1}">
+                        <a href="${contextPath }/management/eduoa/attendance/list/${item.id}">签到</a>
+                    </c:if>
+                </td>
+                <td>
+                    <c:if test="${item.nightEndDisplay == 1}">
+                        <a href="${contextPath }/management/eduoa/attendance/list/${item.id}">签退</a>
+                    </c:if>
+                </td>
 			</tr>
 			</c:forEach>
 		</tbody>

@@ -187,15 +187,15 @@ public class RegistrationAttendanceController extends BaseFormController {
 
 
         Map<String, Object> searchParams = new HashMap<String, Object>();
-        searchParams.put(SearchFilter.Operator.GTE + "_createTime", weekUtils.getCurrentMonday());
-        searchParams.put(SearchFilter.Operator.LTE + "_createTime", weekUtils.getSunday());
+        searchParams.put(SearchFilter.Operator.GTE + "_attendanceDate", weekUtils.getCurrentMonday());
+        searchParams.put(SearchFilter.Operator.LTE + "_attendanceDate", weekUtils.getSunday());
         List<OaRegistrationAttendance> registrationAttendanceList = registrationAttendanceService.findByCondition(page, searchParams);
         if (registrationAttendanceList == null || registrationAttendanceList.isEmpty()) {
             OaTeacherInfo teacherInfo = currentUser.getUser().getTeacherInfo();
-            List<Date> weekList = weekUtils.getCurrentDateOfWeek();
+            List<String> weekList = weekUtils.getCurrentDateOfWeek();
             OaRegistrationAttendance registrationAttendance = null;
-            for (Date week: weekList) {
-                registrationAttendance = new OaRegistrationAttendance(teacherInfo.getId(), teacherInfo.getTeacherName(),
+            for (String week: weekList) {
+                registrationAttendance = new OaRegistrationAttendance(week, teacherInfo.getId(), teacherInfo.getTeacherName(),
                         currentOrganization.getId(), currentOrganization.getName(), new Date());
                 registrationAttendanceService.save(registrationAttendance);
             }
@@ -204,8 +204,8 @@ public class RegistrationAttendanceController extends BaseFormController {
 
 
         for (OaRegistrationAttendance registrationAttendance: registrationAttendanceList) {
-            Date day = registrationAttendance.getCreateTime();
-            if (weekUtils.compileDateForSomeDay(day, weekUtils.getCurrentDate())) {
+            String day = registrationAttendance.getAttendanceDate();
+            if (weekUtils.getCurrentDay().equals(day)) {
                 if (registrationAttendance.getMorningStartTime() == null) {
                     if ("morningStart".equals(minDate.getKey())) {
                         registrationAttendance.setMorningStartDisplay(1);

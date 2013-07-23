@@ -61,6 +61,15 @@ public class WeekUtils {
         return preMonday;
     }
 
+    // 获得本周星期一的日期
+    public Date getCurrentMondayDate() {
+        weeks = 0;
+        int mondayPlus = this.getMondayPlus();
+        GregorianCalendar currentDate = new GregorianCalendar();
+        currentDate.add(GregorianCalendar.DATE, mondayPlus);
+        return currentDate.getTime();
+    }
+
     // 获得下周星期一的日期
     public String getNextMonday() {
         weeks++;
@@ -84,10 +93,31 @@ public class WeekUtils {
         return preMonday;
     }
 
+    // 获得相应周的周日的日期
+    public Date getSundayDate() {
+        int mondayPlus = this.getMondayPlus();
+        GregorianCalendar currentDate = new GregorianCalendar();
+        currentDate.add(GregorianCalendar.DATE, mondayPlus + 7 * weeks + 6);
+        return currentDate.getTime();
+    }
+
     public Date getCurrentDate() {
         GregorianCalendar currentDate = new GregorianCalendar();
         return currentDate.getTime();
     }
+
+    public Date getConvertStringToDate(String date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String newDateStr = date + " 00:00:00";
+        Date convertDate = null;
+        try {
+            convertDate = simpleDateFormat.parse(newDateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return convertDate;
+    }
+
 
     public Date getConvertTimeToDate(String time){
         Date date = getCurrentDate();
@@ -96,7 +126,8 @@ public class WeekUtils {
         String newDateStr = day + " " + time;
         Date convertDate = null;
         try {
-            convertDate = simpleDateFormat.parse(newDateStr);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            convertDate = dateFormat.parse(newDateStr);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -119,14 +150,25 @@ public class WeekUtils {
         }
     }
 
-    public List<Date> getCurrentDateOfWeek() {
-        List<Date> resultDate = new ArrayList<Date>(7);
+    // 获得当天日期
+    public String getCurrentDay() {
+        GregorianCalendar currentDate = new GregorianCalendar();
+        Date monday = currentDate.getTime();
+        DateFormat df = DateFormat.getDateInstance();
+        String preMonday = df.format(monday);
+        return preMonday;
+    }
+
+    public List<String> getCurrentDateOfWeek() {
+        List<String> resultDate = new ArrayList<String>(7);
         for (int i=0; i<= 6; i++) {
             int mondayPlus = this.getMondayPlus();
             GregorianCalendar currentDate = new GregorianCalendar();
             currentDate.add(GregorianCalendar.DATE, mondayPlus + i);
             Date monday = currentDate.getTime();
-            resultDate.add(monday);
+            DateFormat df = DateFormat.getDateInstance();
+            String preMonday = df.format(monday);
+            resultDate.add(preMonday);
         }
         return resultDate;
     }

@@ -21,7 +21,7 @@ public class OaRegistrationAttendance extends IdEntity {
     private static final long serialVersionUID = 7116375295309848920L;
 
     @Column(name = "attendance_date")
-    private Date attendanceDate;//考勤日期
+    private String attendanceDate;//考勤日期
     @Column(name = "teacher_id")
     private Long teacherId;
     @Column(name = "teacher_name")
@@ -81,7 +81,9 @@ public class OaRegistrationAttendance extends IdEntity {
     public OaRegistrationAttendance() {
     }
 
-    public OaRegistrationAttendance(Long teacherId, String teacherName, Long organizationId, String organizationName, Date createTime) {
+    public OaRegistrationAttendance(String attendanceDate, Long teacherId, String teacherName, Long organizationId,
+                                    String organizationName, Date createTime) {
+        this.attendanceDate = attendanceDate;
         this.teacherId = teacherId;
         this.teacherName = teacherName;
         this.organizationId = organizationId;
@@ -89,11 +91,11 @@ public class OaRegistrationAttendance extends IdEntity {
         this.createTime = createTime;
     }
 
-    public Date getAttendanceDate() {
+    public String getAttendanceDate() {
         return attendanceDate;
     }
 
-    public void setAttendanceDate(Date attendanceDate) {
+    public void setAttendanceDate(String attendanceDate) {
         this.attendanceDate = attendanceDate;
     }
 
