@@ -26,6 +26,7 @@ import com.node.system.log.LogMessageObject;
 import com.node.system.log.impl.LogUitl;
 import com.node.system.util.dwz.AjaxObject;
 import com.node.system.util.dwz.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -57,6 +58,7 @@ public class LeaveAttendanceController extends BaseFormController {
     private LeaveAttendanceService leaveAttendanceService;
 
 	private static final String LIST = "management/eduoa/attendance/leave";
+	private static final String LEAVE_LIST = "management/eduoa/attendance/leave_list";
 
     @Log(message="{0}执行了离校。", level=LogLevel.INFO)
     @RequiresPermissions("LeaveAttendance:leaveStart")
@@ -110,16 +112,17 @@ public class LeaveAttendanceController extends BaseFormController {
         WeekUtils weekUtils = new WeekUtils();
 
         Map<String, Object> searchParams = new HashMap<String, Object>();
-        searchParams.put(SearchFilter.Operator.GTE + "_attendanceDate", weekUtils.getCurrentMonday());
-        searchParams.put(SearchFilter.Operator.LTE + "_attendanceDate", weekUtils.getSunday());
+        searchParams.put(SearchFilter.Operator.GTE + "_attendanceDate", weekUtils.getConvertStringToDate(weekUtils.getCurrentMonday()).getTime() + "");
+        searchParams.put(SearchFilter.Operator.LTE + "_attendanceDate", weekUtils.getConvertStringToDate(weekUtils.getSunday()).getTime() + "");
         List<OaLeaveAttendance> leaveAttendanceList = leaveAttendanceService.findByCondition(page, searchParams);
         if (leaveAttendanceList == null || leaveAttendanceList.isEmpty()) {
             OaTeacherInfo teacherInfo = currentUser.getUser().getTeacherInfo();
             List<String> weekList = weekUtils.getCurrentDateOfWeek();
             OaLeaveAttendance registrationAttendance = null;
             for (String week: weekList) {
-                registrationAttendance = new OaLeaveAttendance(week, teacherInfo.getId(), teacherInfo.getTeacherName(),
-                        currentOrganization.getId(), currentOrganization.getName(), new Date());
+                registrationAttendance = new OaLeaveAttendance(weekUtils.getConvertStringToDate(week).getTime(), week,
+                        teacherInfo.getId(), teacherInfo.getTeacherName(), currentOrganization.getId(),
+                        currentOrganization.getName(), new Date());
                 leaveAttendanceService.save(registrationAttendance);
             }
             leaveAttendanceList = leaveAttendanceService.findByCondition(page, searchParams);
@@ -127,9 +130,9 @@ public class LeaveAttendanceController extends BaseFormController {
 
         String currentDay = weekUtils.getCurrentDay();
         for (OaLeaveAttendance leaveAttendance: leaveAttendanceList) {
-            String day = leaveAttendance.getAttendanceDate();
+            String day = leaveAttendance.getAttendanceDateCn();
             if (currentDay.equals(day)) {
-                leaveAttendance.setAttendanceDate(leaveAttendance.getAttendanceDate() + "(今日)");
+                leaveAttendance.setAttendanceDateCn(leaveAttendance.getAttendanceDateCn() + "(今日)");
                 if (leaveAttendance.getLeaveStartTime() == null) {
                     leaveAttendance.setLeaveStartDisplay(1);
                     leaveAttendance.setLeaveEndDisplay(0);
@@ -145,5 +148,60 @@ public class LeaveAttendanceController extends BaseFormController {
 
 		return LIST;
 	}
+
+    @RequiresPermissions("listLeave:view")
+    @RequestMapping(value="/listLeave", method={RequestMethod.GET, RequestMethod.POST})
+    public String listLeave(Page page, String startTime, String endTime, String teacherId,
+                            String organizationId, String teacherName,
+                            String organizationName, Map<String, Object> map) {
+
+        WeekUtils weekUtils = new WeekUtils();
+
+        Boolean existCondition = false;
+        Map<String, Object> searchParams = new HashMap<String, Object>();
+        if (StringUtils.isNotBlank(teacherId)) {
+            searchParams.put(SearchFilter.Operator.EQ + "_teacherId", teacherId);
+            existCondition = true;
+        }
+        if (StringUtils.isNotBlank(organizationId)) {
+            searchParams.put(SearchFilter.Operator.EQ + "_organizationId", organizationId);
+            existCondition = true;
+        }
+        if (StringUtils.isNotBlank(startTime)) {
+            searchParams.put(SearchFilter.Operator.GTE + "_attendanceDate", weekUtils.getConvertStringToDate(startTime).getTime()+"");
+            existCondition = true;
+        }
+        if (StringUtils.isNotBlank(endTime)) {
+            searchParams.put(SearchFilter.Operator.LTE + "_attendanceDate", weekUtils.getConvertStringToDate(endTime).getTime()+"");
+            existCondition = true;
+        }
+
+        if (!existCondition) {
+            searchParams.put(SearchFilter.Operator.EQ + "_teacherId", currentUser.getUser().getTeacherInfo().getId() + "");
+            searchParams.put(SearchFilter.Operator.GTE + "_attendanceDate", weekUtils.getConvertStringToDate(weekUtils.getCurrentMonday()).getTime() + "");
+            searchParams.put(SearchFilter.Operator.LTE + "_attendanceDate", weekUtils.getConvertStringToDate(weekUtils.getSunday()).getTime() + "");
+        }
+
+        List<OaLeaveAttendance> leaveAttendanceList = leaveAttendanceService.findByCondition(page, searchParams);
+
+        String currentDay = weekUtils.getCurrentDay();
+        for (OaLeaveAttendance leaveAttendance: leaveAttendanceList) {
+            String day = leaveAttendance.getAttendanceDateCn();
+            if (currentDay.equals(day)) {
+                leaveAttendance.setAttendanceDateCn(leaveAttendance.getAttendanceDateCn() + "(今日)");
+            }
+        }
+
+        map.put("page", page);
+        map.put("leaveAttendances", leaveAttendanceList);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("teacherId", teacherId);
+        map.put("organizationId", organizationId);
+        map.put("teacherName", teacherName);
+        map.put("organizationName", organizationName);
+
+        return LEAVE_LIST;
+    }
 
 }

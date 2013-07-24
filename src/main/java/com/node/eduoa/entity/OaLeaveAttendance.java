@@ -23,7 +23,10 @@ public class OaLeaveAttendance extends IdEntity {
     private static final long serialVersionUID = 1731468052657407591L;
 
     @Column(name = "attendance_date")
-    private String attendanceDate;//考勤日期
+    private Long attendanceDate;//考勤日期
+
+    @Column(name = "attendance_date_cn")
+    private String attendanceDateCn;//考勤日期
 
     @Column(name = "teacher_id")
     private Long teacherId;
@@ -62,9 +65,10 @@ public class OaLeaveAttendance extends IdEntity {
     public OaLeaveAttendance() {
     }
 
-    public OaLeaveAttendance(String attendanceDate, Long teacherId, String teacherName, Long organizationId,
-                             String organizationName, Date createTime) {
+    public OaLeaveAttendance(Long attendanceDate, String attendanceDateCn, Long teacherId, String teacherName,
+                             Long organizationId, String organizationName, Date createTime) {
         this.attendanceDate = attendanceDate;
+        this.attendanceDateCn = attendanceDateCn;
         this.teacherId = teacherId;
         this.teacherName = teacherName;
         this.organizationId = organizationId;
@@ -72,11 +76,19 @@ public class OaLeaveAttendance extends IdEntity {
         this.createTime = createTime;
     }
 
-    public String getAttendanceDate() {
+    public String getAttendanceDateCn() {
+        return attendanceDateCn;
+    }
+
+    public void setAttendanceDateCn(String attendanceDateCn) {
+        this.attendanceDateCn = attendanceDateCn;
+    }
+
+    public Long getAttendanceDate() {
         return attendanceDate;
     }
 
-    public void setAttendanceDate(String attendanceDate) {
+    public void setAttendanceDate(Long attendanceDate) {
         this.attendanceDate = attendanceDate;
     }
 

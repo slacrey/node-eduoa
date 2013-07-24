@@ -58,6 +58,7 @@
                     <label>选择状态：</label>
                     <span style="width: 200px;">
                     <select name="statue" class="combox">
+                        <option value="">请选择</option>
                         <c:forEach items="${attendanceEnum}" var="item">
                             <option value="${item.index}">${item.text}</option>
                         </c:forEach>
