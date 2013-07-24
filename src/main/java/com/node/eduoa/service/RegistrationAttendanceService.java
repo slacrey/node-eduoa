@@ -27,6 +27,8 @@ public interface RegistrationAttendanceService {
 
     List<OaRegistrationAttendance> findByCondition(Page page, Map<String, Object> searchParams);
 
+    List<OaRegistrationAttendance> findByCondition(Page page, Map<String, Object> andSearchParams, Map<String, Object> orSearchParams);
+
     List<OaRegistrationAttendance> findAll(Page page);
 
 }

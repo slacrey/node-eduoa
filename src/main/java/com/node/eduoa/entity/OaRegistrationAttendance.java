@@ -1,5 +1,6 @@
 package com.node.eduoa.entity;
 
+import com.node.eduoa.enums.AttendanceEnum;
 import com.node.system.entity.IdEntity;
 
 import javax.persistence.Column;
@@ -20,8 +21,10 @@ public class OaRegistrationAttendance extends IdEntity {
 
     private static final long serialVersionUID = 7116375295309848920L;
 
+    @Column(name = "attendance_date_cn")
+    private String attendanceDateCn;//考勤日期
     @Column(name = "attendance_date")
-    private String attendanceDate;//考勤日期
+    private Long attendanceDate;//考勤日期
     @Column(name = "teacher_id")
     private Long teacherId;
     @Column(name = "teacher_name")
@@ -39,6 +42,8 @@ public class OaRegistrationAttendance extends IdEntity {
     private Date morningStartTime;
     @Transient
     private Integer morningStartDisplay;
+    @Transient
+    private String morningStartString;
 
     @Column(name = "morning_end")
     private Integer morningEnd;
@@ -46,6 +51,8 @@ public class OaRegistrationAttendance extends IdEntity {
     private Date morningEndTime;
     @Transient
     private Integer morningEndDisplay;
+    @Transient
+    private String morningEndString;
 
     @Column(name = "afternoon_start")
     private Integer afternoonStart;
@@ -53,6 +60,8 @@ public class OaRegistrationAttendance extends IdEntity {
     private Date afternoonStartTime;
     @Transient
     private Integer afternoonStartDisplay;
+    @Transient
+    private String afternoonStartString;
 
     @Column(name = "afternoon_end")
     private Integer afternoonEnd;
@@ -60,6 +69,8 @@ public class OaRegistrationAttendance extends IdEntity {
     private Date afternoonEndTime;
     @Transient
     private Integer afternoonEndDisplay;
+    @Transient
+    private String afternoonEndString;
 
     @Column(name = "night_start")
     private Integer nightStart;
@@ -67,6 +78,8 @@ public class OaRegistrationAttendance extends IdEntity {
     private Date nightStartTime;
     @Transient
     private Integer nightStartDisplay;
+    @Transient
+    private String nightStartString;
 
     @Column(name = "night_end")
     private Integer nightEnd;
@@ -74,6 +87,8 @@ public class OaRegistrationAttendance extends IdEntity {
     private Date nightEndTime;
     @Transient
     private Integer nightEndDisplay;
+    @Transient
+    private String nightEndString;
 
     @Column(name = "create_time")
     private Date createTime;
@@ -81,8 +96,9 @@ public class OaRegistrationAttendance extends IdEntity {
     public OaRegistrationAttendance() {
     }
 
-    public OaRegistrationAttendance(String attendanceDate, Long teacherId, String teacherName, Long organizationId,
-                                    String organizationName, Date createTime) {
+    public OaRegistrationAttendance(String attendanceDateCn, Long attendanceDate, Long teacherId, String teacherName,
+                                    Long organizationId, String organizationName, Date createTime) {
+        this.attendanceDateCn = attendanceDateCn;
         this.attendanceDate = attendanceDate;
         this.teacherId = teacherId;
         this.teacherName = teacherName;
@@ -91,12 +107,20 @@ public class OaRegistrationAttendance extends IdEntity {
         this.createTime = createTime;
     }
 
-    public String getAttendanceDate() {
+    public Long getAttendanceDate() {
         return attendanceDate;
     }
 
-    public void setAttendanceDate(String attendanceDate) {
+    public void setAttendanceDate(Long attendanceDate) {
         this.attendanceDate = attendanceDate;
+    }
+
+    public String getAttendanceDateCn() {
+        return attendanceDateCn;
+    }
+
+    public void setAttendanceDateCn(String attendanceDateCn) {
+        this.attendanceDateCn = attendanceDateCn;
     }
 
     public Long getTeacherId() {
@@ -281,5 +305,90 @@ public class OaRegistrationAttendance extends IdEntity {
 
     public void setNightEndDisplay(Integer nightEndDisplay) {
         this.nightEndDisplay = nightEndDisplay;
+    }
+
+
+    public String getMorningStartString() {
+        if (morningStart != null) {
+            AttendanceEnum classTypeEnum = AttendanceEnum.valueByIndex(morningStart);
+            if (classTypeEnum != null) {
+                return classTypeEnum.getText();
+            }
+        }
+        return "";
+    }
+
+    public void setMorningStartString(String morningStartString) {
+        this.morningStartString = morningStartString;
+    }
+
+    public String getMorningEndString() {
+        if (morningEnd != null) {
+            AttendanceEnum classTypeEnum = AttendanceEnum.valueByIndex(morningEnd);
+            if (classTypeEnum != null) {
+                return classTypeEnum.getText();
+            }
+        }
+        return "";
+    }
+
+    public void setMorningEndString(String morningEndString) {
+        this.morningEndString = morningEndString;
+    }
+
+    public String getAfternoonStartString() {
+        if (afternoonStart != null) {
+            AttendanceEnum classTypeEnum = AttendanceEnum.valueByIndex(afternoonStart);
+            if (classTypeEnum != null) {
+                return classTypeEnum.getText();
+            }
+        }
+        return "";
+    }
+
+    public void setAfternoonStartString(String afternoonStartString) {
+        this.afternoonStartString = afternoonStartString;
+    }
+
+    public String getAfternoonEndString() {
+        if (afternoonEnd != null) {
+            AttendanceEnum classTypeEnum = AttendanceEnum.valueByIndex(afternoonEnd);
+            if (classTypeEnum != null) {
+                return classTypeEnum.getText();
+            }
+        }
+        return "";
+    }
+
+    public void setAfternoonEndString(String afternoonEndString) {
+        this.afternoonEndString = afternoonEndString;
+    }
+
+    public String getNightStartString() {
+        if (nightStart != null) {
+            AttendanceEnum classTypeEnum = AttendanceEnum.valueByIndex(nightStart);
+            if (classTypeEnum != null) {
+                return classTypeEnum.getText();
+            }
+        }
+        return "";
+    }
+
+    public void setNightStartString(String nightStartString) {
+        this.nightStartString = nightStartString;
+    }
+
+    public String getNightEndString() {
+        if (nightEnd != null) {
+            AttendanceEnum classTypeEnum = AttendanceEnum.valueByIndex(nightEnd);
+            if (classTypeEnum != null) {
+                return classTypeEnum.getText();
+            }
+        }
+        return "";
+    }
+
+    public void setNightEndString(String nightEndString) {
+        this.nightEndString = nightEndString;
     }
 }

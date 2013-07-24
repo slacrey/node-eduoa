@@ -1,5 +1,7 @@
 package com.node.eduoa.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -107,15 +109,19 @@ public class WeekUtils {
     }
 
     public Date getConvertStringToDate(String date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String newDateStr = date + " 00:00:00";
-        Date convertDate = null;
-        try {
-            convertDate = simpleDateFormat.parse(newDateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (date != null && StringUtils.isNotBlank(date)) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String newDateStr = date + " 00:00:00";
+            Date convertDate = null;
+            try {
+                convertDate = simpleDateFormat.parse(newDateStr);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return convertDate;
         }
-        return convertDate;
+        return null;
+
     }
 
 
@@ -148,6 +154,36 @@ public class WeekUtils {
         } else {
             return false;
         }
+    }
+
+    public int compileDate(Date oneDate, Date twoDate) {
+        long oneTime = oneDate.getTime();
+        long twoTime = twoDate.getTime();
+        if (oneTime > twoTime) {
+            return 1;
+        } else if (oneTime == twoTime) {
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+
+    public String compileDateOfDate(Date oneDate, Date twoDate) {
+        long oneTime = oneDate.getTime();
+        long twoTime = twoDate.getTime();
+        long result = twoTime - oneTime;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String day = getCurrentDay();
+        Date currentDate = null;
+        try {
+            currentDate = dateFormat.parse(day);
+            currentDate.setTime(currentDate.getTime() + result);
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            return timeFormat.format(currentDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // 获得当天日期

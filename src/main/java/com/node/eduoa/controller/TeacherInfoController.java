@@ -91,6 +91,8 @@ public class TeacherInfoController extends BaseFormController {
     private static final String VIEW = "management/eduoa/teacher/view";
     private static final String TREE = "management/eduoa/teacher/treeLookup";
     private static final String LEADER_TREE = "management/eduoa/teacher/tree_leader";
+    private static final String TEACHERS_TREE = "management/eduoa/teacher/tree_teacher";
+    private static final String ORGANIZATION_TREE = "management/eduoa/teacher/tree_organization";
     private static final String TREE_GRADE = "management/eduoa/teacher/tree_grade";
     private static final String TREE_HEAD_TEACHER = "management/eduoa/teacher/tree_head_teacher";
     private static final String TEACH_CLASS = "management/eduoa/teacher/teach_class";
@@ -111,6 +113,21 @@ public class TeacherInfoController extends BaseFormController {
         Organization organization = organizationService.getTree();
         map.put("organization", organization);
         return LEADER_TREE;
+    }
+
+    @RequestMapping(value = "/teachers", method = {RequestMethod.GET, RequestMethod.POST})
+    public String getTeachers(Map<String, Object> map) {
+        Organization organization = organizationService.getTree();
+        map.put("organization", organization);
+        return TEACHERS_TREE;
+    }
+
+    @RequestMapping(value = "/organizationTree", method = {RequestMethod.GET, RequestMethod.POST})
+    public String getOrganizationList(Map<String, Object> map) {
+        Organization organization = organizationService.getTree();
+
+        map.put("organization", organization);
+        return ORGANIZATION_TREE;
     }
 
     @RequiresPermissions("TeacherInfo:view")

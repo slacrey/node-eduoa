@@ -69,12 +69,32 @@ public class RegistrationAttendanceServiceImpl implements RegistrationAttendance
         return oaClassPage.getContent();
     }
 
+    @Override
+    public List<OaRegistrationAttendance> findByCondition(Page page, Map<String, Object> andSearchParams,
+                                                          Map<String, Object> orSearchParams) {
+        PageRequest pageRequest = PageUtils.createPageRequest(page);
+        Specification<OaRegistrationAttendance> spec = buildSpecification(andSearchParams, orSearchParams);
+        org.springframework.data.domain.Page<OaRegistrationAttendance> oaClassPage = registrationAttendanceDao.findAll(spec, pageRequest);
+        return oaClassPage.getContent();
+    }
+
     /**
      * 创建动态查询条件组合.
      */
     private Specification<OaRegistrationAttendance> buildSpecification(Map<String, Object> searchParams) {
         Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
         Specification<OaRegistrationAttendance> spec = DynamicSpecifications.bySearchFilter(filters.values(), OaRegistrationAttendance.class);
+        return spec;
+    }
+
+    /**
+     * 创建动态查询条件组合.
+     */
+    private Specification<OaRegistrationAttendance> buildSpecification(Map<String, Object> andSearchParams,
+                                                                       Map<String, Object> orSearchParams) {
+        Map<String, SearchFilter> andFilters = SearchFilter.parse(andSearchParams);
+        Map<String, SearchFilter> orFilters = SearchFilter.parse(orSearchParams);
+        Specification<OaRegistrationAttendance> spec = DynamicSpecifications.bySearchFilter(andFilters.values(), orFilters.values(), OaRegistrationAttendance.class);
         return spec;
     }
 
