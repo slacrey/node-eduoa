@@ -104,16 +104,16 @@ public class RegistrationAttendanceController extends BaseFormController {
             registrationAttendance.setMorningEndTime(currentDate);
         }
         if ("afternoonEnd".equals(type)) {
-            if (weekUtils.compileDate(currentDate, standardDate) == 1) {
-                registrationAttendance.setAfternoonEnd(AttendanceEnum.ArriveLate.getIndex());
+            if (weekUtils.compileDate(currentDate, standardDate) == -1) {
+                registrationAttendance.setAfternoonEnd(AttendanceEnum.LeaveEarly.getIndex());
             } else {
                 registrationAttendance.setAfternoonEnd(AttendanceEnum.Normal.getIndex());
             }
             registrationAttendance.setAfternoonEndTime(currentDate);
         }
         if ("nightEnd".equals(type)) {
-            if (weekUtils.compileDate(currentDate, standardDate) == 1) {
-                registrationAttendance.setNightEnd(AttendanceEnum.ArriveLate.getIndex());
+            if (weekUtils.compileDate(currentDate, standardDate) == -1) {
+                registrationAttendance.setNightEnd(AttendanceEnum.LeaveEarly.getIndex());
             } else {
                 registrationAttendance.setNightEnd(AttendanceEnum.Normal.getIndex());
             }

@@ -18,6 +18,8 @@ import com.node.eduoa.enums.ApplyStatusEnum;
 import com.node.eduoa.enums.SemesterEnum;
 import com.node.eduoa.enums.StatusEnum;
 import com.node.eduoa.service.GoodsApplyService;
+import com.node.eduoa.service.GoodsReceiveService;
+import com.node.eduoa.service.impl.GoodsReceiveServiceImpl;
 import com.node.eduoa.utils.YearUtils;
 import com.node.eduoa.utils.model.GoodsModel;
 import com.node.system.log.Log;
@@ -56,6 +58,10 @@ public class GoodsApplyController extends BaseFormController {
     @Autowired
     private GoodsApplyService goodsApplyService;
 
+    @Qualifier("goodsReceiveServiceImpl")
+    @Autowired
+    private GoodsReceiveService goodsReceiveService;
+
 	@Autowired
 	private Validator validator;
 
@@ -67,6 +73,7 @@ public class GoodsApplyController extends BaseFormController {
 	private static final String LIST_DRAFT = "management/eduoa/goods/list_draft";
 	private static final String LIST_APPROVAL = "management/eduoa/goods/list_approval";
 	private static final String VIEW = "management/eduoa/goods/view";
+
 
 
     @RequiresPermissions("GoodsApply:view")
@@ -197,6 +204,8 @@ public class GoodsApplyController extends BaseFormController {
         OaGoodsApply goodsApply = goodsApplyService.get(goodsModel.getGoodsApply().getId());
         goodsApply.setSickTime(goodsModel.getGoodsApply().getSickTime());
         goodsApplyService.update(goodsApply);
+
+//        goodsReceiveService.
 
         LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{goodsApply.getApplyTeacherName()}));
         return AjaxObject.newOk("领取成功！").toString();

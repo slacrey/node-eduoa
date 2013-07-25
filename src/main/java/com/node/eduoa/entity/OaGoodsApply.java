@@ -58,6 +58,9 @@ public class OaGoodsApply extends IdEntity {
     @Column(name = "commit_time")
     private Date commitTime;
 
+    @Column(name = "lave")
+    private Integer lave;
+
     @Transient
     private String applyStatueCn;
 
@@ -217,5 +220,13 @@ public class OaGoodsApply extends IdEntity {
 
     public void setGoodsCount(Integer goodsCount) {
         this.goodsCount = goodsCount;
+    }
+
+    public Integer getLave() {
+        return lave;
+    }
+
+    public void setLave(Integer lave) {
+        this.lave = lave;
     }
 }
