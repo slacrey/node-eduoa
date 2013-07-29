@@ -4,12 +4,10 @@ import com.node.system.entity.IdEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.util.Date;
 
 /**
- *
  * User: linfeng at Administrator
  * Date: 13-7-6
  * Time: 上午9:57

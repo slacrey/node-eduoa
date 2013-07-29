@@ -10,7 +10,6 @@ import javax.persistence.Transient;
 import java.util.Date;
 
 /**
- *
  * User: linfeng at Administrator
  * Date: 13-7-14
  * Time: 下午8:33

@@ -3,14 +3,11 @@ package com.node.eduoa.entity;
 import com.node.eduoa.enums.PurchaseEnum;
 import com.node.system.entity.IdEntity;
 
-import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.util.Date;
 
 /**
- *
  * User: linfeng at Administrator
  * Date: 13-7-28
  * Time: 下午1:36

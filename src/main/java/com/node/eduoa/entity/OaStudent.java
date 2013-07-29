@@ -1,6 +1,5 @@
 package com.node.eduoa.entity;
 
-import com.node.eduoa.enums.ClassTypeEnum;
 import com.node.eduoa.enums.GenderEnum;
 import com.node.system.entity.IdEntity;
 
@@ -9,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
  * User: linfeng at Administrator
  * Date: 13-7-6
  * Time: 上午9:57
@@ -42,11 +40,11 @@ public class OaStudent extends IdEntity {
     private Date updateTime;
     @javax.persistence.Column(name = "operator_id")
     private Long operatorId;
-    @OneToMany(mappedBy = "oaStudentByStudentId", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "oaStudentByStudentId", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
     private List<OaContact> oaContactsById;
-    @OneToMany(mappedBy = "oaStudentByStudentId", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "oaStudentByStudentId", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
     private List<OaStudentClass> oaStudentClassesById;
-    @OneToMany(mappedBy = "oaStudentByStudentId", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "oaStudentByStudentId", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
     private List<OaStudentGrade> oaStudentGradesById;
 
     @Column(name = "grade_name")

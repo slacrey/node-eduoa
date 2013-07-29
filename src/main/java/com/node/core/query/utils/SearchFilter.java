@@ -1,12 +1,11 @@
-package org.springside.modules.persistence;
+package com.node.core.query.utils;
+
+import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.collect.Maps;
 
 public class SearchFilter {
 
@@ -17,12 +16,19 @@ public class SearchFilter {
 	public String fieldName;
 	public Object value;
 	public Operator operator;
+    public Map<String, SearchFilter> searchMap = Maps.newHashMap();
 
 	public SearchFilter(String fieldName, Operator operator, Object value) {
 		this.fieldName = fieldName;
 		this.value = value;
 		this.operator = operator;
 	}
+
+    public SearchFilter eq(String fieldName, Object value) {
+        SearchFilter filter = new SearchFilter(fieldName, Operator.EQ, value);
+        searchMap.put("", filter);
+        return this;
+    }
 
 	/**
 	 * searchParams中key的格式为OPERATOR_FIELDNAME
@@ -34,9 +40,9 @@ public class SearchFilter {
 			// 过滤掉空值
 			String key = entry.getKey();
 			Object value = entry.getValue();
-//			if (StringUtils.isBlank((String) value)) {
-//				continue;
-//			}
+			if (StringUtils.isBlank((String) value)) {
+				continue;
+			}
 
 			// 拆分operator与filedAttribute
 			String[] names = StringUtils.split(key, "_");

@@ -1,13 +1,11 @@
 package org.springside.modules.persistence;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import javax.persistence.metamodel.EntityType;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,6 +29,8 @@ public class DynamicSpecifications {
 							expression = expression.get(names[i]);
 						}
 
+                        EntityType<T> ci_ = root.getModel();
+
 						// logic operator
 						switch (filter.operator) {
 						case EQ:
@@ -51,7 +51,10 @@ public class DynamicSpecifications {
 						case LTE:
 							predicates.add(builder.lessThanOrEqualTo(expression, (Comparable) filter.value));
 							break;
-						}
+                        case IN:
+                            predicates.add(expression.in(((List) filter.value).toArray()));
+                            break;
+                        }
 					}
 
 					// 将所有条件用 and 联合起来

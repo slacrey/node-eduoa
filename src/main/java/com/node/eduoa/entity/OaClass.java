@@ -52,7 +52,6 @@ public class OaClass extends IdEntity {
     private String categoryName;
 
 
-
     public String getClassName() {
         return className;
     }

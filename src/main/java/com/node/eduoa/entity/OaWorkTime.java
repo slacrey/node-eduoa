@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import java.util.Date;
 
 /**
- *
  * User: linfeng
  * Date: 13-7-20
  * Time: 下午3:50

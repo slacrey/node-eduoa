@@ -4,7 +4,9 @@ import com.node.system.entity.IdEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 /**
@@ -21,12 +23,12 @@ public class OaPosition extends IdEntity {
     private static final long serialVersionUID = 6603604563249891863L;
 
     @NotBlank
-    @Length(min=1, max=32)
-    @Column(name = "position_name", nullable=false, length=32)
+    @Length(min = 1, max = 32)
+    @Column(name = "position_name", nullable = false, length = 32)
     private String positionName;
 
-    @Length(max=255)
-    @Column(name = "description", length=255)
+    @Length(max = 255)
+    @Column(name = "description", length = 255)
     private String description;
 
     @OneToMany(mappedBy = "oaPositionByPositionId")

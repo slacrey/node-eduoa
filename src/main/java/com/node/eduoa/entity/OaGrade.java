@@ -5,12 +5,10 @@ import com.node.system.entity.IdEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
 import java.util.List;
 
 /**
- *
  * User: linfeng at Administrator
  * Date: 13-7-6
  * Time: 上午9:57

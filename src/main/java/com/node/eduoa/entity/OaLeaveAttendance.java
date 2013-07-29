@@ -1,6 +1,5 @@
 package com.node.eduoa.entity;
 
-import com.node.eduoa.enums.AttendanceEnum;
 import com.node.system.entity.IdEntity;
 
 import javax.persistence.Column;
@@ -9,7 +8,6 @@ import javax.persistence.Transient;
 import java.util.Date;
 
 /**
- *
  * User: linfeng
  * Date: 13-7-20
  * Time: 下午4:42

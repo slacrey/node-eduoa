@@ -54,7 +54,6 @@ public abstract class LogUitl {
 	/**
 	 * 得到LogMessageObject。
 	 * 描述
-	 * @param logMessageObject
 	 */
 	public static LogMessageObject getArgs() {
 		HttpServletRequest request = getRequest();

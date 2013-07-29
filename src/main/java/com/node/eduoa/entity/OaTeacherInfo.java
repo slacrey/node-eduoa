@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
  * User: linfeng at Administrator
  * Date: 13-7-6
  * Time: 上午9:57
@@ -102,7 +101,7 @@ public class OaTeacherInfo extends IdEntity {
     @JoinColumn(name = "position_id", referencedColumnName = "id")
     private OaPosition oaPositionByPositionId;
 
-    @OneToOne(mappedBy="teacherInfo", cascade={CascadeType.PERSIST})
+    @OneToOne(mappedBy = "teacherInfo", cascade = {CascadeType.PERSIST})
     private User user;
 
     @Transient

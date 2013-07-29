@@ -3,12 +3,12 @@ package com.node.eduoa.entity;
 import com.node.eduoa.enums.ApplyStatusEnum;
 import com.node.system.entity.IdEntity;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.Date;
 
 /**
- *
  * User: linfeng at Administrator
  * Date: 13-7-14
  * Time: 下午8:33

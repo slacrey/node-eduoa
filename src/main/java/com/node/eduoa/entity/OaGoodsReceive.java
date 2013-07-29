@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import java.util.Date;
 
 /**
- *
  * User: linfeng at Administrator
  * Date: 13-7-24
  * Time: 下午10:51
