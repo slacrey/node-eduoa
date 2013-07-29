@@ -28,4 +28,6 @@ public interface GoodsReceiveService {
 
     List<OaGoodsReceive> findAll(Page page);
 
+    List<OaGoodsReceive> findByCondition(Long goodsApplyId);
+
 }

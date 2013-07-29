@@ -1,8 +1,7 @@
 package com.node.eduoa.utils.model;
 
-import com.node.eduoa.entity.OaGoodsApply;
-import com.node.eduoa.entity.OaGoodsReceive;
-import com.node.system.entity.main.Organization;
+import com.node.eduoa.entity.OaPurchaseApply;
+import com.node.eduoa.entity.OaPurchaseConduct;
 
 import java.io.Serializable;
 
@@ -13,22 +12,14 @@ import java.io.Serializable;
  * Time: 下午11:27
  * To change this template use File | Settings | File Templates.
  */
-public class GoodsModel implements Serializable {
-    private static final long serialVersionUID = -8857228341808949069L;
+public class ConductModel implements Serializable {
+
+    private static final long serialVersionUID = 2321915936088861275L;
 
     private Leader leader;
     private TeacherModel teacherModel;
-    private OaGoodsApply goodsApply;
+    private OaPurchaseConduct purchaseConduct;
     private OrganizationModel organizationModel;
-    private OaGoodsReceive goodsReceive;
-
-    public OaGoodsReceive getGoodsReceive() {
-        return goodsReceive;
-    }
-
-    public void setGoodsReceive(OaGoodsReceive goodsReceive) {
-        this.goodsReceive = goodsReceive;
-    }
 
     public Leader getLeader() {
         return leader;
@@ -46,12 +37,12 @@ public class GoodsModel implements Serializable {
         this.teacherModel = teacherModel;
     }
 
-    public OaGoodsApply getGoodsApply() {
-        return goodsApply;
+    public OaPurchaseConduct getPurchaseConduct() {
+        return purchaseConduct;
     }
 
-    public void setGoodsApply(OaGoodsApply goodsApply) {
-        this.goodsApply = goodsApply;
+    public void setPurchaseConduct(OaPurchaseConduct purchaseConduct) {
+        this.purchaseConduct = purchaseConduct;
     }
 
     public OrganizationModel getOrganizationModel() {

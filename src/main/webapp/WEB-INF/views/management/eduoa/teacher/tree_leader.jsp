@@ -12,7 +12,7 @@
             for (User user : organization.getUsers()) {
                 OaTeacherInfo teacherInfo = user.getTeacherInfo();
                 if (teacherInfo != null && teacherInfo.getOaPositionByPositionId() != null ) {
-                    buffer.append("<li><a href=\"javascript:\" onclick=\"returnClose({leaderId:'" + user.getId()
+                    buffer.append("<li><a href=\"javascript:\" onclick=\"returnClose({leaderId:'" + teacherInfo.getId()
                             + "',leaderPosition:'"+teacherInfo.getOaPositionByPositionId().getPositionName()+"' , leaderName:'" + teacherInfo.getTeacherName() + "'})\" >" + teacherInfo.getTeacherName() + "</a>" + "\n");
                     buffer.append("</li>" + "\n");
                     exist = true;

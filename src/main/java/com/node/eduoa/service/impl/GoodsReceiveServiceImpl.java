@@ -78,4 +78,9 @@ public class GoodsReceiveServiceImpl implements GoodsReceiveService {
         page.setTotalCount(springDataPage.getTotalElements());
         return springDataPage.getContent();
     }
+
+    @Override
+    public List<OaGoodsReceive> findByCondition(Long goodsApplyId) {
+        return goodsReceiveDao.findByGoodsApplyId(goodsApplyId);
+    }
 }

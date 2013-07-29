@@ -4,18 +4,18 @@
 <script type="text/javascript">
     $(document).ready(function(){
         var navClose = function(json) {
-            $("#button_close", $("#leaveForm")).trigger("click");
+            $("#button_close", $("#purchaseModel")).trigger("click");
             dialogReloadNavTabAfterCloseTab(json);
         };
         //提交按钮
         $("#button_submit").on('click', function(event){
-            $("#leaveForm").prop("action", '${contextPath }/management/eduoa/goods/submit');
-            return validateCallback($("#leaveForm"), navClose);
+            $("#purchaseModel").prop("action", '${contextPath }/management/eduoa/purchase/submit');
+            return validateCallback($("#purchaseModel"), navClose);
         });
         //保存按钮
         $("#button_save").on('click', function(event){
-            $("#leaveForm").prop("action", '${contextPath }/management/eduoa/goods/save');
-            return validateCallback($("#leaveForm"), navClose);
+            $("#purchaseModel").prop("action", '${contextPath }/management/eduoa/purchase/save');
+            return validateCallback($("#purchaseModel"), navClose);
         });
 
         $("#leaderName").on('click', function(event) {
@@ -25,25 +25,25 @@
     });
 </script>
 <div class="pageContent">
-    <form id="leaveForm" method="post" action="${contextPath }/management/eduoa/goods/create" class="required-validate pageForm">
+    <form id="purchaseModel" method="post" action="#" class="required-validate pageForm">
         <div class="pageFormContent" style="height: 228px; overflow: auto;" layouth="56">
             <p>
                 <label>申请人：</label>
-                <input type="hidden" name="goodsApply.applyTeacherId" readonly="true" value="${user.id}" size="32" maxlength="32"/>
-                <input type="text" name="goodsApply.applyTeacherName" readonly="true" value="${user.teacherName}" readonly="true" class="required" size="32" maxlength="20"/>
+                <input type="hidden" name="purchaseApply.applyTeacherId" readonly="true" value="${user.id}" size="32" maxlength="32"/>
+                <input type="text" name="purchaseApply.applyTeacherName" readonly="true" value="${user.teacherName}" readonly="true" class="required" size="32" maxlength="20"/>
             </p>
 
             <p>
                 <label>申请部门：</label>
-                <input type="hidden" name="goodsApply.applyOrganizationId" value="${organization.id}" class="required" size="30"/>
-                <input type="text" name="goodsApply.applyOrganizationName" readonly="true" value="${organization.name}" class="required" size="30"/>
+                <input type="hidden" name="purchaseApply.applyOrganizationId" value="${organization.id}" class="required" size="30"/>
+                <input type="text" name="purchaseApply.applyOrganizationName" readonly="true" value="${organization.name}" class="required" size="30"/>
             </p>
 
             <p>
                 <label>申请时间：</label>
-                <input type="text" name="goodsApply.createTime"
-                       value="<fmt:formatDate value="${createTime}" pattern="yyyy-MM-dd"/>"
-                       dateFmt="yyyy-MM-dd" class="required date" size="30"/><a class="inputDateButton"
+                <input type="text" name="purchaseApply.createTime"
+                       value="<fmt:formatDate value="${createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+                       dateFmt="yyyy-MM-dd HH:mm:ss" class="required date" size="30"/><a class="inputDateButton"
                                                                                         href="javascript:;">选择</a>
             </p>
 
@@ -60,17 +60,23 @@
             <div class="divider"></div>
             <p>
                 <label>物品：</label>
-                <input type="hidden" name="goodsApply.goodsId" size="32" maxlength="32"/>
-                <input type="text" name="goodsApply.goodsName" class="required" size="32" maxlength="32"/>
+                <input type="hidden" name="purchaseApply.goodsId" size="32" maxlength="32"/>
+                <input type="text" name="purchaseApply.goodsName" class="required" size="32" maxlength="32"/>
             </p>
             <p>
                 <label>单位：</label>
-                <input type="text" name="goodsApply.goodsUnit" class="required" size="32" maxlength="20"/>
+                <input type="text" name="purchaseApply.goodsUnit" class="required" size="32" maxlength="20"/>
             </p>
             <p>
                 <label>数量：</label>
-                <input type="text" name="goodsApply.goodsCount" class="required digits" size="32" maxlength="20"/>
+                <input type="text" name="purchaseApply.goodsCount" class="required digits" size="32" maxlength="20"/>
             </p>
+
+            <div class="divider"></div>
+            <dl class="nowrap">
+                <dt>申请备注：</dt>
+                <dd><textarea cols="90" rows="5" name="purchaseApply.remark"></textarea></dd>
+            </dl>
         </div>
 
         <div class="formBar">

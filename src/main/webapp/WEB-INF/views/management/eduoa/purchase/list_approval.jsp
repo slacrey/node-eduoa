@@ -59,11 +59,11 @@
         });
     });
 </script>
-<keta:paginationForm action="${contextPath }/management/eduoa/goods/listApproval" page="${page }">
+<keta:paginationForm action="${contextPath }/management/eduoa/purchase/listApproval" page="${page }">
 	<input type="hidden" name="keywords" value="${keywords}"/>
 </keta:paginationForm>
 
-<form method="post" action="${contextPath }/management/eduoa/goods/listApproval" onsubmit="return navTabSearch(this)">
+<form method="post" action="${contextPath }/management/eduoa/purchase/listApproval" onsubmit="return navTabSearch(this)">
 	<div class="pageHeader">
 		<div class="searchBar">
 			<ul class="searchContent">
@@ -85,15 +85,7 @@
 
 	<div class="panelBar">
 		<ul class="toolBar">
-            <shiro:hasPermission name="GoodsApproval:sick">
-                <li><a class="arrow_refresh" target="ajaxToDialog" mask="true"
-                       checkUrl="${contextPath }/management/eduoa/goods/checkSick/{slt_uid}"
-                       href="${contextPath }/management/eduoa/goods/sick/{slt_uid}"><span>领取</span></a></li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="GoodsApproval:sick">
-                <li><a class="magnifier" target="dialog" mask="true" width="530" height="350"
-                       href="${contextPath }/management/eduoa/goods/viewSick/{slt_uid}"><span>查看领取情况</span></a></li>
-            </shiro:hasPermission>
+
 		</ul>
 	</div>
 	
@@ -110,11 +102,10 @@
                 <th width="80">数量</th>
                 <th width="100">审批状态</th>
                 <th width="130">审批时间</th>
-                <th width="130">领取时间</th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="item" items="${leavePermits}">
+			<c:forEach var="item" items="${purchaseApplies}">
 			<tr target="slt_uid" rel="${item.id}">
 				<td><input name="ids" value="${item.id}" type="checkbox"></td>
                 <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
@@ -126,7 +117,6 @@
                 <td>${item.goodsCount}</td>
                 <td>${item.applyStatueCn}</td>
                 <td><fmt:formatDate value="${item.applyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                <td><fmt:formatDate value="${item.sickTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 			</tr>
 			</c:forEach>
 		</tbody>

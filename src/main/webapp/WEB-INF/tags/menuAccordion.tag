@@ -19,7 +19,7 @@
 			<li>
                 <c:if test="${not empty c.children}" var="child">
                     <a href="#" class="disabled-alink" rel="${c.sn}_${c.id}">${c.name}</a>
-                    <keta:menuAccordion child="${c }" urlPrefix="${urlPrefix }" target="target"/>
+                    <keta:menuAccordion child="${c }" urlPrefix="${urlPrefix }" target="${target}"/>
                 </c:if>
                 <c:if test="${!child}">
                     <a href="${urlPrefix}${c.url}" target="${target}" rel="${c.sn}_${c.id}">${c.name}</a>

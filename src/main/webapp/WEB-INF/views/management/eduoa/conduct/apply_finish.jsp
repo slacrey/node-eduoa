@@ -2,11 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include.inc.jsp"%>
 
-<keta:paginationForm action="${contextPath }/management/eduoa/goods/list" page="${page }">
+<keta:paginationForm action="${contextPath }/management/eduoa/conduct/applyFinish" page="${page }">
 	<input type="hidden" name="keywords" value="${keywords}"/>
 </keta:paginationForm>
 
-<form method="post" action="${contextPath }/management/eduoa/goods/list" onsubmit="return navTabSearch(this)">
+<form method="post" action="${contextPath }/management/eduoa/conduct/applyFinish" onsubmit="return navTabSearch(this)">
 	<div class="pageHeader">
 		<div class="searchBar">
 			<ul class="searchContent">
@@ -26,16 +26,13 @@
 
 <div class="pageContent">
 
-	<div class="panelBar">
-		<ul class="toolBar">
-            <shiro:hasPermission name="GoodsPermit:pass">
-                <li><a class="arrow_refresh" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/goods/passed" title="确认通过申请码？"><span>通过申请</span></a></li>
+    <div class="panelBar">
+        <ul class="toolBar">
+            <shiro:hasPermission name="PurchaseApplyFinish:add">
+                <li><a class="add" target="navTab" href="${contextPath }/management/eduoa/conduct/create/{slt_uid}"><span>添加采购</span></a></li>
             </shiro:hasPermission>
-            <shiro:hasPermission name="GoodsPermit:reject">
-                <li><a class="delete" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/goods/rejected" title="确认要驳回该申请吗?"><span>驳回申请</span></a></li>
-            </shiro:hasPermission>
-		</ul>
-	</div>
+        </ul>
+    </div>
 	
 	<table class="table" layoutH="138" width="100%">
 		<thead>
@@ -53,7 +50,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="item" items="${leavePermits}">
+			<c:forEach var="item" items="${purchaseApplies}">
 			<tr target="slt_uid" rel="${item.id}">
 				<td><input name="ids" value="${item.id}" type="checkbox"></td>
                 <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

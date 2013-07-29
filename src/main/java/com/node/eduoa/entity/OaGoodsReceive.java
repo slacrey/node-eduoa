@@ -18,8 +18,8 @@ import java.util.Date;
 public class OaGoodsReceive extends IdEntity {
 
     private static final long serialVersionUID = 3336563335657711972L;
-    @Column(name = "goods_id")
-    private Long goodsId;
+    @Column(name = "goods_apply_id")
+    private Long goodsApplyId;
     @Column(name = "recipients_id")
     private Long recipientsId;
     @Column(name = "recipients_name")
@@ -31,12 +31,12 @@ public class OaGoodsReceive extends IdEntity {
     @Column(name = "create_time")
     private Date createTime;
 
-    public Long getGoodsId() {
-        return goodsId;
+    public Long getGoodsApplyId() {
+        return goodsApplyId;
     }
 
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
+    public void setGoodsApplyId(Long goodsApplyId) {
+        this.goodsApplyId = goodsApplyId;
     }
 
     public Long getRecipientsId() {

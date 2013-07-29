@@ -14,6 +14,7 @@
 package com.node.eduoa.controller;
 
 import com.node.eduoa.entity.OaGoodsApply;
+import com.node.eduoa.entity.OaGoodsReceive;
 import com.node.eduoa.enums.ApplyStatusEnum;
 import com.node.eduoa.enums.SemesterEnum;
 import com.node.eduoa.enums.StatusEnum;
@@ -73,6 +74,7 @@ public class GoodsApplyController extends BaseFormController {
 	private static final String LIST_DRAFT = "management/eduoa/goods/list_draft";
 	private static final String LIST_APPROVAL = "management/eduoa/goods/list_approval";
 	private static final String VIEW = "management/eduoa/goods/view";
+	private static final String SICK_VIEW = "management/eduoa/goods/view_sick";
 
 
 
@@ -81,7 +83,7 @@ public class GoodsApplyController extends BaseFormController {
 	public String preCreate(Map<String, Object> map) {
         map.put("semesterEnums", SemesterEnum.values());
         map.put("years", YearUtils.getYears(3));
-        map.put("user", currentUser.getUser());
+        map.put("user", currentUser.getUser().getTeacherInfo());
         map.put("organization", currentOrganization);
         map.put("createTime", new Date());
 		return CREATE;
@@ -106,8 +108,8 @@ public class GoodsApplyController extends BaseFormController {
             goodsModel.getGoodsApply().setApplyStatue(ApplyStatusEnum.Normal.getIndex());
             goodsModel.getGoodsApply().setCreateTime(currentDate);
 
-            goodsModel.getGoodsApply().setApplyTeacherId(getCurrentUser().getId());
-            goodsModel.getGoodsApply().setApplyTeacherName(getCurrentUser().getLoginName());
+            goodsModel.getGoodsApply().setApplyTeacherId(getCurrentUser().getUser().getTeacherInfo().getId());
+            goodsModel.getGoodsApply().setApplyTeacherName(getCurrentUser().getUser().getTeacherInfo().getTeacherName());
 
             goodsModel.getGoodsApply().setApplyOrganizationId(currentOrganization.getId());
             goodsModel.getGoodsApply().setApplyOrganizationName(currentOrganization.getName());
@@ -143,8 +145,8 @@ public class GoodsApplyController extends BaseFormController {
             goodsModel.getGoodsApply().setApplyStatue(ApplyStatusEnum.Normal.getIndex());
             goodsModel.getGoodsApply().setCreateTime(currentDate);
 
-            goodsModel.getGoodsApply().setApplyTeacherId(getCurrentUser().getId());
-            goodsModel.getGoodsApply().setApplyTeacherName(getCurrentUser().getLoginName());
+            goodsModel.getGoodsApply().setApplyTeacherId(getCurrentUser().getUser().getTeacherInfo().getId());
+            goodsModel.getGoodsApply().setApplyTeacherName(getCurrentUser().getUser().getTeacherInfo().getTeacherName());
             goodsModel.getGoodsApply().setCommitTime(currentDate);
             goodsModel.getGoodsApply().setApplyOrganizationId(currentOrganization.getId());
             goodsModel.getGoodsApply().setApplyOrganizationName(currentOrganization.getName());
@@ -193,6 +195,9 @@ public class GoodsApplyController extends BaseFormController {
         if (goodsApply.getApplyStatue() != ApplyStatusEnum.Pass.getIndex()) {
             return AjaxObject.newError("请等待申请通过之后操作！").setCallbackType("").toString();
         }
+        if (goodsApply.getLave() != null && goodsApply.getLave() <= 0) {
+            return AjaxObject.newError("该物品已经全部领取！").setCallbackType("").toString();
+        }
         return AjaxObject.newOk("打开窗口验证成功！").setCallbackType("").toString();
     }
 
@@ -203,12 +208,38 @@ public class GoodsApplyController extends BaseFormController {
 
         OaGoodsApply goodsApply = goodsApplyService.get(goodsModel.getGoodsApply().getId());
         goodsApply.setSickTime(goodsModel.getGoodsApply().getSickTime());
-        goodsApplyService.update(goodsApply);
 
-//        goodsReceiveService.
+        if (goodsApply.getLave() > 0) {
+
+
+            OaGoodsReceive goodsReceive = goodsModel.getGoodsReceive();
+            goodsReceive.setGoodsApplyId(goodsApply.getId());
+            goodsReceive.setRecipientsId(currentUser.getUser().getTeacherInfo().getId());
+            goodsReceive.setRecipientsName(currentUser.getUser().getTeacherInfo().getTeacherName());
+            goodsReceive.setRecipientsTime(new Date());
+            goodsReceive.setCreateTime(new Date());
+            Integer lave = goodsApply.getGoodsCount() - goodsReceive.getRecipientsCount();
+            goodsApply.setLave(lave);
+
+            goodsApplyService.update(goodsApply);
+
+            goodsReceiveService.save(goodsReceive);
+        }
 
         LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{goodsApply.getApplyTeacherName()}));
         return AjaxObject.newOk("领取成功！").toString();
+    }
+
+    @RequiresPermissions("GoodsApproval:sick")
+    @RequestMapping(value="/viewSick/{id}", method={RequestMethod.GET})
+    public String viewSick(@PathVariable Long id, Map<String, Object> map) {
+        OaGoodsApply goodsApply = goodsApplyService.get(id);
+        map.put("goodsApply", goodsApply);
+        if (goodsApply != null) {
+            List<OaGoodsReceive> goodsReceives = goodsReceiveService.findByCondition(goodsApply.getId());
+            map.put("goodsReceives", goodsReceives);
+        }
+        return SICK_VIEW;
     }
 
     @Log(message="修改了{0}的领物申请。", level=LogLevel.TRACE, override=true)
@@ -280,7 +311,7 @@ public class GoodsApplyController extends BaseFormController {
         OaGoodsApply goodsApply = new OaGoodsApply();
         page.setOrderField("applyTime");
         Map<String, Object> searchParam = new HashMap<String, Object>();
-        searchParam.put(SearchFilter.Operator.EQ + "_leaderId", getCurrentUser().getId()+"");
+        searchParam.put(SearchFilter.Operator.EQ + "_leaderId", getCurrentUser().getUser().getTeacherInfo().getId()+"");
         searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Submitted.getIndex() + "");
         searchParam.put(SearchFilter.Operator.EQ + "_applyStatue", ApplyStatusEnum.Normal.getIndex() + "");
         List<OaGoodsApply> leavePermits = null;
@@ -305,7 +336,7 @@ public class GoodsApplyController extends BaseFormController {
         OaGoodsApply goodsApply = new OaGoodsApply();
         page.setOrderField("applyTime");
         Map<String, Object> searchParam = new HashMap<String, Object>();
-        searchParam.put(SearchFilter.Operator.EQ + "_leaderId", getCurrentUser().getId()+"");
+        searchParam.put(SearchFilter.Operator.EQ + "_leaderId", getCurrentUser().getUser().getTeacherInfo().getId()+"");
         searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Submitted.getIndex() + "");
         searchParam.put(SearchFilter.Operator.GTE + "_applyStatue", ApplyStatusEnum.Pass.getIndex() + "");
         List<OaGoodsApply> leavePermits = null;
@@ -333,6 +364,7 @@ public class GoodsApplyController extends BaseFormController {
             OaGoodsApply goodsApply = goodsApplyService.get(ids[i]);
             goodsApply.setApplyStatue(ApplyStatusEnum.Pass.getIndex());
             goodsApply.setApplyTime(new Date());
+            goodsApply.setLave(goodsApply.getGoodsCount());
             goodsApplyService.update(goodsApply);
             titles[i] = goodsApply.getApplyTeacherName();
         }
@@ -366,7 +398,7 @@ public class GoodsApplyController extends BaseFormController {
         OaGoodsApply goodsApply = new OaGoodsApply();
         page.setOrderField("applyTime");
         Map<String, Object> searchParam = new HashMap<String, Object>();
-        searchParam.put(SearchFilter.Operator.EQ + "_applyTeacherId", getCurrentUser().getId()+"");
+        searchParam.put(SearchFilter.Operator.EQ + "_applyTeacherId", getCurrentUser().getUser().getTeacherInfo().getId()+"");
         searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Uncommitted.getIndex()+"");
         List<OaGoodsApply> leavePermits = null;
         if (StringUtils.isNotBlank(keywords)) {
@@ -390,7 +422,7 @@ public class GoodsApplyController extends BaseFormController {
         OaGoodsApply goodsApply = new OaGoodsApply();
         page.setOrderField("applyStatue");
         Map<String, Object> searchParam = new HashMap<String, Object>();
-        searchParam.put(SearchFilter.Operator.EQ + "_applyTeacherId", getCurrentUser().getId() + "");
+        searchParam.put(SearchFilter.Operator.EQ + "_applyTeacherId", getCurrentUser().getUser().getTeacherInfo().getId() + "");
         searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Submitted.getIndex() + "");
         List<OaGoodsApply> leavePermits = null;
         if (StringUtils.isNotBlank(keywords)) {
