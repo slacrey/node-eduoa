@@ -7,7 +7,7 @@ package com.node.eduoa.enums;
  * To change this template use File | Settings | File Templates.
  */
 public enum AttachmentTypeEnum {
-    OrgStructure("组织结构");
+    OrgStructure("组织结构"), TeachingPlan("电子教案");
 
     private String text;
 

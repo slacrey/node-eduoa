@@ -43,8 +43,8 @@
 
             <p>
                 <label>申请时间：</label>
-                <input type="text" name="goodsApply.createTime" value="<fmt:formatDate value="${goodsApply.createTime}" pattern="yyyy-MM-dd"/>"
-                       dateFmt="yyyy-MM-dd" class="required date" size="30"/><a class="inputDateButton" href="javascript:;">选择</a>
+                <input type="text" name="goodsApply.createTime" value="<fmt:formatDate value="${goodsApply.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+                       dateFmt="yyyy-MM-dd HH:mm:ss" class="required date" size="30"/><a class="inputDateButton" href="javascript:;">选择</a>
             </p>
 
             <p>

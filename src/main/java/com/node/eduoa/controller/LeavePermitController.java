@@ -268,7 +268,7 @@ public class LeavePermitController extends BaseFormController {
         OaLeavePermit leavePermit = new OaLeavePermit();
         page.setOrderField("applyTime");
         Map<String, Object> searchParam = new HashMap<String, Object>();
-        searchParam.put(SearchFilter.Operator.EQ + "_leaderId", getCurrentUser().getId()+"");
+        searchParam.put(SearchFilter.Operator.EQ + "_leaderId", getCurrentUser().getUser().getTeacherInfo().getId()+"");
         searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Submitted.getIndex() + "");
         searchParam.put(SearchFilter.Operator.EQ + "_applyStatue", ApplyStatusEnum.Normal.getIndex() + "");
         List<OaLeavePermit> leavePermits = null;
@@ -293,7 +293,7 @@ public class LeavePermitController extends BaseFormController {
         OaLeavePermit leavePermit = new OaLeavePermit();
         page.setOrderField("applyTime");
         Map<String, Object> searchParam = new HashMap<String, Object>();
-        searchParam.put(SearchFilter.Operator.EQ + "_leaderId", getCurrentUser().getId()+"");
+        searchParam.put(SearchFilter.Operator.EQ + "_leaderId", getCurrentUser().getUser().getTeacherInfo().getId()+"");
         searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Submitted.getIndex() + "");
         searchParam.put(SearchFilter.Operator.GTE + "_applyStatue", ApplyStatusEnum.Pass.getIndex() + "");
         List<OaLeavePermit> leavePermits = null;
@@ -352,7 +352,7 @@ public class LeavePermitController extends BaseFormController {
         OaLeavePermit leavePermit = new OaLeavePermit();
         page.setOrderField("applyTime");
         Map<String, Object> searchParam = new HashMap<String, Object>();
-        searchParam.put(SearchFilter.Operator.EQ + "_applyTeacherId", getCurrentUser().getId()+"");
+        searchParam.put(SearchFilter.Operator.EQ + "_applyTeacherId", getCurrentUser().getUser().getTeacherInfo().getId()+"");
         searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Uncommitted.getIndex()+"");
         List<OaLeavePermit> leavePermits = null;
         if (StringUtils.isNotBlank(keywords)) {
@@ -376,7 +376,7 @@ public class LeavePermitController extends BaseFormController {
         OaLeavePermit leavePermit = new OaLeavePermit();
         page.setOrderField("applyStatue");
         Map<String, Object> searchParam = new HashMap<String, Object>();
-        searchParam.put(SearchFilter.Operator.EQ + "_applyTeacherId", getCurrentUser().getId() + "");
+        searchParam.put(SearchFilter.Operator.EQ + "_applyTeacherId", getCurrentUser().getUser().getTeacherInfo().getId() + "");
         searchParam.put(SearchFilter.Operator.EQ + "_statue", StatusEnum.Submitted.getIndex() + "");
         List<OaLeavePermit> leavePermits = null;
         if (StringUtils.isNotBlank(keywords)) {

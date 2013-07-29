@@ -2,29 +2,32 @@
          pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include.inc.jsp"%>
 <div class="pageContent">
-    <form id="leaveForm" method="post" action="${contextPath }/management/eduoa/teachingplan/create"
+    <form id="leaveForm" method="post" action="${contextPath }/management/eduoa/teachingplan/update"
           enctype="multipart/form-data" class="required-validate pageForm"
           onsubmit="return iframeCallback(this, dialogReloadNavTab);">
+        <input type="hidden" name="id" value="${teachingPlan.id}" />
         <div class="pageFormContent" layoutH="58">
             <p>
                 <label>课件标题：</label>
-                <input type="text" name="planTitle" class="required" size="32" maxlength="32"/>
+                <input type="text" name="planTitle" value="${teachingPlan.planTitle}" class="required" size="32" maxlength="32"/>
             </p>
             <p>
                 <label>年级：</label>
-                <select name="gradeId" class="combox">
+                <select name="gradeId" value="${teachingPlan.gradeId}" class="combox">
                     <option value="">无归属年级</option>
                     <c:forEach items="${grades}" var="item" >
-                        <option value="${item.id}">${item.gradeName}</option>
+                        <option ${teachingPlan.gradeId == item.id ? 'selected="selected"':''}
+                                value="${item.id}">${item.gradeName}</option>
                     </c:forEach>
                 </select>
             </p>
             <p>
                 <label>学科：</label>
-                <select name="subjectId" class="combox">
+                <select name="subjectId" value="${teachingPlan.subjectId}" class="combox">
                     <option value="">不教授</option>
                     <c:forEach var="item" items="${subjects}">
-                        <option value="${item.id}">${item.subjectName}</option>
+                        <option ${teachingPlan.subjectId == item.id ? 'selected="selected"':''}
+                                value="${item.id}">${item.subjectName}</option>
                     </c:forEach>
                 </select>
             </p>
@@ -34,8 +37,8 @@
                 <input type="text" name="userName" value="${user.teacherName}" readonly="true" size="32" maxlength="32"/>
             </p>
             <p>
-                <label>教案：</label>
-                <input name="uploadFile" class="required" type="file" />
+                <label>教案：<a href="#" target="_blank">${teachingPlan.attachmentTitle}</a></label>
+                <input name="uploadFile" type="file" />
             </p>
         </div>
 

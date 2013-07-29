@@ -50,7 +50,7 @@
         <tbody>
         <c:forEach var="item" items="${leaveAttendances}">
             <tr target="slt_uid" rel="${item.id}">
-                <td>${item.attendanceDate}</td>
+                <td>${item.attendanceDateCn}</td>
                 <td>${item.teacherName}</td>
                 <td>
                     <c:if test="${item.leaveStartDisplay == 1}" var="leaveStartDisplay">

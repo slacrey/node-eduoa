@@ -2,11 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include.inc.jsp"%>
 
-<keta:paginationForm action="${contextPath }/management/eduoa/teachingplan/list" page="${page }">
+<keta:paginationForm action="${contextPath }/management/eduoa/teachingplan/listRatings" page="${page }">
 	<input type="hidden" name="keywords" value="${keywords}"/>
 </keta:paginationForm>
 
-<form method="post" action="${contextPath }/management/eduoa/teachingplan/list" onsubmit="return navTabSearch(this)">
+<form method="post" action="${contextPath }/management/eduoa/teachingplan/listRatings" onsubmit="return navTabSearch(this)">
 	<div class="pageHeader">
 		<div class="searchBar">
 			<ul class="searchContent">
@@ -28,17 +28,8 @@
 
 	<div class="panelBar">
 		<ul class="toolBar">
-            <shiro:hasPermission name="TeachingPlan:save">
-                <li><a class="add" target="dialog" mask="true" width="530" height="350" href="${contextPath }/management/eduoa/teachingplan/create"><span>添加课件</span></a></li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="TeachingPlan:save">
-                <li><a class="arrow_refresh" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/teachingplan/submit" title="确认要提交选定课件?"><span>提交课件</span></a></li>
-            </shiro:hasPermission>
-			<shiro:hasPermission name="TeachingPlan:edit">
-				<li><a class="edit" target="dialog" mask="true" width="530" height="350" href="${contextPath }/management/eduoa/teachingplan/update/{slt_uid}"><span>编辑课件</span></a></li>
-			</shiro:hasPermission>
-			<shiro:hasPermission name="TeachingPlan:delete">
-				<li><a class="delete" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/teachingplan/delete" title="确认要删除选定课件?"><span>删除课件</span></a></li>
+			<shiro:hasPermission name="TeachingPlanRatings:ratings">
+				<li><a class="edit" target="dialog" mask="true" width="530" height="350" href="${contextPath }/management/eduoa/teachingplan/ratings/{slt_uid}"><span>评定课件</span></a></li>
 			</shiro:hasPermission>
 		</ul>
 	</div>
@@ -53,6 +44,7 @@
 				<th width="100">学科</th>
 				<th width="100">撰写人</th>
 				<th width="100">上传状态</th>
+				<th width="100">评定</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -65,6 +57,7 @@
                 <td>${item.subjectName}</td>
                 <td>${item.teacherName}</td>
                 <td style="color: red;">${item.statueCn}</td>
+                <td style="color: red;">${item.planLevelCn}</td>
 			</tr>
 			</c:forEach>
 		</tbody>

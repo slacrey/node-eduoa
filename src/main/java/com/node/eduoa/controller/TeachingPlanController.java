@@ -1,10 +1,10 @@
 package com.node.eduoa.controller;
 
 import com.node.eduoa.entity.*;
-import com.node.eduoa.enums.AttachmentTypeEnum;
-import com.node.eduoa.enums.SemesterEnum;
+import com.node.eduoa.enums.*;
 import com.node.eduoa.service.*;
 import com.node.eduoa.utils.FilenameUtils;
+import com.node.eduoa.utils.YearUtils;
 import com.node.system.log.Log;
 import com.node.system.log.LogLevel;
 import com.node.system.log.LogMessageObject;
@@ -16,19 +16,15 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springside.modules.beanvalidator.BeanValidators;
+import org.springside.modules.persistence.SearchFilter;
 
 import javax.validation.Validator;
 import java.io.File;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 组织结构
@@ -66,6 +62,9 @@ public class TeachingPlanController extends BaseFormController {
     private static final String CREATE = "management/eduoa/teachingplan/create";
     private static final String VIEW = "management/eduoa/teachingplan/view";
     private static final String LIST = "management/eduoa/teachingplan/list";
+    private static final String LIST_RATINGS = "management/eduoa/teachingplan/ratings_list";
+    private static final String UPDATE = "management/eduoa/teachingplan/update";
+    private static final String RATINGS = "management/eduoa/teachingplan/ratings";
 
 
     @RequiresPermissions("TeachingPlanView:view")
@@ -89,6 +88,90 @@ public class TeachingPlanController extends BaseFormController {
         map.put("subjects", subjectService.findAll());
         map.put("user", currentUser.getUser().getTeacherInfo());
         return CREATE;
+    }
+
+    @RequiresPermissions("TeachingPlan:edit")
+    @RequestMapping(value="/update/{id}", method=RequestMethod.GET)
+    public String preUpdate(@PathVariable Long id, Map<String, Object> map) {
+        OaTeachingPlan teachingPlan = teachingPlanService.get(id);
+        Calendar calendar = Calendar.getInstance();
+        map.put("teachingPlan", teachingPlan);
+        map.put("grades", gradeService.findAllByYear(calendar.get(Calendar.YEAR)));
+        map.put("subjects", subjectService.findAll());
+        map.put("user", currentUser.getUser().getTeacherInfo());
+
+        return UPDATE;
+    }
+
+    @Log(message="修改了{0}年级。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("TeachingPlan:edit")
+    @RequestMapping(value="/update", method=RequestMethod.POST)
+    public @ResponseBody String update(@RequestParam("id") Long id, @RequestParam("planTitle") String planTitle,
+                                       @RequestParam("gradeId") Long gradeId, @RequestParam("subjectId") Long subjectId,
+                                       @RequestParam("userId") Long userId, @RequestParam("userName") String userName,
+                                       @RequestParam("uploadFile") MultipartFile multipartFile) {
+
+        String path = getServletContext().getRealPath("/upload");
+        String webPath = "/upload";
+
+        if(multipartFile.isEmpty()){
+            OaTeachingPlan plan = teachingPlanService.get(id);
+            plan.setPlanTitle(planTitle);
+            plan.setSubjectId(subjectId);
+            OaGrade grade = gradeService.get(gradeId);
+            if (grade != null) {
+                plan.setGradeId(grade.getId());
+                plan.setGradeName(grade.getGradeName());
+            }
+            OaSubject subject = subjectService.get(subjectId);
+            if (subject != null) {
+                plan.setSubjectId(subjectId);
+                plan.setSubjectName(subject.getSubjectName());
+            }
+            plan.setTeacherId(userId);
+            plan.setTeacherName(userName);
+            teachingPlanService.save(plan);
+
+            return AjaxObject.newOk("课件修改成功！").toString();
+        }else{
+
+            OaTeachingPlan plan = teachingPlanService.get(id);
+            if (plan.getAttachmentId() != null) {
+                attachmentService.delete(plan.getAttachmentId());
+            }
+
+            Calendar calendar = Calendar.getInstance();
+            String distDir = "/teaching_plan/" + calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH)+1)
+                    + "/" + calendar.get(Calendar.DAY_OF_MONTH) + "/";
+
+            File distDirFile = new File(path + distDir);
+            if (!distDirFile.exists()) {
+                distDirFile.mkdirs();
+            }
+
+            String fileExt = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+            String fileName = distDir + calendar.getTimeInMillis() + "." + fileExt;
+            File file = new File(path+fileName);
+
+            try {
+                multipartFile.transferTo(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return AjaxObject.newError("上传文件失败，请联系管理员！").setCallbackType("").toString();
+            }
+
+            SysAttachment sysAttachment = initAttachment(file, multipartFile.getOriginalFilename(), fileExt, webPath + fileName);
+            attachmentService.save(sysAttachment);
+
+            OaTeachingPlan teachingPlan = initTeachingPlan(planTitle, gradeId,
+                    subjectId, userId, userName, sysAttachment);
+            teachingPlan.setStatue(UploadEnum.UnUpLoad.getIndex());
+            teachingPlanService.save(teachingPlan);
+
+            LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{planTitle}));
+            return AjaxObject.newOk("课件修改成功！").toString();
+        }
+
     }
 
     /**
@@ -133,13 +216,34 @@ public class TeachingPlanController extends BaseFormController {
 
             OaTeachingPlan teachingPlan = initTeachingPlan(planTitle, gradeId,
                     subjectId, userId, userName, sysAttachment);
+            teachingPlan.setStatue(UploadEnum.UnUpLoad.getIndex());
             teachingPlanService.save(teachingPlan);
 
             LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{planTitle}));
-            return AjaxObject.newOk("文件添加成功！").setCallbackType("").setForwardUrl(CREATE).toString();
+            return AjaxObject.newOk("文件添加成功！").toString();
         }
 
     }
+
+    @Log(message="提交了{0}课件。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("TeachingPlan:save")
+    @RequestMapping(value="/submit", method=RequestMethod.POST)
+    public @ResponseBody String submit(Long[] ids) {
+        String[] titles = new String[ids.length];
+        for (int i = 0; i < ids.length; i++) {
+            OaTeachingPlan teachingPlan = teachingPlanService.get(ids[i]);
+            teachingPlan.setStatue(UploadEnum.Upload.getIndex());
+            if (teachingPlan.getAttachmentId() != null) {
+                attachmentService.delete(teachingPlan.getAttachmentId());
+            }
+            teachingPlanService.save(teachingPlan);
+            titles[i] = teachingPlan.getPlanTitle();
+        }
+
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{Arrays.toString(titles)}));
+        return AjaxObject.newOk("课件提交成功！").setCallbackType("").toString();
+    }
+
 
     @RequiresPermissions("TeachingPlan:view")
     @RequestMapping(value="/list", method={RequestMethod.GET, RequestMethod.POST})
@@ -151,7 +255,6 @@ public class TeachingPlanController extends BaseFormController {
             teachingPlans = teachingPlanService.findAll(page);
         }
         SemesterEnum[] semesterEnums = SemesterEnum.values();
-        map.put("semesterEnums", semesterEnums);
 
         map.put("page", page);
         map.put("teachingPlans", teachingPlans);
@@ -160,6 +263,63 @@ public class TeachingPlanController extends BaseFormController {
         return LIST;
     }
 
+    @RequiresPermissions("TeachingPlanRatings:view")
+    @RequestMapping(value="/listRatings", method={RequestMethod.GET, RequestMethod.POST})
+    public String listRatings(Page page, String keywords, Map<String, Object> map) {
+        List<OaTeachingPlan> teachingPlans = null;
+        Map<String, Object> searchParam = new HashMap<String, Object>();
+        searchParam.put(SearchFilter.Operator.EQ + "_statue", UploadEnum.Upload.getIndex()+"");
+        if (StringUtils.isNotBlank(keywords)) {
+            searchParam.put(SearchFilter.Operator.EQ + "_planTitle", keywords);
+            teachingPlans = teachingPlanService.findByPlanTitleCondition(page, searchParam);
+        } else {
+            teachingPlans = teachingPlanService.findByPlanTitleCondition(page, searchParam);
+        }
+
+        map.put("page", page);
+        map.put("teachingPlans", teachingPlans);
+        map.put("keywords", keywords);
+
+        return LIST_RATINGS;
+    }
+
+    @RequiresPermissions("TeachingPlanRatings:ratings")
+    @RequestMapping(value="/ratings/{id}", method=RequestMethod.GET)
+    public String preRatings(@PathVariable Long id, Map<String, Object> map) {
+        OaTeachingPlan teachingPlan = teachingPlanService.get(id);
+        map.put("teachingPlan", teachingPlan);
+        map.put("planLevelEnum", PlanLevelEnum.values());
+
+        return RATINGS;
+    }
+
+    @Log(message="评定了{0}课件。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("TeachingPlanRatings:ratings")
+    @RequestMapping(value="/ratings", method=RequestMethod.POST)
+    public @ResponseBody String ratings(@RequestParam("id") Long id, @RequestParam("planLevel") Integer planLevel) {
+        OaTeachingPlan teachingPlan = teachingPlanService.get(id);
+        teachingPlan.setRatings(RatingsEnum.Assessed.getIndex());
+        teachingPlan.setPlanLevel(planLevel);
+        teachingPlanService.save(teachingPlan);
+
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{teachingPlan.getPlanTitle()}));
+        return AjaxObject.newOk("课件评定成功！").toString();
+    }
+
+    @Log(message="删除了{0}课件。", level=LogLevel.TRACE, override=true)
+    @RequiresPermissions("TeachingPlan:delete")
+    @RequestMapping(value="/delete", method=RequestMethod.POST)
+    public @ResponseBody String deleteMany(Long[] ids) {
+        String[] titles = new String[ids.length];
+        for (int i = 0; i < ids.length; i++) {
+            OaTeachingPlan teachingPlan = teachingPlanService.get(ids[i]);
+            teachingPlanService.delete(teachingPlan.getId());
+            titles[i] = teachingPlan.getPlanTitle();
+        }
+
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{Arrays.toString(titles)}));
+        return AjaxObject.newOk("课件删除成功！").setCallbackType("").toString();
+    }
 
     private SysAttachment initAttachment(File file, String fileName, String fileExt, String urlPath) {
         SysAttachment attachment = new SysAttachment();
@@ -168,7 +328,7 @@ public class TeachingPlanController extends BaseFormController {
         attachment.setFileSize(file.length());
         attachment.setServiceFile(file.getPath());
         attachment.setCreateTime(new Date());
-        attachment.setAttachmentType(AttachmentTypeEnum.OrgStructure.getIndex());
+        attachment.setAttachmentType(AttachmentTypeEnum.TeachingPlan.getIndex());
         attachment.setUserId(currentUser.getId());
         attachment.setUrlPath(urlPath);
         return attachment;

@@ -80,7 +80,7 @@ public class OaTeachingPlan extends IdEntity {
 
     public String getStatueCn() {
         if (statue != null) {
-            UploadEnum educationEnum = UploadEnum.valueByIndex(ratings);
+            UploadEnum educationEnum = UploadEnum.valueByIndex(statue);
             if (educationEnum != null) {
                 return educationEnum.getText();
             }
