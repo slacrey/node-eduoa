@@ -2,9 +2,7 @@ package com.node.eduoa.entity;
 
 import com.node.system.entity.IdEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -37,6 +35,7 @@ public class OaLeaveAttendance extends IdEntity {
     @Column(name = "organization_name")
     private String organizationName;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "leave_start_time")
     private Date leaveStartTime;
     @Column(name = "leave_start")
@@ -44,6 +43,7 @@ public class OaLeaveAttendance extends IdEntity {
     @Transient
     private Integer leaveStartDisplay;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "leave_end_time")
     private Date leaveEndTime;
     @Column(name = "leave_end")
@@ -57,6 +57,7 @@ public class OaLeaveAttendance extends IdEntity {
     @Column(name = "leave_time_cn")
     private String leaveTimeCn;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
 

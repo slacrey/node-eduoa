@@ -4,6 +4,8 @@ import com.node.eduoa.enums.PurchaseEnum;
 import com.node.system.entity.IdEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import java.util.Date;
 
@@ -33,9 +35,11 @@ public class OaPurchaseConduct extends IdEntity {
     @javax.persistence.Column(name = "conduct_organization_name")
     private String conductOrganizationName;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @javax.persistence.Column(name = "conduct_start_time")
     private Date conductStartTime;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @javax.persistence.Column(name = "conduct_end_time")
     private Date conductEndTime;
 
@@ -72,12 +76,15 @@ public class OaPurchaseConduct extends IdEntity {
     @javax.persistence.Column(name = "price_sum")
     private Float priceSum;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @javax.persistence.Column(name = "create_time")
     private Date createTime;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @javax.persistence.Column(name = "commit_time")
     private Date commitTime;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @javax.persistence.Column(name = "apply_time")
     private Date applyTime;
 

@@ -3,9 +3,7 @@ package com.node.eduoa.entity;
 import com.node.eduoa.enums.AttendanceEnum;
 import com.node.system.entity.IdEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -37,6 +35,8 @@ public class OaRegistrationAttendance extends IdEntity {
 
     @Column(name = "morning_start")
     private Integer morningStart;
+
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "morning_start_time")
     private Date morningStartTime;
     @Transient
@@ -46,6 +46,8 @@ public class OaRegistrationAttendance extends IdEntity {
 
     @Column(name = "morning_end")
     private Integer morningEnd;
+
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "morning_end_time")
     private Date morningEndTime;
     @Transient
@@ -55,6 +57,8 @@ public class OaRegistrationAttendance extends IdEntity {
 
     @Column(name = "afternoon_start")
     private Integer afternoonStart;
+
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "afternoon_start_time")
     private Date afternoonStartTime;
     @Transient
@@ -64,6 +68,8 @@ public class OaRegistrationAttendance extends IdEntity {
 
     @Column(name = "afternoon_end")
     private Integer afternoonEnd;
+
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "afternoon_end_time")
     private Date afternoonEndTime;
     @Transient
@@ -73,6 +79,8 @@ public class OaRegistrationAttendance extends IdEntity {
 
     @Column(name = "night_start")
     private Integer nightStart;
+
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "night_start_time")
     private Date nightStartTime;
     @Transient
@@ -82,6 +90,8 @@ public class OaRegistrationAttendance extends IdEntity {
 
     @Column(name = "night_end")
     private Integer nightEnd;
+
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "night_end_time")
     private Date nightEndTime;
     @Transient

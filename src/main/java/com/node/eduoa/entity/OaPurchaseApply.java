@@ -3,10 +3,7 @@ package com.node.eduoa.entity;
 import com.node.eduoa.enums.ApplyStatusEnum;
 import com.node.system.entity.IdEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -43,8 +40,12 @@ public class OaPurchaseApply extends IdEntity {
     private Long applyOrganizationId;
     @Column(name = "apply_organization_name")
     private String applyOrganizationName;
+
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "apply_time")
     private Date applyTime;
     @Column(name = "apply_time_long")
@@ -54,6 +55,7 @@ public class OaPurchaseApply extends IdEntity {
     @Column(name = "statue")
     private Integer statue;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "commit_time")
     private Date commitTime;
     @Column(name = "commit_time_long")

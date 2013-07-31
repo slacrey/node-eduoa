@@ -1,5 +1,6 @@
 package com.node.eduoa.controller;
 
+import com.node.eduoa.converters.CustomTimestampEditor;
 import com.node.eduoa.entity.*;
 import com.node.eduoa.enums.*;
 import com.node.eduoa.service.ClassService;
@@ -21,13 +22,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springside.modules.beanvalidator.BeanValidators;
 import org.springside.modules.persistence.SearchFilter;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Validator;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -65,6 +71,20 @@ public class StudentController extends BaseFormController {
     private static final String TEACH_CLASS = "management/eduoa/student/teach_class";
     private static final String GUIDE_CLASS = "management/eduoa/student/guide_class";
     private static final String CLASS_LIST = "management/eduoa/student/class_list";
+
+
+    @InitBinder
+    protected void initBinder(HttpServletRequest request,
+                              ServletRequestDataBinder binder) {
+        binder.registerCustomEditor(Integer.class, null,
+                new CustomNumberEditor(Integer.class, null, true));
+        binder.registerCustomEditor(Long.class, null,
+                new CustomNumberEditor(Long.class, null, true));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", request.getLocale());
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, null,
+                new CustomDateEditor(dateFormat, true));
+    }
 
     @Autowired
     private Validator validator;

@@ -4,6 +4,8 @@ import com.node.system.entity.IdEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
@@ -23,10 +25,12 @@ public class OaGoodsReceive extends IdEntity {
     private Long recipientsId;
     @Column(name = "recipients_name")
     private String recipientsName;
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "recipients_time")
     private Date recipientsTime;
     @Column(name = "recipients_count")
     private Integer recipientsCount;
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
 

@@ -3,9 +3,7 @@ package com.node.eduoa.entity;
 import com.node.eduoa.enums.ApplyStatusEnum;
 import com.node.system.entity.IdEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -35,16 +33,23 @@ public class OaLeavePermit extends IdEntity {
     @javax.persistence.Column(name = "remark")
     private String remark;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @javax.persistence.Column(name = "start_time")
     private Date startTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
     @javax.persistence.Column(name = "end_time")
     private Date endTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
     @javax.persistence.Column(name = "apply_time")
     private Date applyTime;
     @javax.persistence.Column(name = "apply_teacher_id")
     private Long applyTeacherId;
     @javax.persistence.Column(name = "apply_teacher_name")
     private String applyTeacherName;
+
+    @Temporal(TemporalType.TIMESTAMP)
     @javax.persistence.Column(name = "create_time")
     private Date createTime;
     @javax.persistence.Column(name = "statue")
@@ -58,6 +63,7 @@ public class OaLeavePermit extends IdEntity {
     @Column(name = "real_day")
     private Integer realDay;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "sick_time")
     private Date sickTime;
 
