@@ -22,6 +22,9 @@ public class OaScore extends IdEntity {
     @Column(name = "exam_date")
     private Date examDate;
 
+    @Column(name = "exam_type")
+    private String examType;
+
     @Column(name = "exam_date_time")
     private Long examDateTime;
 
@@ -64,6 +67,14 @@ public class OaScore extends IdEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time")
     private Date createTime;
+
+    public String getExamType() {
+        return examType;
+    }
+
+    public void setExamType(String examType) {
+        this.examType = examType;
+    }
 
     public Date getExamDate() {
         return examDate;

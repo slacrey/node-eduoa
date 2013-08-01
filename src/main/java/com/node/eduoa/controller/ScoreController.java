@@ -13,7 +13,8 @@
  
 package com.node.eduoa.controller;
 
-import com.node.eduoa.entity.OaGrade;
+import com.node.eduoa.entity.OaScore;
+import com.node.eduoa.entity.OaScore;
 import com.node.eduoa.enums.SemesterEnum;
 import com.node.eduoa.service.GradeService;
 import com.node.eduoa.service.ScoreService;
@@ -43,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 /** 
- * 年级管理
+ * 分数管理
  * User: linfeng at Administrator
  * Date: 13-7-7
  * Time: 上午11:47
@@ -53,9 +54,6 @@ import java.util.Map;
 @RequestMapping("/management/eduoa/score")
 public class ScoreController extends BaseFormController {
 
-    @Qualifier("gradeServiceImpl")
-    @Autowired
-    private GradeService gradeService;
     @Qualifier("scoreServiceImpl")
     @Autowired
     private ScoreService scoreService;
@@ -71,7 +69,7 @@ public class ScoreController extends BaseFormController {
 
 
 
-    @RequiresPermissions("Grade:save")
+    @RequiresPermissions("Score:save")
 	@RequestMapping(value="/create", method=RequestMethod.GET)
 	public String preCreate(Map<String, Object> map) {
         map.put("semesterEnums", SemesterEnum.values());
@@ -82,33 +80,33 @@ public class ScoreController extends BaseFormController {
 	/**
 	 * LogMessageObject的write用法实例。
 	 */
-    @Log(message="添加了{0}年级。", level=LogLevel.TRACE, override=true)
-	@RequiresPermissions("Grade:save")
+    @Log(message="添加了{0}分数。", level=LogLevel.TRACE, override=true)
+	@RequiresPermissions("Score:save")
 	@RequestMapping(value="/create", method=RequestMethod.POST)
-	public @ResponseBody String create(OaGrade grade) {
-		BeanValidators.validateWithException(validator, grade);
+	public @ResponseBody String create(OaScore score) {
+		BeanValidators.validateWithException(validator, score);
         try {
-            grade.setCreateTime(new Date());
-            gradeService.save(grade);
+            score.setCreateTime(new Date());
+            scoreService.save(score);
         } catch (Exception e) {
             return AjaxObject.newError(e.getMessage()).setCallbackType("").toString();
         }
 		
 		// 加入一个LogMessageObject，该对象的isWritten为true，会记录日志。
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{grade.getGradeName()}));
-		return AjaxObject.newOk("年级添加成功！").toString();
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{score.getGradeName()}));
+		return AjaxObject.newOk("分数添加成功！").toString();
 	}
 	
 	/**
 	 * LogMessageObject的ignore用法实例，ignore不会记录日志。
 	 */
 	@Log(message="你永远不会看见该日志，LogMessageObject的isWritten为false。", level=LogLevel.TRACE)
-	@RequiresPermissions("Grade:edit")
+	@RequiresPermissions("Score:edit")
 	@RequestMapping(value="/update/{id}", method=RequestMethod.GET)
 	public String preUpdate(@PathVariable Long id, Map<String, Object> map) {
-		OaGrade grade = gradeService.get(id);
+		OaScore score = scoreService.get(id);
 		
-		map.put("grade", grade);
+		map.put("score", score);
         map.put("years", YearUtils.getYears(3));
         map.put("semesterEnums", SemesterEnum.values());
 		
@@ -117,35 +115,26 @@ public class ScoreController extends BaseFormController {
 		return UPDATE;
 	}
 
-    @Log(message="修改了{0}年级。", level=LogLevel.TRACE, override=true)
-	@RequiresPermissions("Grade:edit")
+    @Log(message="修改了{0}分数。", level=LogLevel.TRACE, override=true)
+	@RequiresPermissions("Score:edit")
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public @ResponseBody String update(OaGrade grade) {
-		BeanValidators.validateWithException(validator, grade);
-		gradeService.update(grade);
+	public @ResponseBody String update(OaScore score) {
+		BeanValidators.validateWithException(validator, score);
+		scoreService.update(score);
 
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{grade.getGradeName()}));
-		return AjaxObject.newOk("年级修改成功！").toString();
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{score.getGradeName()}));
+		return AjaxObject.newOk("分数修改成功！").toString();
 	}
 
 
-    @Log(message="删除了{0}年级。", level=LogLevel.TRACE, override=true)
-	@RequiresPermissions("Grade:delete")
+    @Log(message="删除了{0}分数。", level=LogLevel.TRACE, override=true)
+	@RequiresPermissions("Score:delete")
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.POST)
 	public @ResponseBody String delete(@PathVariable Long id) {
-        OaGrade grade = gradeService.get(id);
-        if (grade.getOaClassesById() != null && !grade.getOaClassesById().isEmpty()) {
-            return AjaxObject.newError("年级删除失败：【"+grade.getGradeName()+"】下有班级！").setCallbackType("").toString();
-        }
-        if (grade.getOaTeacherInfosById() != null && !grade.getOaTeacherInfosById().isEmpty()) {
-            return AjaxObject.newError("年级删除失败：【"+grade.getGradeName()+"】下有属于此的教师！").setCallbackType("").toString();
-        }
-        if (grade.getOaStudentGradesById() != null && !grade.getOaStudentGradesById().isEmpty()) {
-            return AjaxObject.newError("年级删除失败：【"+grade.getGradeName()+"】下有学生！").setCallbackType("").toString();
-        }
-		gradeService.delete(id);
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{grade.getGradeName()}));
-		return AjaxObject.newOk("年级删除成功！").setCallbackType("").toString();
+        OaScore score = scoreService.get(id);
+		scoreService.delete(id);
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{score.getGradeName()}));
+		return AjaxObject.newOk("分数删除成功！").setCallbackType("").toString();
 	}
 	
 	
@@ -155,38 +144,35 @@ public class ScoreController extends BaseFormController {
 	 * 
 	 * 批量删除展示
 	 */
-	@Log(message="删除了{0}年级。", level=LogLevel.TRACE, override=true)
-	@RequiresPermissions("Grade:delete")
+	@Log(message="删除了{0}分数。", level=LogLevel.TRACE, override=true)
+	@RequiresPermissions("Score:delete")
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
 	public @ResponseBody String deleteMany(Long[] ids) {
 		String[] titles = new String[ids.length];
 		for (int i = 0; i < ids.length; i++) {
-			OaGrade grade = gradeService.get(ids[i]);
-            if (grade.getOaClassesById() != null && !grade.getOaClassesById().isEmpty()) {
-                return AjaxObject.newError("年级删除失败：【"+grade.getGradeName()+"】下面有班级！").setCallbackType("").toString();
-            }
-			gradeService.delete(grade.getId());
-			titles[i] = grade.getGradeName();
+			OaScore score = scoreService.get(ids[i]);
+			scoreService.delete(score.getId());
+			titles[i] = score.getGradeName();
 		}
 		
 		LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{Arrays.toString(titles)}));
-		return AjaxObject.newOk("年级删除成功！").setCallbackType("").toString();
+		return AjaxObject.newOk("分数删除成功！").setCallbackType("").toString();
 	}
 
-	@RequiresPermissions("Grade:view")
+	@RequiresPermissions("Score:view")
 	@RequestMapping(value="/list", method={RequestMethod.GET, RequestMethod.POST})
 	public String list(Page page, String keywords, Map<String, Object> map) {
-		List<OaGrade> grades = null;
+		List<OaScore> scores = null;
 		if (StringUtils.isNotBlank(keywords)) {
-			grades = gradeService.find(page, keywords);
+			scores = scoreService.find(page, keywords);
 		} else {
-			grades = gradeService.findAll(page);
+			scores = scoreService.findAll(page);
 		}
         SemesterEnum[] semesterEnums = SemesterEnum.values();
         map.put("semesterEnums", semesterEnums);
 
 		map.put("page", page);
-		map.put("grades", grades);
+		map.put("scores", scores);
 		map.put("keywords", keywords);
 
 		return LIST;
@@ -199,11 +185,11 @@ public class ScoreController extends BaseFormController {
 	 * @param map
 	 * @return
 	 */
-	@RequiresPermissions("Grade:look")
+	@RequiresPermissions("Score:look")
 	@RequestMapping(value="/view/{id}", method={RequestMethod.GET})
 	public String view(@PathVariable Long id, Map<String, Object> map) {
-		OaGrade grade = gradeService.get(id);
-		map.put("grade", grade);
+		OaScore score = scoreService.get(id);
+		map.put("score", score);
         map.put("semesterEnums", SemesterEnum.values());
 		return VIEW;
 	}
