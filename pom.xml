@@ -86,6 +86,12 @@
 	<!-- 依赖项定义 -->
 	<dependencies>
 
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-jaxrs</artifactId>
+            <version>1.7.1</version>
+        </dependency>
+
 		<!-- SPRING basic begin(一般不需要显式定义) -->
 		<dependency>
 			<groupId>org.springframework</groupId>

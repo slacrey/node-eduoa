@@ -11,7 +11,7 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
-					<label>年级名称：</label>
+					<label>分数名称：</label>
 					<input type="text" name="keywords" value="${keywords}"/>
 				</li>
 			</ul>
@@ -29,16 +29,16 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<shiro:hasPermission name="Score:view">
-				<li><a class="magnifier" target="dialog" mask="true" width="530" height="350" href="${contextPath }/management/eduoa/score/view/{slt_uid}"><span>查看年级</span></a></li>
+				<li><a class="magnifier" target="dialog" mask="true" width="530" height="350" href="${contextPath }/management/eduoa/score/view/{slt_uid}"><span>查看分数</span></a></li>
 			</shiro:hasPermission>		
 			<shiro:hasPermission name="Score:save">
-				<li><a class="add" target="dialog" mask="true" width="530" height="350" href="${contextPath }/management/eduoa/score/create"><span>添加年级</span></a></li>
+				<li><a class="add" target="dialog" mask="true" width="530" height="350" href="${contextPath }/management/eduoa/score/create"><span>添加分数</span></a></li>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="Score:edit">
-				<li><a class="edit" target="dialog" mask="true" width="530" height="350" href="${contextPath }/management/eduoa/score/update/{slt_uid}"><span>编辑年级</span></a></li>
+				<li><a class="edit" target="dialog" mask="true" width="530" height="350" href="${contextPath }/management/eduoa/score/update/{slt_uid}"><span>编辑分数</span></a></li>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="Score:delete">
-				<li><a class="delete" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/score/delete" title="确认要删除选定年级?"><span>删除年级</span></a></li>
+				<li><a class="delete" target="selectedTodo" rel="ids" href="${contextPath }/management/eduoa/score/delete" title="确认要删除选定分数?"><span>删除分数</span></a></li>
 			</shiro:hasPermission>
 		</ul>
 	</div>
@@ -49,7 +49,7 @@
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th width="130">时间</th>
 				<th>考试批次</th>
-				<th width="100">年级</th>
+				<th width="100">分数</th>
 				<th width="100">班级</th>
 				<th width="100">学生姓名</th>
 				<th width="100">学科</th>

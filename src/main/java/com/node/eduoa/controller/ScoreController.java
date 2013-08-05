@@ -15,10 +15,15 @@ package com.node.eduoa.controller;
 
 import com.node.eduoa.entity.OaScore;
 import com.node.eduoa.entity.OaScore;
+import com.node.eduoa.entity.OaStudent;
+import com.node.eduoa.enums.ExamsEnum;
 import com.node.eduoa.enums.SemesterEnum;
 import com.node.eduoa.service.GradeService;
 import com.node.eduoa.service.ScoreService;
+import com.node.eduoa.service.StudentService;
+import com.node.eduoa.service.SubjectService;
 import com.node.eduoa.service.impl.ScoreServiceImpl;
+import com.node.eduoa.service.impl.StudentServiceImpl;
 import com.node.eduoa.utils.YearUtils;
 import com.node.system.log.Log;
 import com.node.system.log.LogLevel;
@@ -38,10 +43,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springside.modules.beanvalidator.BeanValidators;
 
 import javax.validation.Validator;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /** 
  * 分数管理
@@ -57,7 +59,15 @@ public class ScoreController extends BaseFormController {
     @Qualifier("scoreServiceImpl")
     @Autowired
     private ScoreService scoreService;
-
+    @Qualifier("gradeServiceImpl")
+    @Autowired
+    private GradeService gradeService;
+    @Qualifier("subjectServiceImpl")
+    @Autowired
+    private SubjectService subjectService;
+    @Qualifier("studentServiceImpl")
+    @Autowired
+    private StudentService studentService;
 	
 	@Autowired
 	private Validator validator;
@@ -68,12 +78,15 @@ public class ScoreController extends BaseFormController {
 	private static final String VIEW = "management/eduoa/score/view";
 
 
-
     @RequiresPermissions("Score:save")
 	@RequestMapping(value="/create", method=RequestMethod.GET)
 	public String preCreate(Map<String, Object> map) {
         map.put("semesterEnums", SemesterEnum.values());
+        map.put("examsEnums", ExamsEnum.values());
         map.put("years", YearUtils.getYears(3));
+        Calendar calendar = Calendar.getInstance();
+        map.put("grades", gradeService.findAllByYear(calendar.get(Calendar.YEAR)));
+        map.put("subjects", subjectService.findAll());
 		return CREATE;
 	}
 	
@@ -126,6 +139,14 @@ public class ScoreController extends BaseFormController {
 		return AjaxObject.newOk("分数修改成功！").toString();
 	}
 
+    @RequiresPermissions("Score:edit")
+    @RequestMapping(value="/student/${id}", method=RequestMethod.POST)
+    public @ResponseBody String getStudent(@PathVariable Long id) {
+
+        OaStudent student = studentService.get(id);
+        return AjaxObject.newOk("分数修改成功！").setValue(student).toString();
+    }
+
 
     @Log(message="删除了{0}分数。", level=LogLevel.TRACE, override=true)
 	@RequiresPermissions("Score:delete")
@@ -168,8 +189,8 @@ public class ScoreController extends BaseFormController {
 		} else {
 			scores = scoreService.findAll(page);
 		}
-        SemesterEnum[] semesterEnums = SemesterEnum.values();
-        map.put("semesterEnums", semesterEnums);
+
+        map.put("examsEnums", ExamsEnum.values());
 
 		map.put("page", page);
 		map.put("scores", scores);

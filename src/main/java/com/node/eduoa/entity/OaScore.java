@@ -3,6 +3,7 @@ package com.node.eduoa.entity;
 import com.node.system.entity.IdEntity;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -14,6 +15,8 @@ import java.util.Date;
  * Time: 下午10:07
  * To change this template use File | Settings | File Templates.
  */
+@javax.persistence.Table(name = "oa_score")
+@Entity
 public class OaScore extends IdEntity {
 
     private static final long serialVersionUID = -8590895188359907191L;
@@ -23,7 +26,7 @@ public class OaScore extends IdEntity {
     private Date examDate;
 
     @Column(name = "exam_type")
-    private String examType;
+    private Integer examType;
 
     @Column(name = "exam_date_time")
     private Long examDateTime;
@@ -68,11 +71,22 @@ public class OaScore extends IdEntity {
     @Column(name = "create_time")
     private Date createTime;
 
-    public String getExamType() {
+    @Column(name = "remark")
+    private String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Integer getExamType() {
         return examType;
     }
 
-    public void setExamType(String examType) {
+    public void setExamType(Integer examType) {
         this.examType = examType;
     }
 

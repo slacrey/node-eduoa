@@ -13,7 +13,11 @@
  
 package com.node.system.util.dwz;
 
-/** 
+import org.codehaus.jackson.map.ObjectMapper;
+
+import java.io.IOException;
+
+/**
  * 	
  * navTabAjaxDone是DWZ框架中预定义的表单提交回调函数．
  * 服务器转回navTabId可以把那个navTab标记为reloadFlag=1, 下次切换到那个navTab时会重新载入内容. 
@@ -50,6 +54,8 @@ public class AjaxObject {
 	private String forwardUrl = "";
 	private String rel = "";
 	private String callbackType = CALLBACK_TYPE_CLOSE_CURRENT;
+
+    private Object value;
 	
 	public AjaxObject() {
 		
@@ -58,8 +64,13 @@ public class AjaxObject {
 	public AjaxObject(String message) {
 		this.message = message;
 	}
-	
-	/**  
+
+    public AjaxObject setValue(Object value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
 	 * 构造函数
 	 * @param statusCode  
 	 */ 
@@ -258,8 +269,17 @@ public class AjaxObject {
 			  .append("\"navTabId\":\"" + navTabId + "\",")
 			  .append("\"rel\":\"" + rel + "\",")
 			  .append("\"callbackType\":\"" + callbackType + "\",")
-			  .append("\"forwardUrl\":\"" + forwardUrl + "\"")
-			  .append("}");
+			  .append("\"forwardUrl\":\"" + forwardUrl + "\"");
+        if (value != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                String result = objectMapper.writeValueAsString(value);
+                buffer.append("\"value\":\"" + result + "\"");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        buffer.append("}");
 		return buffer.toString();
 	}
 
