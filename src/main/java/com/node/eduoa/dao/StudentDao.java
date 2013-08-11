@@ -25,4 +25,7 @@ public interface StudentDao extends JpaRepository<OaStudent, Long>, JpaSpecifica
     @Query("select s from OaStudent s where s.currentYear=:currentYear order by s.studentNumber desc")
     List<OaStudent> getMaxStudentNumber(@Param("currentYear") Integer currentYear);
 
+    @Query("select s from OaStudent s where s.studentNumber=:studentNumber")
+    OaStudent findByStudentNumber(@Param("studentNumber") Integer studentNumber);
+
 }

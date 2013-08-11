@@ -2,6 +2,10 @@ package com.node.eduoa.entity;
 
 import com.node.eduoa.enums.GenderEnum;
 import com.node.system.entity.IdEntity;
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,6 +19,7 @@ import java.util.List;
  */
 @javax.persistence.Table(name = "oa_student")
 @Entity
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
 public class OaStudent extends IdEntity {
 
     private static final long serialVersionUID = 8252084003837390544L;
@@ -61,7 +66,30 @@ public class OaStudent extends IdEntity {
 
     @Transient
     private String genderName;
+    @Transient
+    private Long gradeId;
+    @Transient
+    private Long classId;
 
+    @JsonSerialize
+    public Long getGradeId() {
+        return gradeId;
+    }
+
+    public void setGradeId(Long gradeId) {
+        this.gradeId = gradeId;
+    }
+
+    @JsonSerialize
+    public Long getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Long classId) {
+        this.classId = classId;
+    }
+
+    @JsonSerialize
     public String getCategoryName() {
         return categoryName;
     }
@@ -70,6 +98,7 @@ public class OaStudent extends IdEntity {
         this.categoryName = categoryName;
     }
 
+    @JsonSerialize
     public Integer getCurrentYear() {
         return currentYear;
     }
@@ -78,6 +107,7 @@ public class OaStudent extends IdEntity {
         this.currentYear = currentYear;
     }
 
+    @JsonSerialize
     public String getGradeName() {
         return gradeName;
     }
@@ -86,6 +116,7 @@ public class OaStudent extends IdEntity {
         this.gradeName = gradeName;
     }
 
+    @JsonSerialize
     public String getClassName() {
         return className;
     }
@@ -94,6 +125,7 @@ public class OaStudent extends IdEntity {
         this.className = className;
     }
 
+    @JsonSerialize
     public String getGenderName() {
         if (getGender() != null) {
             GenderEnum genderEnum = GenderEnum.valueByIndex(getGender());
@@ -108,6 +140,7 @@ public class OaStudent extends IdEntity {
         this.genderName = genderName;
     }
 
+    @JsonSerialize
     public String getStudentName() {
         return studentName;
     }
@@ -116,6 +149,7 @@ public class OaStudent extends IdEntity {
         this.studentName = studentName;
     }
 
+    @JsonSerialize
     public String getIdNumber() {
         return idNumber;
     }
@@ -124,6 +158,7 @@ public class OaStudent extends IdEntity {
         this.idNumber = idNumber;
     }
 
+    @JsonSerialize
     public Integer getGender() {
         return gender;
     }
@@ -132,6 +167,7 @@ public class OaStudent extends IdEntity {
         this.gender = gender;
     }
 
+    @JsonSerialize
     public Integer getStudentNumber() {
         return studentNumber;
     }
@@ -140,6 +176,7 @@ public class OaStudent extends IdEntity {
         this.studentNumber = studentNumber;
     }
 
+    @JsonIgnore
     public Date getBirthday() {
         return birthday;
     }
@@ -148,6 +185,7 @@ public class OaStudent extends IdEntity {
         this.birthday = birthday;
     }
 
+    @JsonIgnore
     public Date getCreateTime() {
         return createTime;
     }
@@ -156,6 +194,7 @@ public class OaStudent extends IdEntity {
         this.createTime = createTime;
     }
 
+    @JsonIgnore
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -164,6 +203,7 @@ public class OaStudent extends IdEntity {
         this.updateTime = updateTime;
     }
 
+    @JsonIgnore
     public Long getOperatorId() {
         return operatorId;
     }
@@ -172,6 +212,7 @@ public class OaStudent extends IdEntity {
         this.operatorId = operatorId;
     }
 
+    @JsonIgnore
     public List<OaContact> getOaContactsById() {
         return oaContactsById;
     }
@@ -180,6 +221,7 @@ public class OaStudent extends IdEntity {
         this.oaContactsById = oaContactsById;
     }
 
+    @JsonIgnore
     public List<OaStudentClass> getOaStudentClassesById() {
         return oaStudentClassesById;
     }
@@ -188,6 +230,7 @@ public class OaStudent extends IdEntity {
         this.oaStudentClassesById = oaStudentClassesById;
     }
 
+    @JsonIgnore
     public List<OaStudentGrade> getOaStudentGradesById() {
         return oaStudentGradesById;
     }

@@ -32,7 +32,7 @@
 				<li><a class="magnifier" target="dialog" mask="true" width="530" height="350" href="${contextPath }/management/eduoa/score/view/{slt_uid}"><span>查看分数</span></a></li>
 			</shiro:hasPermission>		
 			<shiro:hasPermission name="Score:save">
-				<li><a class="add" target="dialog" mask="true" width="530" height="350" href="${contextPath }/management/eduoa/score/create"><span>添加分数</span></a></li>
+				<li><a class="add" target="navTab" href="${contextPath }/management/eduoa/score/create"><span>添加分数</span></a></li>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="Score:edit">
 				<li><a class="edit" target="dialog" mask="true" width="530" height="350" href="${contextPath }/management/eduoa/score/update/{slt_uid}"><span>编辑分数</span></a></li>

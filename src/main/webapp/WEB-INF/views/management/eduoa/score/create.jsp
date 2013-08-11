@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" trimDirectiveWhitespaces="true"
          pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/views/include.inc.jsp" %>
-<script>
+<script type="text/javascript">
+    var navClose = function(json) {
+        $("#button_close", $("#scoreModel")).trigger("click");
+        dialogReloadNavTabAfterCloseTab(json);
+    };
+
     $(document).ready(function(){
         if ($.validator) {
             $.validator.addMethod("getStudent", function(value, element, params) {
@@ -11,34 +16,57 @@
                     return false;
                 }
             }, "不存在该学号的学生！");
+
+            $.validator.addMethod("scoreValidator", function(value, element, params) {
+                try{
+                    return eval('(' + params + ')');
+                }catch(e){
+                    return false;
+                }
+            }, "分数值不能大于100！");
         }
     });
 
-    function doInitStudent(element) {
-        var student_no = $(element).val();
+    function doCheckScore() {
+       var score = $("#score_score").val();
+        if (Number(score) <= 100) {
+            return true;
+        }
+        return false;
+    }
+
+    function doInitStudent() {
+        var student_no = $("#score_studentNumber").val();
         $.ajax({
-            url:'${contextPath }/management/eduoa/score/student/'+student_no,
+            type: 'GET',
             async : false,
-            dataType : 'json',
-            error : DWZ.ajaxError,
-            type: 'POST',
+            url:'${contextPath }/management/eduoa/score/student/'+student_no,
+            dataType:"json",
             cache: false,
             success: function(json){
-                DWZ.ajaxDone(json);
+                if (json.statusCode == DWZ.statusCode.ok){
+                    var value = json.value;
+                    $("#score_studentName").val(value.studentName);
+                    $("#score_gradeId").val(value.gradeId);
 
-            }
+                    $("#score_gradeId").find("option[value='"+value.gradeId+"']").attr("selected","selected");
+                    $("#classModel_classId").val(value.classId);
+                    $("#classModel_className").val(value.className);
+                } else {
+                    DWZ.ajaxDone(json);
+                    $("#score_studentNumber").val("");
+                }
+            },
+            error: DWZ.ajaxError
         });
-        var purchaseConduct_goodsUnitPrice = $("#purchaseConduct_goodsUnitPrice").val();
-        var purchaseConduct_goodsCount = $("#purchaseConduct_goodsCount").val();
-        var priceSum = parseFloat(purchaseConduct_goodsUnitPrice) * parseFloat(purchaseConduct_goodsCount);
-        $("#purchaseConduct_priceSum").val(priceSum);
         return true;
     }
 
 </script>
 <div class="pageContent">
-    <form method="post" action="${contextPath }/management/eduoa/score/create" class="required-validate pageForm"
-          onsubmit="return validateCallback(this, dialogReloadNavTab);">
+    <form id="scoreModel" method="post" action="${contextPath }/management/eduoa/score/create"
+          class="required-validate pageForm"
+          onsubmit="return validateCallback(this, navClose);">
         <div class="pageFormContent" layoutH="58">
             <p>
                 <label>时间：</label>
@@ -48,7 +76,7 @@
 
             <p>
                 <label>学号：</label>
-                <input type="text" name="score.studentNumber" getStudent="doInitStudent(this)"  size="30"/>
+                <input type="text" id="score_studentNumber" name="score.studentNumber" getStudent="doInitStudent()" class="required"  size="30"/>
             </p>
 
             <p>
@@ -58,17 +86,12 @@
 
             <p>
                 <label>学生姓名：</label>
-                <input type="hidden" name="classModel.classId" />
-                <input type="text" class="required" name="classModel.className" readonly="true" />
-                <a class="btnLook" target="dialog" width="500" height="400"
-                   lookupGroup="classModel" mask="true"
-                   href="${contextPath }/management/eduoa/student/tree_grade"
-                   title="选择">选择</a>
+                <input type="text" id="score_studentName" class="required" name="score.studentName" />
             </p>
 
             <p>
                 <label>考试批次：</label>
-                <select name="score.examType" class="combox">
+                <select id="score_examType" name="score.examType">
                     <c:forEach items="${examsEnums}" var="item" >
                         <option value="${item.index}">${item.text}</option>
                     </c:forEach>
@@ -77,7 +100,7 @@
 
             <p>
                 <label>年级：</label>
-                <select name="score.gradeId" class="combox">
+                <select id="score_gradeId" name="score.gradeId">
                     <option value="">无归属年级</option>
                     <c:forEach items="${grades}" var="item" >
                         <option value="${item.id}">${item.gradeName}</option>
@@ -87,8 +110,8 @@
 
             <p>
                 <label>班级：</label>
-                <input type="hidden" name="classModel.classId" />
-                <input type="text" class="required" name="classModel.className" readonly="true" />
+                <input type="hidden" id="classModel_classId" name="classModel.classId" />
+                <input type="text" class="required" id="classModel_className" name="classModel.className" readonly="true" />
                 <a class="btnLook" target="dialog" width="500" height="400"
                    lookupGroup="classModel" mask="true"
                    href="${contextPath }/management/eduoa/student/tree_grade"
@@ -97,7 +120,7 @@
 
             <p>
                 <label>学科：</label>
-                <select name="score.subjectId" class="combox">
+                <select name="score.subjectId">
                     <c:forEach var="item" items="${subjects}">
                         <option value="${item.id}">${item.subjectName}</option>
                     </c:forEach>
@@ -106,7 +129,7 @@
 
             <p>
                 <label>成绩：</label>
-                <input type="text" name="score.score" size="30"/>
+                <input type="text" scoreValidator="doCheckScore()" id="score_score" name="score.score" class="number" size="30"/>
             </p>
 
             <div class="divider"></div>
@@ -129,7 +152,7 @@
                 <li>
                     <div class="button">
                         <div class="buttonContent">
-                            <button type="button" class="close">关闭</button>
+                            <button id="button_close" type="button" class="close">关闭</button>
                         </div>
                     </div>
                 </li>

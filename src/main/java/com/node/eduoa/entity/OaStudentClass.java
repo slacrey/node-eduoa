@@ -1,6 +1,8 @@
 package com.node.eduoa.entity;
 
 import com.node.system.entity.IdEntity;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +17,7 @@ import java.util.Date;
  */
 @javax.persistence.Table(name = "oa_student_class")
 @Entity
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
 public class OaStudentClass extends IdEntity {
 
     private static final long serialVersionUID = 4859515590347236233L;
@@ -62,6 +65,7 @@ public class OaStudentClass extends IdEntity {
         this.oaClassByClassId = oaClassByClassId;
     }
 
+    @JsonManagedReference
     public OaStudent getOaStudentByStudentId() {
         return oaStudentByStudentId;
     }

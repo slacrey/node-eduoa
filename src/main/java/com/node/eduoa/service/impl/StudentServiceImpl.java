@@ -87,6 +87,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public OaStudent findByStudentNumber(Integer studentNumber) {
+        return studentDao.findByStudentNumber(studentNumber);
+    }
+
+    @Override
     public Integer getMaxStudentNumber() {
         Calendar calendar = Calendar.getInstance();
         List<OaStudent> studentList = studentDao.getMaxStudentNumber(calendar.get(Calendar.YEAR));

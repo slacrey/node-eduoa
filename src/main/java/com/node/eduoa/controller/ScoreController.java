@@ -13,9 +13,9 @@
  
 package com.node.eduoa.controller;
 
+import com.node.eduoa.converters.CustomTimestampEditor;
+import com.node.eduoa.entity.*;
 import com.node.eduoa.entity.OaScore;
-import com.node.eduoa.entity.OaScore;
-import com.node.eduoa.entity.OaStudent;
 import com.node.eduoa.enums.ExamsEnum;
 import com.node.eduoa.enums.SemesterEnum;
 import com.node.eduoa.service.GradeService;
@@ -25,6 +25,7 @@ import com.node.eduoa.service.SubjectService;
 import com.node.eduoa.service.impl.ScoreServiceImpl;
 import com.node.eduoa.service.impl.StudentServiceImpl;
 import com.node.eduoa.utils.YearUtils;
+import com.node.eduoa.utils.model.ScoreModel;
 import com.node.system.log.Log;
 import com.node.system.log.LogLevel;
 import com.node.system.log.LogMessageObject;
@@ -35,14 +36,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springside.modules.beanvalidator.BeanValidators;
+import org.springside.modules.persistence.SearchFilter;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Validator;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /** 
@@ -77,6 +81,14 @@ public class ScoreController extends BaseFormController {
 	private static final String LIST = "management/eduoa/score/list";
 	private static final String VIEW = "management/eduoa/score/view";
 
+    @InitBinder
+    protected void initBinder(HttpServletRequest request,
+                              ServletRequestDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", request.getLocale());
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, null,
+                new CustomDateEditor(dateFormat, true));
+    }
 
     @RequiresPermissions("Score:save")
 	@RequestMapping(value="/create", method=RequestMethod.GET)
@@ -96,18 +108,40 @@ public class ScoreController extends BaseFormController {
     @Log(message="添加了{0}分数。", level=LogLevel.TRACE, override=true)
 	@RequiresPermissions("Score:save")
 	@RequestMapping(value="/create", method=RequestMethod.POST)
-	public @ResponseBody String create(OaScore score) {
-		BeanValidators.validateWithException(validator, score);
+	public @ResponseBody String create(ScoreModel scoreModel) {
+
         try {
-            score.setCreateTime(new Date());
-            scoreService.save(score);
+            scoreModel.getScore().setCreateTime(new Date());
+
+            scoreModel.getScore().setClassId(scoreModel.getClassModel().getClassId());
+            scoreModel.getScore().setClassName(scoreModel.getClassModel().getClassName());
+            Long gradeId = scoreModel.getScore().getGradeId();
+            OaGrade grade = null;
+            if (gradeId != null) {
+                grade = gradeService.get(gradeId);
+                scoreModel.getScore().setGradeName(grade.getGradeName());
+            }
+            Long subjectId = scoreModel.getScore().getSubjectId();
+            OaSubject subject = null;
+            if (subjectId != null) {
+                subject = subjectService.get(subjectId);
+                scoreModel.getScore().setSubjectName(subject.getSubjectName());
+            }
+            Date examDate = scoreModel.getScore().getExamDate();
+            if (examDate != null) {
+                scoreModel.getScore().setExamDateTime(examDate.getTime());
+            }
+            scoreModel.getScore().setTeacherId(currentUser.getUser().getTeacherInfo().getId());
+            scoreModel.getScore().setTeacherName(currentUser.getUser().getTeacherInfo().getTeacherName());
+
+            scoreService.save(scoreModel.getScore());
         } catch (Exception e) {
             return AjaxObject.newError(e.getMessage()).setCallbackType("").toString();
         }
 		
 		// 加入一个LogMessageObject，该对象的isWritten为true，会记录日志。
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{score.getGradeName()}));
-		return AjaxObject.newOk("分数添加成功！").toString();
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{scoreModel.getScore().getStudentName()}));
+		return AjaxObject.newOk("分数添加成功！").setCallbackType("").toString();
 	}
 	
 	/**
@@ -136,15 +170,41 @@ public class ScoreController extends BaseFormController {
 		scoreService.update(score);
 
         LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{score.getGradeName()}));
-		return AjaxObject.newOk("分数修改成功！").toString();
+		return AjaxObject.newOk("分数修改成功！").setCallbackType("").toString();
 	}
 
     @RequiresPermissions("Score:edit")
-    @RequestMapping(value="/student/${id}", method=RequestMethod.POST)
-    public @ResponseBody String getStudent(@PathVariable Long id) {
+    @RequestMapping(value="/student/{studentNumber}", method=RequestMethod.GET)
+    public @ResponseBody String getStudent(@PathVariable Integer studentNumber) {
 
-        OaStudent student = studentService.get(id);
-        return AjaxObject.newOk("分数修改成功！").setValue(student).toString();
+        Calendar calendar = Calendar.getInstance();
+        OaStudent student = studentService.findByStudentNumber(studentNumber);
+        if (student != null) {
+            List<OaStudentGrade> studentGrades = student.getOaStudentGradesById();
+            if (studentGrades != null && !studentGrades.isEmpty()) {
+                for (OaStudentGrade studentGrade : studentGrades) {
+                    if (calendar.get(Calendar.YEAR) == studentGrade.getCurrentYear()) {
+                        student.setGradeName(studentGrade.getOaGradeByGradeId().getGradeName());
+                        student.setGradeId(studentGrade.getOaGradeByGradeId().getId());
+                        break;
+                    }
+                }
+            }
+            List<OaStudentClass> studentClasses = student.getOaStudentClassesById();
+            if (studentClasses != null && !studentClasses.isEmpty()) {
+                for (OaStudentClass studentClass:studentClasses) {
+                    if (calendar.get(Calendar.YEAR) == studentClass.getCurrentYear()) {
+                        student.setClassId(studentClass.getOaClassByClassId().getId());
+                        student.setClassName(studentClass.getOaClassByClassId().getClassName());
+                        break;
+                    }
+                }
+            }
+        } else {
+            return AjaxObject.newError("不存在该学生").toString();
+        }
+
+        return AjaxObject.newOk("获得学生成功！").setValue(student).toString();
     }
 
 

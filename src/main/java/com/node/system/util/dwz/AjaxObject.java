@@ -268,16 +268,18 @@ public class AjaxObject {
 			  .append("\"message\":\"" + message + "\",")
 			  .append("\"navTabId\":\"" + navTabId + "\",")
 			  .append("\"rel\":\"" + rel + "\",")
-			  .append("\"callbackType\":\"" + callbackType + "\",")
-			  .append("\"forwardUrl\":\"" + forwardUrl + "\"");
+			  .append("\"callbackType\":\"" + callbackType + "\",");
         if (value != null) {
+            buffer.append("\"forwardUrl\":\"" + forwardUrl + "\",");
             ObjectMapper objectMapper = new ObjectMapper();
             try {
                 String result = objectMapper.writeValueAsString(value);
-                buffer.append("\"value\":\"" + result + "\"");
+                buffer.append("\"value\":" + result );
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else {
+            buffer.append("\"forwardUrl\":\"" + forwardUrl + "\"");
         }
         buffer.append("}");
 		return buffer.toString();

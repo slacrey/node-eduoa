@@ -30,4 +30,6 @@ public interface StudentService {
 
     Integer getMaxStudentNumber();
 
+    OaStudent findByStudentNumber(Integer studentNumber);
+
 }
