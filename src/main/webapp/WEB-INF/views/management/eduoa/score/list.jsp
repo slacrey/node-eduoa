@@ -28,9 +28,6 @@
 
 	<div class="panelBar">
 		<ul class="toolBar">
-			<shiro:hasPermission name="Score:view">
-				<li><a class="magnifier" target="dialog" mask="true" width="530" height="350" href="${contextPath }/management/eduoa/score/view/{slt_uid}"><span>查看分数</span></a></li>
-			</shiro:hasPermission>		
 			<shiro:hasPermission name="Score:save">
 				<li><a class="add" target="navTab" href="${contextPath }/management/eduoa/score/create"><span>添加分数</span></a></li>
 			</shiro:hasPermission>
@@ -49,7 +46,7 @@
 				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th width="130">时间</th>
 				<th>考试批次</th>
-				<th width="100">分数</th>
+				<th width="100">年级</th>
 				<th width="100">班级</th>
 				<th width="100">学生姓名</th>
 				<th width="100">学科</th>
@@ -62,7 +59,7 @@
 			<tr target="slt_uid" rel="${item.id}">
 				<td><input name="ids" value="${item.id}" type="checkbox"></td>
 				<td><fmt:formatDate value="${item.examDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-				<td>${item.examType}</td>
+				<td>${item.examTypeName}</td>
 				<td>${item.gradeName}</td>
 				<td>${item.className}</td>
 				<td>${item.studentName}</td>

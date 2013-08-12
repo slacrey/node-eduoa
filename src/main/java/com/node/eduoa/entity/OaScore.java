@@ -1,11 +1,9 @@
 package com.node.eduoa.entity;
 
+import com.node.eduoa.enums.ExamsEnum;
 import com.node.system.entity.IdEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -73,6 +71,23 @@ public class OaScore extends IdEntity {
 
     @Column(name = "remark")
     private String remark;
+
+    @Transient
+    private String examTypeName;
+
+    public String getExamTypeName() {
+        if (examType != null) {
+            ExamsEnum genderEnum = ExamsEnum.valueByIndex(examType);
+            if (genderEnum != null) {
+                return genderEnum.getText();
+            }
+        }
+        return "";
+    }
+
+    public void setExamTypeName(String examTypeName) {
+        this.examTypeName = examTypeName;
+    }
 
     public String getRemark() {
         return remark;

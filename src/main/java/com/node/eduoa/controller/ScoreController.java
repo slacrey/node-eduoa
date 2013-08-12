@@ -165,11 +165,38 @@ public class ScoreController extends BaseFormController {
     @Log(message="修改了{0}分数。", level=LogLevel.TRACE, override=true)
 	@RequiresPermissions("Score:edit")
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public @ResponseBody String update(OaScore score) {
-		BeanValidators.validateWithException(validator, score);
-		scoreService.update(score);
+	public @ResponseBody String update(ScoreModel scoreModel) {
+        try {
+            scoreModel.getScore().setCreateTime(new Date());
 
-        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{score.getGradeName()}));
+            scoreModel.getScore().setClassId(scoreModel.getClassModel().getClassId());
+            scoreModel.getScore().setClassName(scoreModel.getClassModel().getClassName());
+            Long gradeId = scoreModel.getScore().getGradeId();
+            OaGrade grade = null;
+            if (gradeId != null) {
+                grade = gradeService.get(gradeId);
+                scoreModel.getScore().setGradeName(grade.getGradeName());
+            }
+            Long subjectId = scoreModel.getScore().getSubjectId();
+            OaSubject subject = null;
+            if (subjectId != null) {
+                subject = subjectService.get(subjectId);
+                scoreModel.getScore().setSubjectName(subject.getSubjectName());
+            }
+            Date examDate = scoreModel.getScore().getExamDate();
+            if (examDate != null) {
+                scoreModel.getScore().setExamDateTime(examDate.getTime());
+            }
+            scoreModel.getScore().setTeacherId(currentUser.getUser().getTeacherInfo().getId());
+            scoreModel.getScore().setTeacherName(currentUser.getUser().getTeacherInfo().getTeacherName());
+
+            scoreService.save(scoreModel.getScore());
+        } catch (Exception e) {
+            return AjaxObject.newError(e.getMessage()).setCallbackType("").toString();
+        }
+
+        // 加入一个LogMessageObject，该对象的isWritten为true，会记录日志。
+        LogUitl.putArgs(LogMessageObject.newWrite().setObjects(new Object[]{scoreModel.getScore().getStudentName()}));
 		return AjaxObject.newOk("分数修改成功！").setCallbackType("").toString();
 	}
 
